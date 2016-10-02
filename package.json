@@ -1,0 +1,19 @@
+{
+  "name": "hocrjs",
+  "version": "0.0.1",
+  "description": "Inspect hOCR files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kba/hocrjs.git"
+  },
+  "author": "kba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kba/hocrjs/issues"
+  },
+  "homepage": "https://github.com/kba/hocrjs#readme"
+}

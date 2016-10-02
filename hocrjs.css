@@ -1,0 +1,19 @@
+.hocrjs *[class^='ocr'] {
+    position: fixed;
+    border: 1px solid red;
+}
+
+.hocrjs *[class^='ocr']:hover {
+    background: rgba(255, 0, 0, 0.1)
+}
+
+.hocrjs *[class^='ocr']:hover:before {
+    display: block;
+    background: white;
+    border: 1px solid black;
+    font-family: monospace;
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+    top: -15px;
+}
