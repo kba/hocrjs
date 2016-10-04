@@ -5,4 +5,4 @@
         window.hocrViewer.init();
     }
     document.addEventListener('load', document.hocrViewerInit);
-}());
+}(this));

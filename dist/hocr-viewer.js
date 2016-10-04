@@ -349,6 +349,6 @@ SOFTWARE.
     }
 
     window.HocrViewer = HocrViewer;
-}());
+}(this));
 
 //# sourceMappingURL=hocr-viewer.js.map.json

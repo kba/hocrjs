@@ -349,7 +349,7 @@ SOFTWARE.
     }
 
     window.HocrViewer = HocrViewer;
-}());
+}(this));
 (function(window) {
     var document = window.document;
     document.hocrViewerInit = function hocrViewerInit() {
@@ -357,6 +357,6 @@ SOFTWARE.
         window.hocrViewer.init();
     }
     document.addEventListener('load', document.hocrViewerInit);
-}());
+}(this));
 
 //# sourceMappingURL=hocr-viewer-fullscreen.js.map.json

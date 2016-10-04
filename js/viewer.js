@@ -295,4 +295,4 @@
     }
 
     window.HocrViewer = HocrViewer;
-}());
+}(this));
