@@ -22,7 +22,7 @@ dist/hocr-viewer.js: LICENSE.js js/parser.js js/viewer.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
 
-dist/hocr-viewer-fullscreen.js: LICENSE.js js/fullscreen-init.js js/parser.js js/viewer.js
+dist/hocr-viewer-fullscreen.js: LICENSE.js js/parser.js js/viewer.js js/fullscreen-init.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
 

@@ -21,14 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-(function() {
-    window.hocrViewerInit = function hocrViewerInit() {
-        window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
-        window.hocrViewer.init();
-    }
-    window.addEventListener('load', window.hocrViewerInit);
-    console.log(window);
-}());
 (function(global)  {
     function HocrParser() {}
 
@@ -357,5 +349,12 @@ HocrViewer.prototype.init = function init() {
     this.onConfigChange();
     window.addEventListener('resize', () => this.onConfigChange());
 }
+(function() {
+    window.hocrViewerInit = function hocrViewerInit() {
+        window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
+        window.hocrViewer.init();
+    }
+    window.addEventListener('load', window.hocrViewerInit);
+}());
 
 //# sourceMappingURL=hocr-viewer-fullscreen.js.map.json
