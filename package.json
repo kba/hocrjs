@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/kba/hocrjs/issues"
   },
-  "homepage": "https://github.com/kba/hocrjs#readme"
+  "homepage": "https://github.com/kba/hocrjs#readme",
+  "devDependencies": {
+    "cat-source-map": "^0.1.2",
+    "less": "^2.7.1",
+    "less-plugin-clean-css": "^1.5.1",
+    "nodemon": "^1.10.2"
+  }
 }
