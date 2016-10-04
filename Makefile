@@ -1,4 +1,5 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
+MKDIR = mkdir -p
 WGET = wget
 # LESSC = lessc --source-map --source-map-map-inline --include-path=less:. --clean-css
 LESSC = lessc --source-map --source-map-map-inline --include-path=less

@@ -70,6 +70,7 @@ function HocrViewer(config) {
         }
     });
 }
+window.HocrViewer = HocrViewer;
 
 HocrViewer.prototype.log = function logdebug() {
     var level = arguments[0];
