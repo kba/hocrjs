@@ -143,8 +143,8 @@
             this.log(2, `${fontsize}:`,
                 `width: ${wrap.clientWidth} < ${el.clientWidth}`,
                 `height ${wrap.clientHeight} < ${el.clientHeight}`);
-            } while (wrap.offsetWidth >= el.offsetWidth
-                || wrap.offsetHeight >= el.offsetHeight);
+        } while (wrap.offsetWidth >= el.offsetWidth
+             || wrap.offsetHeight >= el.offsetHeight);
         el.style['font-size'] = fontsize + 'px';
         this.hidden.removeChild(wrap);
     }
@@ -171,13 +171,14 @@
     }
 
     HocrViewer.prototype.toggleBackgroundImage = function toggleBackgroundImage(onoff) {
+        var page = this.root.querySelector('.ocr_page');
         if (onoff) {
             this.findByOcrClass({title: 'image'}).forEach((el) => {
                 var imageFile = this.parser.image(el);
-                this.root.style.backgroundImage = `url(${imageFile})`;
+                page.style.backgroundImage = `url(${imageFile})`;
             });
         } else {
-            this.root.style.backgroundImage = '';
+            page.style.backgroundImage = '';
             // delete this.root.style.backgroundImage;
         }
     }
@@ -252,11 +253,15 @@
         <h2>Features</h2>
         <ul class='features'>
         </ul>
+        <h2>Zoom</h2>
+        <input type='range' class='zoom' min='0' max='500' step='2' value="100"/>
     </div>`;
         this.toolbar.querySelector('.toggler').addEventListener('click', (ev) => {
             this.config.expandToolbar = !this.config.expandToolbar;
             this.toggleExpandToolbar(this.config.expandToolbar);
         });
+
+        // fonts
         var fontSelect = this.toolbar.querySelector('select.fontlist');
         this.config.fonts.forEach((font) => {
             var fontOption = document.createElement('option');
@@ -272,6 +277,8 @@
             });
             this.onConfigChange();
         });
+
+        // features
         this.features.forEach((feature) => {
             var li = document.createElement('li');
             var label = document.createElement('label');
@@ -296,6 +303,16 @@
             li.appendChild(checkbox);
             li.appendChild(label);
             this.toolbar.querySelector('.features').appendChild(li);
+        });
+
+        // Zoom
+        var zoomSlider = this.toolbar.querySelector('.zoom');
+        zoomSlider.addEventListener('input', (ev) => {
+            var scaleFactor = ev.target.value / 100.0;
+            var page = this.root.querySelector('.ocr_page');
+            page.style.transform = `scale(${scaleFactor})`;
+            page.style.transformOrigin = 'top left';
+            // console.log();
         });
     }
 
