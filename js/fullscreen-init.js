@@ -4,4 +4,5 @@
         window.hocrViewer.init();
     }
     window.addEventListener('load', window.hocrViewerInit);
+    console.log(window);
 }());
