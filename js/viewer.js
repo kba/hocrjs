@@ -1,3 +1,4 @@
+console.log(window);
 function HocrViewer(config) {
     this.config = this.defaultConfig;
     Object.keys(config || {}).forEach((k) => {
@@ -17,6 +18,7 @@ function HocrViewer(config) {
     });
 }
 window.HocrViewer = HocrViewer;
+console.log(window.HocrViewer);
 
 HocrViewer.prototype.log = function logdebug() {
     var level = arguments[0];
