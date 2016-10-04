@@ -1,0 +1,14 @@
+{
+    "version": 3,
+    "sources": [
+        "LICENSE.js",
+        "js/parser.js"
+    ],
+    "names": [],
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;ACtBA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA",
+    "file": "dist/hocr-parser.js",
+    "sourcesContent": [
+        "/*!\nThe MIT License (MIT)\n\nCopyright (c) 2016 Konstantin Baierer\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\n",
+        "(function(global)  {\n    function HocrParser() {}\n\n    HocrParser.prototype.bbox = function bbox(titleString) {\n        if (typeof titleString !== 'string') titleString = titleString.getAttribute('title');\n        return titleString\n            .match(/bbox\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)/)\n            .slice(1)\n            .map((coord) => parseInt(coord));\n    }\n\n    HocrParser.prototype.image = function image(titleString) {\n        if (typeof titleString !== 'string') titleString = titleString.getAttribute('title');\n        return titleString.match(/image\\s+\"([^\"]+)\"/)[1];\n    }\n\n    // AMD support\n    if (typeof define === 'function' && define.amd) {\n        define(function() { return HocrParser; });\n        // CommonJS and Node.js module support.\n    } else if (typeof exports !== 'undefined') {\n        // Support Node.js specific `module.exports` (which can be a function)\n        if (typeof module !== 'undefined' && module.exports) {\n            exports = module.exports = HocrParser;\n        }\n        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)\n        exports.HocrParser = HocrParser;\n    } else {\n        global.HocrParser = HocrParser;\n    }\n}(this));\n"
+    ]
+}
