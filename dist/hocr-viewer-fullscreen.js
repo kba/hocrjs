@@ -355,7 +355,7 @@ SOFTWARE.
         window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
         window.hocrViewer.init();
     }
-    window.addEventListener('load', document.hocrViewerInit);
+    document.addEventListener('load', document.hocrViewerInit);
 }());
 
 //# sourceMappingURL=hocr-viewer-fullscreen.js.map.json
