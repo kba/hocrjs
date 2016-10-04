@@ -28,7 +28,7 @@ dist/hocr-viewer-fullscreen.js: LICENSE.js js/parser.js js/viewer.js js/fullscre
 	$(CAT_SOURCE_MAP) $^ $@
 
 dist/hocr-viewer.user.js: userscript/hocr-viewer.user.js
-	sed 's/__DATE/`date +"%s"`/' $< > $@
+	sed "s/__DATE__/`date +'%s'`/" $< > $@
 
 ##
 ## Dependencies
