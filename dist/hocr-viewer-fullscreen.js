@@ -351,11 +351,8 @@ SOFTWARE.
     window.HocrViewer = HocrViewer;
 }(this));
 (function(window) {
-    window.hocrViewerInit = function hocrViewerInit() {
-        window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
-        window.hocrViewer.init();
-    }
-    document.addEventListener('load', window.hocrViewerInit);
+    window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
+    window.hocrViewer.init();
 }(this));
 
 //# sourceMappingURL=hocr-viewer-fullscreen.js.map.json
