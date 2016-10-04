@@ -29,7 +29,15 @@
     HocrViewer.prototype.defaultConfig = {
         root: 'body',
         debugLevel: 1,
-        fonts: ['serif', 'sans-serif', 'monospace', 'UnifrakturCook', 'UnifrakturMaguntia', 'Old Standard TT', 'Cardo'],
+        fonts: [
+            'sans-serif',
+            'serif',
+            'monospace',
+            'UnifrakturCook',
+            'UnifrakturMaguntia',
+            'Old Standard TT',
+            'Cardo',
+        ],
         maxFontSize: 128,
         minFontSize: 2,
         backgroundImage: false,
@@ -183,9 +191,23 @@
     }
 
     HocrViewer.prototype.toggleContentEditable = function toggleContentEditable(onoff) {
-        this.findByOcrClass({clauses: ',em,strong'}).forEach((el) => {
-            if (onoff) el.setAttribute('contentEditable', 'true');
-            else el.removeAttribute('contentEditable');
+        var onContentEditableInput = (ev) => {
+            console.warn("Scaling of contentEditable is broken right now");
+            if (this.config.scaleFontSize) {
+                this.scaleFontSize(ev.target);
+                this.findByOcrClass({context: ev.target}).forEach((child) => {
+                    this.scaleFontSize(child);
+                })
+            }
+        }
+        this.findByOcrClass({class: ['line', 'x_word'], clauses: ''}).forEach((el) => {
+            if (onoff) {
+                el.setAttribute('contentEditable', 'true');
+                el.addEventListener('input', onContentEditableInput);
+            } else {
+                el.removeAttribute('contentEditable');
+                el.removeEventListener('input', onContentEditableInput);
+            }
         });
     }
 
@@ -205,9 +227,9 @@
         });
     }
 
-        /**
-         * Add toolbar
-         */
+    /**
+     * Add toolbar
+     */
     HocrViewer.prototype.addToolbar = function addToolbar() {
         this.toolbar = document.querySelector('#' + this.config.toolbarId);
         if (this.toolbar) return;
@@ -217,21 +239,16 @@
         document.body.appendChild(this.toolbar);
         this.toolbar.innerHTML = `
     <div class="toggler">
-        <div class="toggler-inner"></div>
-        <div class="toggler-inner"></div>
-        <div class="toggler-inner"></div>
+        <div class="toggler-inner toggler-show">
+            &gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>
+        </div>
+        <div class="toggler-inner toggler-hide">
+            &lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>
+        </div>
     </div>
     <div class="wrapper">
         <h2>Font</h2>
-        <select class="fontlist">
-            <option>serif</option>
-            <option>sans-serif</option>
-            <option>monospace</option>
-            <option>UnifrakturMaguntia</option>
-            <option>UnifrakturCook</option>
-            <option>Old Standard TT</option>
-            <option>Cardo</option>
-        </select>
+        <select class="fontlist"></select>
         <h2>Features</h2>
         <ul class='features'>
         </ul>
@@ -240,7 +257,15 @@
             this.config.expandToolbar = !this.config.expandToolbar;
             this.toggleExpandToolbar(this.config.expandToolbar);
         });
-        this.toolbar.querySelector('select.fontlist').addEventListener('change', (ev) => {
+        var fontSelect = this.toolbar.querySelector('select.fontlist');
+        this.config.fonts.forEach((font) => {
+            var fontOption = document.createElement('option');
+            fontOption.innerHTML = font;
+            fontOption.style.fontSize = 'large';
+            fontOption.style.fontFamily = font;
+            fontSelect.append(fontOption);
+        });
+        fontSelect.addEventListener('change', (ev) => {
             var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML;;
             this.findByOcrClass().forEach((el) => {
                 el.style.fontFamily = selectedFont;
@@ -260,7 +285,7 @@
                 this.config[feature] = checkbox.checked;
                 this.onConfigChange();
             };
-            label.addEventListener('click', (ev) => {
+            li.addEventListener('click', (ev) => {
                 checkbox.checked = !checkbox.checked;
                 // onChange();
                 li.classList.toggle('checked');

@@ -1,14 +1,14 @@
 /*!
  *      _                               _
- *     | |__   ___   ___ _ __    __   _(_) _____      _____ _ __ 
+ *     | |__   ___   ___ _ __    __   _(_) _____      _____ _ __
  *     | '_ \ / _ \ / __| '__|___\ \ / / |/ _ \ \ /\ / / _ \ '__|
  *     | | | | (_) | (__| | |_____\ V /| |  __/\ V  V /  __/ |
  *     |_| |_|\___/ \___|_|        \_/ |_|\___| \_/\_/ \___|_|
  */
 
 @import (css,inline) "../LICENSE.js";
-@import "prefixer.less";
 @import "reset.less";
+@import "prefixer.less";
 
 @import 'https://fonts.googleapis.com/css?family=UnifrakturCook:700|UnifrakturMaguntia';
 @import 'https://fonts.googleapis.com/css?family=UnifrakturCook:700';
@@ -32,6 +32,7 @@
 .tooltip {
     display: block;
     background: white;
+    color: black !important;
     border: 1px solid black;
     font-family: monospace;
     position: absolute;
@@ -71,7 +72,7 @@
 
     &.hocr-viewer-transparent-text {
         .ocr_page {
-            color: @color-transparent !important;
+            color: @color-transparent;
         }
     }
 
@@ -103,7 +104,7 @@
     position: fixed;
     background-color: @color-toolbar-bg;
     top: 0;
-    height: 100vh;
+    height: 100%;
     border: none;
     .toggler {
         float: left;
@@ -112,31 +113,36 @@
         background: @color-toolbar-border;
         height: 100vh;
         width: 1em;
-        padding-top: 50vh;
-        .toggler-inner:before {
+        .toggler-inner {
             font-size: 1.5em;
-            margin-top: 50vh;
-            content: '>'
+            top: 40vh;
+            position: fixed;
         }
+        .toggler-hide { display:none; }
+        .toggler-show { display:block; }
     }
     .wrapper {
         position: relative;
         padding-left: 1px;
-        display: none;
-        width: 20em;
+        width: 0em;
+        overflow: hidden;
+        .transition(all 0.5s ease;);
         margin-left: 1em;
     }
     &.expanded {
-        border-right: 1px solid @color-toolbar-border;
-        .wrapper { display: block; }
-        .toggler-inner:before { content: '<' }
+        border-right: @border-width solid @color-toolbar-border;
+        .wrapper { width: 20em; }
+        .toggler-show { display:none; }
+        .toggler-hide { display:block; }
     }
     ul.features {
         list-style-type: none;
         padding: 0;
+        width: 19em;
         li {
             background-color: @color-unchecked;
-            padding: 2px 0;
+            margin-bottom: 2px;
+            padding: 5px 0;
             &:before { content: '✗ '; }
             &.checked {
                 background-color: @color-checked;
@@ -147,5 +153,3 @@
         }
     }
 }
-
-
