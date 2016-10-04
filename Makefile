@@ -8,7 +8,8 @@ CAT_SOURCE_MAP = cat-source-map
 dist: dist/hocr-viewer.css \
 	dist/hocr-parser.js \
 	dist/hocr-viewer.js \
-	dist/hocr-viewer-fullscreen.js
+	dist/hocr-viewer-fullscreen.js \
+	dist/hocr-viewer.user.js
 
 dist/hocr-viewer.css: less/hocr-viewer.less
 	$(MKDIR) dist
@@ -25,6 +26,9 @@ dist/hocr-viewer.js: LICENSE.js js/parser.js js/viewer.js
 dist/hocr-viewer-fullscreen.js: LICENSE.js js/parser.js js/viewer.js js/fullscreen-init.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
+
+dist/hocr-viewer.user.js: userscript/hocr-viewer.user.js
+	sed 's/__DATE/`date +"%s"`/' $< > $@
 
 ##
 ## Dependencies

@@ -130,16 +130,17 @@
     .wrapper {
         position: relative;
         background-color: @color-toolbar-bg;
-        padding-left: 1px;
         width: 0em;
         overflow: hidden;
         .transition(all 0.5s ease;);
-        padding-left: 1em;
         height: 100vh;
     }
     &.expanded {
         border-right: @border-width solid @color-toolbar-border;
-        .wrapper { width: 20em; }
+        .wrapper { 
+            padding-left: 1em;
+            width: 20em;
+        }
         .toggler-show { display:none; }
         .toggler-hide { display:block; }
     }
