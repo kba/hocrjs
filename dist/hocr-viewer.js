@@ -21,6 +21,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/*!
+ *   _
+ *  | |__   ___   ___ _ __      _ __   __ _ _ __ ___  ___ _ __
+ *  | '_ \ / _ \ / __| '__|____| '_ \ / _` | '__/ __|/ _ \ '__|
+ *  | | | | (_) | (__| | |_____| |_) | (_| | |  \__ \  __/ |
+ *  |_| |_|\___/ \___|_|       | .__/ \__,_|_|  |___/\___|_|
+ *                             |_|
+ *
+ *  This software may be modified and distributed under the terms
+ *  of the MIT license.  See the LICENSE file for details.
+ */
 (function(global)  {
     function HocrParser() {}
 
@@ -37,6 +48,9 @@ SOFTWARE.
         return titleString.match(/image\s+"([^"]+)"/)[1];
     }
 
+    /* ---------------------------- *
+     * Browser / NodeJS boilerplate *
+     * ---------------------------- */
     // AMD support
     if (typeof define === 'function' && define.amd) {
         define(function() { return HocrParser; });
@@ -52,26 +66,51 @@ SOFTWARE.
         global.HocrParser = HocrParser;
     }
 }(this));
+/*!
+ *   _                               _
+ *  | |__   ___   ___ _ __    __   _(_) _____      _____ _ __
+ *  | '_ \ / _ \ / __| '__|___\ \ / / |/ _ \ \ /\ / / _ \ '__|
+ *  | | | | (_) | (__| | |_____\ V /| |  __/\ V  V /  __/ |
+ *  |_| |_|\___/ \___|_|        \_/ |_|\___| \_/\_/ \___|_|
+ *
+ *
+ *  This software may be modified and distributed under the terms
+ *  of the MIT license.  See the LICENSE file for details.
+ */
 (function() {
+
+    var Utils = {
+        addCssFragment: function(styleId, css) {
+            var style = document.querySelector(`#${styleId}`);
+            if (!style) {
+                style = document.createElement('style');
+                style.id = styleId;
+                document.head.appendChild(style);
+            }
+            style.appendChild(document.createTextNode(css));
+        }
+    };
+
     function HocrViewer(config) {
         this.config = this.defaultConfig;
         Object.keys(config || {}).forEach((k) => {
+            // TODO proper conifg
             this.config[k] = config[k];
         });
         this.root = this.config.root
         if (typeof this.root === 'string')
             this.root = document.querySelector(this.root);
         this.parser = new window.HocrParser(this.config);
-        this.features = [];
-        Object.keys(this.config).forEach((k) => {
-            if (k === 'expandToolbar') return;
-            if (k === 'enableToolbar') return;
-            if (typeof this.config[k] === 'boolean') {
-                this.features.push(k);
-            }
+        Object.keys(this.config.fonts).forEach((font) => {
+            var cssUrl = this.config.fonts[font].cssUrl;
+            if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`);
         });
+        this.cache = {
+            scaleFont: {}
+        }
     }
 
+    // TODO
     HocrViewer.prototype.log = function logdebug() {
         var level = arguments[0];
         if (level > this.config.debugLevel) return;
@@ -83,32 +122,60 @@ SOFTWARE.
     HocrViewer.prototype.defaultConfig = {
         root: 'body',
         debugLevel: 1,
-        fonts: [
-            'sans-serif',
-            'serif',
-            'monospace',
-            'UnifrakturCook',
-            'UnifrakturMaguntia',
-            'Old Standard TT',
-            'Cardo',
-        ],
-        maxFontSize: 128,
-        minFontSize: 2,
-        backgroundImage: false,
-        contentEditable: false,
-        disableEmStrong: true,
-        tooltips: true,
-        scaleFontSize: false,
-        borders: true,
+        fonts: {
+            'sans-serif': {},
+            serif: {},
+            monospace: {},
+            UnifrakturCook: {
+                cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturCook:700',
+            },
+            UnifrakturMaguntia: {
+                cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturMaguntia',
+            },
+            'Old Standard TT': {
+                cssUrl: 'https://fonts.googleapis.com/css?family=Old+Standard+TT',
+            },
+            Cardo: {
+                cssUrl: 'https://fonts.googleapis.com/css?family=Cardo'
+            },
+            'Noto Serif': {
+                cssUrl: 'https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700&subset=latin-ext'
+            },
+            'Libre Baskerville': {
+                cssUrl: 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext'
+            },
+        },
+        features: {
+            backgroundImage: {
+                enabled: false,
+            },
+            scaleFont: {
+                enabled: false,
+                maxFontSize: 128,
+                minFontSize: 2,
+                wrapClass: 'hocr-viewer-wrap',
+            },
+            disableEmStrong: {
+                enabled: false,
+            },
+            contentEditable: {
+                enabled: false,
+            },
+            tooltips: {
+                enabled: false,
+                styleId: 'hocr-viewer-tooltip-style',
+            },
+            borders: {
+                enabled: true,
+            },
+            transparentText: {
+                enabled: false,
+            },
+        },
         expandToolbar: true,
         enableToolbar: true,
         transparentText: false,
         rootClass: 'hocr-viewer',
-        disableEmStrongClass: 'hocr-viewer-disable-emstrong',
-        transparentTextClass: 'hocr-viewer-transparent-text',
-        hiddenClass: 'hocr-viewer-hidden',
-        bordersClass: 'hocr-viewer-borders',
-        tooltipStyleId: 'hocr-viewer-tooltip-style',
         toolbarId: 'hocr-viewer-toolbar',
     };
 
@@ -138,15 +205,19 @@ SOFTWARE.
             return `:scope ${query.tag}[class^="${cls}"]${query.clauses}`
         }).join(',');
         this.log(1, "findByOcrClass:", qs);
-        context = (query.context || document.querySelector('.' + this.config.rootClass)) ;
+        context = (query.context || document.querySelector('.' + this.config.rootClass));
         var set = Array.prototype.slice.call(context.querySelectorAll(qs));
 
         // terminal: Return only hocr-elements containing no hocr-elements themselves
         // container: Opposite
         if (query.terminal)
-            set = set.filter(function(el) {if (!el.querySelector('*[class^="ocr"]')) return el;});
+            set = set.filter(function(el) {
+                if (!el.querySelector('*[class^="ocr"]')) return el;
+            });
         if (query.container)
-            set = set.filter(function(el) {if (el.querySelector('*[class^="ocr"]')) return el; });
+            set = set.filter(function(el) {
+                if (el.querySelector('*[class^="ocr"]')) return el;
+            });
 
         // Arbitrary filter function
         if (query.filter) {
@@ -156,9 +227,10 @@ SOFTWARE.
         return set;
     }
 
-
     HocrViewer.prototype.placeOcrElements = function placeOcrElements() {
-        this.findByOcrClass({title: 'bbox'}).forEach((el) => {
+        this.findByOcrClass({
+            title: 'bbox'
+        }).forEach((el) => {
             var coords = this.parser.bbox(el);
             el.style.left = coords[0] + "px";
             el.style.top = coords[1] + "px";
@@ -167,44 +239,54 @@ SOFTWARE.
         });
         var coords = this.parser.bbox(document.querySelector('.ocr_page'));
         document.querySelector('body').style.minHeight = coords[2] + 'px';
-
     }
 
-    HocrViewer.prototype.toggleScaleFontSize = function toggleScaleFontSize(onoff) {
-        console.profile('toggleScaleFontSize');
-        this.hidden.innerHTML = '';
+    HocrViewer.prototype.toggleScaleFont = function toggleScaleFont(onoff) {
+        // wrapper element containing wrappers for font-size expansion
+        console.time('toggleScaleFont');
+        var wrap = document.querySelector(`.${this.config.features.scaleFont.wrapClass}`);
+        if (!wrap) {
+            wrap = document.createElement('span');
+            wrap.classList.add(this.config.features.scaleFont.wrapClass);
+            this.root.appendChild(wrap);
+        }
         if (onoff) {
-            this.hidden.style.display = 'block';
-            this.findByOcrClass({terminal: true}).forEach((el) => this.scaleFontSize(el))
-            this.hidden.style.display = 'none';
+            this.findByOcrClass({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
+            // wrap.style.display = 'none';
         } else {
             this.findByOcrClass({terminal: true}).forEach((el) => el.style.fontSize = 'initial')
         }
-        console.profileEnd('toggleScaleFontSize');
+        console.timeEnd('toggleScaleFont');
     }
 
-    HocrViewer.prototype.scaleFontSize = function scaleFontSize(el) {
+    HocrViewer.prototype.scaleFont = function scaleFont(el, wrap) {
         if (el.textContent.trim().length == 0) return;
-        var wrap = document.createElement('span')
-        wrap.style.fontFamily = el.style.fontFamily;
-        this.hidden.appendChild(wrap);
-        wrap.innerHTML = el.textContent;
-        var fontsize = el.clientHeight;
-        do {
-            fontsize -= 1;
-            wrap.style['font-size'] = fontsize + 'px';
-            if (fontsize <= this.config.minFontSize) break;
-            this.log(2, `${fontsize}:`,
-                `width: ${wrap.clientWidth} < ${el.clientWidth}`,
-                `height ${wrap.clientHeight} < ${el.clientHeight}`);
-        } while (wrap.offsetWidth >= el.offsetWidth
-             || wrap.offsetHeight >= el.offsetHeight);
-        el.style['font-size'] = fontsize + 'px';
-        this.hidden.removeChild(wrap);
+        if (!(el.textContent in this.cache.scaleFont)) {
+            // wrap.setAttribute('class', el.getAttribute('class'));
+            // wrap.style.width = '100%';
+            wrap.style.fontFamily = el.style.fontFamily;
+            wrap.innerHTML = el.textContent;
+            var w = 'offsetWidth';
+            var h = 'offsetHeight';
+            var fontsize = Math.min(el[w], el[h]);
+            var min = this.config.features.scaleFont.minFontSize;
+            wrap.style.fontSize = fontsize + 'px';
+            if (fontsize > min && wrap[h] > el[h]) {
+                fontsize -= wrap[h] - el[h];
+                wrap.style.fontSize = fontsize + 'px';
+            }
+            while (fontsize > min && wrap[w] > el[w]) {
+                fontsize -= 1;
+                wrap.style.fontSize = fontsize + 'px';
+            }
+            // if (iterations > 1) console.debug(iterations, el.textContent, wrap[h], el[h], wrap[w], el[w]);
+            this.cache.scaleFont[el.textContent] = fontsize;
+        }
+        el.style.fontSize = this.cache.scaleFont[el.textContent] + 'px';
     }
 
     HocrViewer.prototype.toggleTooltips = function toggleTooltips(onoff) {
-        var style = document.querySelector('#' + this.config.tooltipStyleId);
+        var style = document.querySelector('#' + this.config.features.tooltips.styleId);
         if (!onoff) {
             if (style) style.remove();
         } else {
@@ -215,19 +297,21 @@ SOFTWARE.
             this.log(0, "Detected OCR classes", Object.keys(ocrClasses));
             if (!style) {
                 style = document.createElement('style');
-                style.setAttribute('id', this.config.tooltipStyleId);
+                style.setAttribute('id', this.config.features.tooltips.styleId);
             }
             style.appendChild(document.createTextNode(Object.keys(ocrClasses).map((cls) =>
                 `.${this.config.rootClass} .${cls}:hover::before { content: "${cls}"; }\n`
             ).join("\n")));
-            document.querySelector('head').appendChild(style);
+            document.head.appendChild(style);
         }
     }
 
     HocrViewer.prototype.toggleBackgroundImage = function toggleBackgroundImage(onoff) {
         var page = this.root.querySelector('.ocr_page');
         if (onoff) {
-            this.findByOcrClass({title: 'image'}).forEach((el) => {
+            this.findByOcrClass({
+                title: 'image'
+            }).forEach((el) => {
                 var imageFile = this.parser.image(el);
                 page.style.backgroundImage = `url(${imageFile})`;
             });
@@ -237,25 +321,22 @@ SOFTWARE.
         }
     }
 
-    HocrViewer.prototype.toggleBorders = function toggleBorders(onoff) {
-        this.root.classList.toggle(this.config.bordersClass, onoff);
-    }
-
-    HocrViewer.prototype.toggleDisableEmStrong = function toggleDisableEmStrong(onoff) {
-        this.root.classList.toggle(this.config.disableEmStrongClass, onoff);
-    }
-
     HocrViewer.prototype.toggleContentEditable = function toggleContentEditable(onoff) {
         var onContentEditableInput = (ev) => {
             console.warn("Scaling of contentEditable is broken right now");
-            if (this.config.scaleFontSize) {
-                this.scaleFontSize(ev.target);
-                this.findByOcrClass({context: ev.target}).forEach((child) => {
-                    this.scaleFontSize(child);
+            if (this.config.features.scaleFont.enabled) {
+                this.scaleFont(ev.target);
+                this.findByOcrClass({
+                    context: ev.target
+                }).forEach((child) => {
+                    this.scaleFont(child);
                 })
             }
         }
-        this.findByOcrClass({class: ['line', 'x_word'], clauses: ''}).forEach((el) => {
+        this.findByOcrClass({
+            class: ['line', 'x_word'],
+            clauses: '',
+        }).forEach((el) => {
             if (onoff) {
                 el.setAttribute('contentEditable', 'true');
                 el.addEventListener('input', onContentEditableInput);
@@ -270,15 +351,18 @@ SOFTWARE.
         this.toolbar.classList.toggle('expanded', onoff);
     }
 
-    HocrViewer.prototype.toggleTransparentText = function toggleTransparentText(onoff) {
-        this.root.classList.toggle(this.config.transparentTextClass, onoff);
+    HocrViewer.prototype.toggleFeature = function toggleFeature(feature, onoff) {
+        this.root.classList.toggle(`feature-${feature}`, onoff);
+        var toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1);
+        if (toggle in this) {
+            this.log(0, `Calling this.${toggle}`);
+            this[toggle](onoff);
+        }
     }
 
     HocrViewer.prototype.onConfigChange = function onConfigChange() {
-        this.features.forEach((feature) => {
-            var toggle = 'toggle' + feature.substr(0,1).toUpperCase() + feature.substring(1);
-            this.log(0, `Should use this.${toggle}`);
-            this[toggle](this.config[feature]);
+        Object.keys(this.config.features).forEach((feature) => {
+            this.toggleFeature(feature, this.config.features[feature].enabled);
         });
     }
 
@@ -317,7 +401,7 @@ SOFTWARE.
 
         // fonts
         var fontSelect = this.toolbar.querySelector('select.fontlist');
-        this.config.fonts.forEach((font) => {
+        Object.keys(this.config.fonts).forEach((font) => {
             var fontOption = document.createElement('option');
             fontOption.innerHTML = font;
             fontOption.style.fontSize = 'large';
@@ -333,30 +417,32 @@ SOFTWARE.
         });
 
         // features
-        this.features.forEach((feature) => {
+        Object.keys(this.config.features).forEach((feature) => {
             var li = document.createElement('li');
-            var label = document.createElement('label');
-            label.innerHTML = feature;
             var checkbox = document.createElement('input');
+            var label = document.createElement('label');
+            li.appendChild(checkbox);
+            li.appendChild(label);
+            this.toolbar.querySelector('.features').appendChild(li);
+
+            label.innerHTML = feature;
+
             checkbox.setAttribute('type', 'checkbox');
-            checkbox.checked = this.config[feature];
+            checkbox.checked = this.config.features[feature].enabled;
             li.classList.toggle('checked', checkbox.checked);
             var onChange = (ev) => {
                 li.classList.toggle('checked', checkbox.checked);
-                this.config[feature] = checkbox.checked;
-                this.onConfigChange();
+                this.config.features[feature].enabled = checkbox.checked;
+                this.toggleFeature(feature, checkbox.checked);
             };
             li.addEventListener('click', (ev) => {
                 checkbox.checked = !checkbox.checked;
                 // onChange();
                 li.classList.toggle('checked');
-                this.config[feature] = checkbox.checked;
-                this.onConfigChange();
+                this.config.features[feature].enabled = checkbox.checked;
+                this.toggleFeature(feature, checkbox.checked);
             });
             checkbox.addEventListener('change', onChange);
-            li.appendChild(checkbox);
-            li.appendChild(label);
-            this.toolbar.querySelector('.features').appendChild(li);
         });
 
         // Zoom
@@ -372,11 +458,6 @@ SOFTWARE.
 
     HocrViewer.prototype.init = function init() {
         this.root.classList.add(this.config.rootClass);
-
-        // 'hidden' element containing wrappers for font-size expansion
-        this.hidden = document.createElement('div');
-        this.hidden.setAttribute('class', this.config.hiddenClass);
-        this.root.appendChild(this.hidden);
 
         if (this.config.enableToolbar) {
             this.addToolbar();

@@ -21,6 +21,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/*!
+ *   _
+ *  | |__   ___   ___ _ __      _ __   __ _ _ __ ___  ___ _ __
+ *  | '_ \ / _ \ / __| '__|____| '_ \ / _` | '__/ __|/ _ \ '__|
+ *  | | | | (_) | (__| | |_____| |_) | (_| | |  \__ \  __/ |
+ *  |_| |_|\___/ \___|_|       | .__/ \__,_|_|  |___/\___|_|
+ *                             |_|
+ *
+ *  This software may be modified and distributed under the terms
+ *  of the MIT license.  See the LICENSE file for details.
+ */
 (function(global)  {
     function HocrParser() {}
 
@@ -37,6 +48,9 @@ SOFTWARE.
         return titleString.match(/image\s+"([^"]+)"/)[1];
     }
 
+    /* ---------------------------- *
+     * Browser / NodeJS boilerplate *
+     * ---------------------------- */
     // AMD support
     if (typeof define === 'function' && define.amd) {
         define(function() { return HocrParser; });

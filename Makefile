@@ -1,19 +1,20 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 MKDIR = mkdir -p
 WGET = wget
-# LESSC = lessc --source-map --source-map-map-inline --include-path=less:. --clean-css
-LESSC = lessc --source-map --source-map-map-inline --include-path=less
+SASS = sass -t expanded --sourcemap=inline
 CAT_SOURCE_MAP = cat-source-map
 
-dist: dist/hocr-viewer.css \
+dist: \
+	dist/normalize.css \
+	dist/hocr-viewer.css \
 	dist/hocr-parser.js \
 	dist/hocr-viewer.js \
 	dist/hocr-viewer-fullscreen.js \
 	dist/hocr-viewer.user.js
 
-dist/hocr-viewer.css: less/hocr-viewer.less
+dist/hocr-viewer.css: sass/hocr-viewer.scss
 	$(MKDIR) dist
-	$(LESSC) $< $@
+	$(SASS) $< > $@
 
 dist/hocr-parser.js: LICENSE.js js/parser.js
 	$(MKDIR) dist
@@ -34,13 +35,8 @@ dist/hocr-viewer.user.js: userscript/hocr-viewer.user.js
 ## Dependencies
 ##
 
-dist/reset.less:
-	$(MKDIR) dist
+dist/normalize.css:
 	$(WGET) -O$@ 'https://github.com/necolas/normalize.css/raw/master/normalize.css'
-
-dist/prefixer.less:
-	$(MKDIR) dist
-	$(WGET) -O$@ 'https://raw.githubusercontent.com/JoelSutherland/LESS-Prefixer/master/prefixer.less'
 
 LICENSE.js: LICENSE
 	sed -e '1i /*!' -e '$$a */' $< > $@
