@@ -30,7 +30,7 @@
         document.querySelector('body').appendChild(script);
     }
     GM_registerMenuCommand('Inject hOCR viewer', injectHocrViewer);
-    if (document.location.protocol === 'file:') {
+    if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {
         injectHocrViewer();
     }
 
