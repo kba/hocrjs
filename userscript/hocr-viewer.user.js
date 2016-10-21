@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    https://kba.github.io/hocrjs/dist/hocr-viewer.user.js
+// @updateURL    __SERVER__/hocr-viewer.user.js
 // @version      1.0.0.__DATE__
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
@@ -14,20 +14,24 @@
 
 (function() {
     'use strict';
-    var REPO_BASEURL = 'https://kba.github.io/hocrjs/dist/';
-    // var REPO_BASEURL = 'http://localhost:8888/dist/';
     function hocrViewerAsset(name) {
-        return REPO_BASEURL + name + "?cachebuster=" + Math.random() * 10000000000000000;
+        return "__SERVER__/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
     }
-    function injectHocrViewer() {
+    function injectStyle(url) {
         var style = document.createElement('link');
-        style.href = hocrViewerAsset('hocr-viewer.css');
+        style.href = url;
         style.rel = 'stylesheet';
         document.querySelector('head').appendChild(style);
+    }
+    function injectScript(url) {
         var script = document.createElement('script');
-        script.src = hocrViewerAsset('hocr-viewer-fullscreen.js');
+        script.src = url;
         script.type = 'text/javascript';
         document.querySelector('body').appendChild(script);
+    }
+    function injectHocrViewer() {
+        injectStyle(hocrViewerAsset('hocr-viewer.css'));
+        injectScript(hocrViewerAsset('hocr-viewer-fullscreen.js'));
     }
     GM_registerMenuCommand('Inject hOCR viewer', injectHocrViewer);
     if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {

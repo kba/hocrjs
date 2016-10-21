@@ -18,6 +18,7 @@
 // @import 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext';
 
 $selector-test: foo, bar, quux;
+$selector-ocr-page: '*[class="ocr_page"]';
 $selector-ocr-classes: '*[class^="ocr"]';
 $selector-ocr-line: '#{$selector-ocr-classes}[class*="line"]';
 $selector-ocr-area: '.ocr_page .ocr_par';
@@ -92,6 +93,13 @@ $color-toolbar-border: #333;
         @include highlight-area($selector-ocr-area, purple,  rgba(200, 0, 200, 0.3));
         @include highlight-area($selector-ocr-inline, green,  rgba(0, 200, 0, 0.3));
         @include highlight-area($selector-ocr-line, #aa0,  rgba(200, 200, 0, 0.3));
+    }
+
+    &.feature-backgroundImage {
+        #{$selector-ocr-page} {
+            background-size: contain;
+
+        }
     }
 
     &.feature-disableEmStrong {

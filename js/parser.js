@@ -12,18 +12,25 @@
 (function(global)  {
     function HocrParser() {}
 
-    HocrParser.prototype.bbox = function bbox(titleString) {
-        if (typeof titleString !== 'string') titleString = titleString.getAttribute('title');
-        return titleString
+    HocrParser.prototype.bbox = function bbox(s) {
+        return this._titleString(s)
             .match(/bbox\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/)
             .slice(1)
             .map((coord) => parseInt(coord));
-    }
+    };
 
-    HocrParser.prototype.image = function image(titleString) {
-        if (typeof titleString !== 'string') titleString = titleString.getAttribute('title');
-        return titleString.match(/image\s+"([^"]+)"/)[1];
-    }
+    HocrParser.prototype.image = function image(s) {
+        return this._titleString(s).match(/image\s+"([^"]+)"/)[1];
+    };
+
+    /* --------------- *
+     * Private methods *
+     * --------------- */
+    HocrParser.prototype._titleString = function titleString(s) {
+        if (typeof s === 'string') return s;
+        return s.getAttribute('title');
+    };
+
 
     /* ---------------------------- *
      * Browser / NodeJS boilerplate *

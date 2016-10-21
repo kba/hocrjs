@@ -73,6 +73,9 @@
 .hocr-viewer.feature-borders *[class^="ocr"][class*="line"]:hover {
   background: rgba(200, 200, 0, 0.3);
 }
+.hocr-viewer.feature-backgroundImage *[class="ocr_page"] {
+  background-size: contain;
+}
 .hocr-viewer.feature-disableEmStrong em {
   font-style: normal;
 }

@@ -1,16 +1,23 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
-MKDIR = mkdir -p
+MKDIR = @mkdir -p
 WGET = wget
 SASS = sass -t expanded --sourcemap=inline
 CAT_SOURCE_MAP = cat-source-map
 
-dist: \
+SERVER = https://kba.github.io/hocrjs/dist
+PORT = 8888
+
+CSS_TARGETS = \
 	dist/normalize.css \
-	dist/hocr-viewer.css \
+	dist/hocr-viewer.css
+
+JS_TARGETS = \
 	dist/hocr-parser.js \
 	dist/hocr-viewer.js \
 	dist/hocr-viewer-fullscreen.js \
 	dist/hocr-viewer.user.js
+
+dist: $(JS_TARGETS) $(CSS_TARGETS)
 
 dist/hocr-viewer.css: sass/hocr-viewer.scss
 	$(MKDIR) dist
@@ -29,7 +36,9 @@ dist/hocr-viewer-fullscreen.js: LICENSE.js js/parser.js js/viewer.js js/fullscre
 	$(CAT_SOURCE_MAP) $^ $@
 
 dist/hocr-viewer.user.js: userscript/hocr-viewer.user.js
-	sed "s/__DATE__/`date +'%s'`/" $< > $@
+	sed -e "s/__DATE__/`date +'%s'`/" \
+		-e "s,__SERVER__,$(SERVER)," \
+		$< > $@
 
 ##
 ## Dependencies
@@ -47,6 +56,14 @@ LICENSE.js: LICENSE
 
 watch:
 	while true;do \
-		nodemon --exec "make dist" -w js -w less -e 'js less'; \
+		nodemon --exec "make dist" -w js -w sass/ -e 'js scss'; \
 		sleep 10; \
 	done
+
+clean:
+	$(RM) -r $(JS_TARGETS)
+
+server:
+	$(MAKE) clean
+	$(MAKE) SERVER=http://localhost:$(PORT)/dist
+	python2 -m SimpleHTTPServer $(PORT)
