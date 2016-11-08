@@ -1,11 +1,15 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
+
+PORT = 8888
+ASSET_SERVER = https://kba.github.io/hocrjs/dist
+UPDATE_SERVER = $(ASSET_SERVER)
+LOCAL_SERVER = http://localhost:$(PORT)/dist
+
 MKDIR = @mkdir -p
 WGET = wget
 SASS = sass -t expanded --sourcemap=inline
 CAT_SOURCE_MAP = cat-source-map
-
-SERVER = https://kba.github.io/hocrjs/dist
-PORT = 8888
+PYTHON_SERVER = @python2 -m SimpleHTTPServer $(PORT)
 
 CSS_TARGETS = \
 	dist/normalize.css \
@@ -56,14 +60,15 @@ LICENSE.js: LICENSE
 
 watch:
 	while true;do \
-		nodemon --exec "make dist" -w js -w sass/ -e 'js scss'; \
-		sleep 10; \
+		nodemon --exec "make dist ASSET_SERVER=$(LOCAL_SERVER)" \
+			-w js -w sass/ \
+			-e 'js scss' \
+			; sleep 5 || break; \
 	done
 
 clean:
 	$(RM) -r $(JS_TARGETS)
 
-server:
-	$(MAKE) clean
-	$(MAKE) SERVER=http://localhost:$(PORT)/dist
-	python2 -m SimpleHTTPServer $(PORT)
+serve:
+	$(MAKE) clean dist ASSET_SERVER=$(LOCAL_SERVER)
+	$(PYTHON_SERVER)

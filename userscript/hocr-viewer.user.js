@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    __SERVER__/hocr-viewer.user.js
+// @updateURL    __UPDATE_SERVER__/hocr-viewer.user.js
 // @version      1.0.0.__DATE__
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
@@ -15,7 +15,7 @@
 (function() {
     'use strict';
     function hocrViewerAsset(name) {
-        return "__SERVER__/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
+        return "__ASSET_SERVER__/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
     }
     function injectStyle(url) {
         var style = document.createElement('link');
