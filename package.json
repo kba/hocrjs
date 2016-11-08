@@ -42,6 +42,7 @@
         "gulp": "^3.9.1",
         "gulp-babel": "^6.1.2",
         "gulp-plumber": "^1.1.0",
+        "gulp-replace": "^0.5.4",
         "gulp-tape": "^0.0.9",
         "less": "^2.7.1",
         "less-plugin-clean-css": "^1.5.1",
@@ -50,5 +51,5 @@
         "tape": "^4.6.2",
         "webpack-stream": "^3.2.0"
     },
-    "dependencies": { }
+    "dependencies": {}
 }
