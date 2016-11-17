@@ -48,11 +48,7 @@
 	
 	var _viewer = __webpack_require__(1);
 	
-	var _viewer2 = _interopRequireDefault(_viewer);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	window.hocrViewer = new _viewer2.default({ root: document.querySelector('body') });
+	window.hocrViewer = new _viewer.HocrViewer({ root: document.querySelector('body') });
 	window.hocrViewer.init();
 
 /***/ },
@@ -85,8 +81,6 @@
 	
 	
 	var _parser = __webpack_require__(2);
-	
-	var _parser2 = _interopRequireDefault(_parser);
 	
 	var _utils = __webpack_require__(3);
 	
@@ -169,7 +163,7 @@
 	        });
 	        this.root = this.config.root;
 	        if (typeof this.root === 'string') this.root = document.querySelector(this.root);
-	        this.parser = new _parser2.default(this.config);
+	        this.parser = new _parser.HocrParser(this.config);
 	        Object.keys(this.config.fonts).forEach(function (font) {
 	            var cssUrl = _this.config.fonts[font].cssUrl;
 	            if (cssUrl) _utils2.default.addCssFragment('hocr-view-font-styles', '@import "' + cssUrl + '";\n');
@@ -642,4 +636,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=hocr-parser.webpack.js.map
+//# sourceMappingURL=hocr-fullscreen.webpack.js.map

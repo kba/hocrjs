@@ -14,7 +14,7 @@
  *
 
  * END-BANNER */
-import HocrParser from '../shared/parser.js';
+import {HocrParser} from '../lib/parser.js';
 import Utils from './utils';
 
 export const defaultConfig = {
