@@ -12,7 +12,7 @@ const paths = {
     allSrcJs: 'js/**/*.jsx?',
     testSrcJs: 'src/test/*.js',
     sharedSrcJs: 'src/shared/**/*.js',
-    clientEntryPoint: 'src/browser/viewer.js',
+    viewerSrc: 'src/browser/viewer.js',
     gulpFile: 'gulpfile.babel.js',
     webpackFile: 'webpack.config.babel.js',
     userjs: 'src/userjs/hocr-viewer.user.js',
@@ -57,9 +57,10 @@ gulp.task('userjs', [], () => {
 });
 
 gulp.task('browser', ['build'], (callback) => {
-  gulp.src(paths.clientEntryPoint)
-    .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest(paths.distDir));
+    gulp.src("src/browser/fullscreen-init.js")
+        .pipe(babel())
+        .pipe(webpack(webpackConfig))
+        .pipe(gulp.dest(paths.distDir));
 });
 
 gulp.task('watch', () => {

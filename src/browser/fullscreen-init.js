@@ -1,4 +1,3 @@
-(function(window) {
-    window.hocrViewer = new window.HocrViewer({root: document.querySelector('body')});
-    window.hocrViewer.init();
-}(this));
+import HocrViewer from './viewer';
+window.hocrViewer = new HocrViewer({root: document.querySelector('body')});
+window.hocrViewer.init();

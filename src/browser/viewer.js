@@ -14,6 +14,7 @@
  *
 
  * END-BANNER */
+import HocrParser from '../shared/parser.js';
 import Utils from './utils';
 
 export const defaultConfig = {
@@ -76,7 +77,7 @@ export const defaultConfig = {
     toolbarId: 'hocr-viewer-toolbar',
 };
 
-class HocrViewer {
+export class HocrViewer {
     constructor(config) {
         this.config = defaultConfig;
         Object.keys(config || {}).forEach((k) => {
@@ -86,7 +87,7 @@ class HocrViewer {
         this.root = this.config.root;
         if (typeof this.root === 'string')
             this.root = document.querySelector(this.root);
-        this.parser = new window.HocrParser(this.config);
+        this.parser = new HocrParser(this.config);
         Object.keys(this.config.fonts).forEach((font) => {
             var cssUrl = this.config.fonts[font].cssUrl;
             if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`);
@@ -255,9 +256,9 @@ class HocrViewer {
                     context: ev.target
                 }).forEach((child) => {
                     this.scaleFont(child);
-                })
+                });
             }
-        }
+        };
         this.findByOcrClass({
             class: ['line', 'x_word'],
             clauses: '',
@@ -325,7 +326,7 @@ class HocrViewer {
             fontSelect.append(fontOption);
         });
         fontSelect.addEventListener('change', (ev) => {
-            var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML;;
+            var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML;
             this.findByOcrClass().forEach((el) => {
                 el.style.fontFamily = selectedFont;
             });
