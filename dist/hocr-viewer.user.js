@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    https://kba.github.io/hocrjs/dist/hocr-viewer.user.js
-// @version      1.0.0.,
+// @updateURL    http://localhost:3001/dist/hocr-viewer.user.js
+// @version      1.0.0.1479423587.293
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
 // @include      http://*/*
@@ -12,11 +12,28 @@
 // @run-at       document-end
 // ==/UserScript==
 
+/* BEGIN-BANNER -f smmono12 -i ' * ' -C "2016 Konstantin Baierer"  -L MIT
+ * ▗▖                              █
+ * ▐▌                              ▀
+ * ▐▙██▖ ▟█▙  ▟██▖ █▟█▌     ▐▙ ▟▌ ██   ▟█▙ █   █ ▟█▙  █▟█▌     ▐▌ ▐▌▗▟██▖ ▟█▙  █▟█▌
+ * ▐▛ ▐▌▐▛ ▜▌▐▛  ▘ █▘        █ █   █  ▐▙▄▟▌▜ █ ▛▐▙▄▟▌ █▘       ▐▌ ▐▌▐▙▄▖▘▐▙▄▟▌ █▘
+ * ▐▌ ▐▌▐▌ ▐▌▐▌    █    ██▌  ▜▄▛   █  ▐▛▀▀▘▐▙█▟▌▐▛▀▀▘ █        ▐▌ ▐▌ ▀▀█▖▐▛▀▀▘ █
+ * ▐▌ ▐▌▝█▄█▘▝█▄▄▌ █         ▐█▌ ▗▄█▄▖▝█▄▄▌▝█ █▘▝█▄▄▌ █     █  ▐▙▄█▌▐▄▄▟▌▝█▄▄▌ █
+ * ▝▘ ▝▘ ▝▀▘  ▝▀▀  ▀          ▀  ▝▀▀▀▘ ▝▀▀  ▀ ▀  ▝▀▀  ▀     ▀   ▀▀▝▘ ▀▀▀  ▝▀▀  ▀
+ *
+ * Copyright (c) 2016 Konstantin Baierer
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ *
+
+ * END-BANNER */
+
 (function () {
     'use strict';
 
     function hocrViewerAsset(name) {
-        return "https://kba.github.io/hocrjs/dist/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
+        return "http://localhost:3001/dist/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
     }
     function injectStyle(url) {
         var style = document.createElement('link');
@@ -32,7 +49,7 @@
     }
     function injectHocrViewer() {
         injectStyle(hocrViewerAsset('hocr-viewer.css'));
-        injectScript(hocrViewerAsset('hocr-viewer-fullscreen.js'));
+        injectScript(hocrViewerAsset('hocr-fullscreen.webpack.js'));
     }
     GM_registerMenuCommand('Inject hOCR viewer', injectHocrViewer);
     if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {

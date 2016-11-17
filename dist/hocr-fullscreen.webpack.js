@@ -48,7 +48,23 @@
 	
 	var _viewer = __webpack_require__(1);
 	
-	window.hocrViewer = new _viewer.HocrViewer({ root: document.querySelector('body') });
+	window.hocrViewer = new _viewer.HocrViewer({ root: document.querySelector('body') }); /* BEGIN-BANNER -f smmono12 -i ' * ' -C "2016 Konstantin Baierer"  -L MIT
+	                                                                                       *   ▄▄      ▗▄▖  ▗▄▖                                       █         █
+	                                                                                       *  ▐▛▀      ▝▜▌  ▝▜▌                                       ▀         ▀   ▐▌
+	                                                                                       * ▐███ ▐▌ ▐▌ ▐▌   ▐▌  ▗▟██▖ ▟██▖ █▟█▌ ▟█▙  ▟█▙ ▐▙██▖      ██  ▐▙██▖ ██  ▐███
+	                                                                                       *  ▐▌  ▐▌ ▐▌ ▐▌   ▐▌  ▐▙▄▖▘▐▛  ▘ █▘  ▐▙▄▟▌▐▙▄▟▌▐▛ ▐▌       █  ▐▛ ▐▌  █   ▐▌
+	                                                                                       *  ▐▌  ▐▌ ▐▌ ▐▌   ▐▌   ▀▀█▖▐▌    █   ▐▛▀▀▘▐▛▀▀▘▐▌ ▐▌ ██▌   █  ▐▌ ▐▌  █   ▐▌
+	                                                                                       *  ▐▌  ▐▙▄█▌ ▐▙▄  ▐▙▄ ▐▄▄▟▌▝█▄▄▌ █   ▝█▄▄▌▝█▄▄▌▐▌ ▐▌     ▗▄█▄▖▐▌ ▐▌▗▄█▄▖ ▐▙▄
+	                                                                                       *  ▝▘   ▀▀▝▘  ▀▀   ▀▀  ▀▀▀  ▝▀▀  ▀    ▝▀▀  ▝▀▀ ▝▘ ▝▘     ▝▀▀▀▘▝▘ ▝▘▝▀▀▀▘  ▀▀
+	                                                                                       *
+	                                                                                       * Copyright (c) 2016 Konstantin Baierer
+	                                                                                       *
+	                                                                                       * This software may be modified and distributed under the terms
+	                                                                                       * of the MIT license.  See the LICENSE file for details.
+	                                                                                       *
+	                                                                                      
+	                                                                                       * END-BANNER */
+	
 	window.hocrViewer.init();
 
 /***/ },
@@ -133,7 +149,7 @@
 	            enabled: false
 	        },
 	        tooltips: {
-	            enabled: false,
+	            enabled: true,
 	            styleId: 'hocr-viewer-tooltip-style'
 	        },
 	        borders: {
@@ -425,12 +441,13 @@
 	
 	            // fonts
 	            var fontSelect = this.toolbar.querySelector('select.fontlist');
+	            console.log(fontSelect);
 	            Object.keys(this.config.fonts).forEach(function (font) {
 	                var fontOption = document.createElement('option');
 	                fontOption.innerHTML = font;
 	                fontOption.style.fontSize = 'large';
 	                fontOption.style.fontFamily = font;
-	                fontSelect.append(fontOption);
+	                fontSelect.appendChild(fontOption);
 	            });
 	            fontSelect.addEventListener('change', function (ev) {
 	                var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML;
@@ -527,17 +544,21 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	/*!
-	 *   _
-	 *  | |__   ___   ___ _ __      _ __   __ _ _ __ ___  ___ _ __
-	 *  | '_ \ / _ \ / __| '__|____| '_ \ / _` | '__/ __|/ _ \ '__|
-	 *  | | | | (_) | (__| | |_____| |_) | (_| | |  \__ \  __/ |
-	 *  |_| |_|\___/ \___|_|       | .__/ \__,_|_|  |___/\___|_|
-	 *                             |_|
+	/* BEGIN-BANNER -f smmono12 -i ' * ' -C "2016 Konstantin Baierer"  -L MIT
+	 * ▐▙█▙  ▟██▖ █▟█▌▗▟██▖ ▟█▙  █▟█▌
+	 * ▐▛ ▜▌ ▘▄▟▌ █▘  ▐▙▄▖▘▐▙▄▟▌ █▘
+	 * ▐▌ ▐▌▗█▀▜▌ █    ▀▀█▖▐▛▀▀▘ █
+	 * ▐█▄█▘▐▙▄█▌ █   ▐▄▄▟▌▝█▄▄▌ █
+	 * ▐▌▀▘  ▀▀▝▘ ▀    ▀▀▀  ▝▀▀  ▀
+	 * ▐▌
 	 *
-	 *  This software may be modified and distributed under the terms
-	 *  of the MIT license.  See the LICENSE file for details.
-	 */
+	 * Copyright (c) 2016 Konstantin Baierer
+	 *
+	 * This software may be modified and distributed under the terms
+	 * of the MIT license.  See the LICENSE file for details.
+	 *
+	
+	 * END-BANNER */
 	
 	var HocrParser = exports.HocrParser = function () {
 	    function HocrParser() {

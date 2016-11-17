@@ -1,13 +1,19 @@
-/*!
- *   _                               _
- *  | |__   ___   ___ _ __    __   _(_) _____      _____ _ __
- *  | '_ \ / _ \ / __| '__|___\ \ / / |/ _ \ \ /\ / / _ \ '__|
- *  | | | | (_) | (__| | |_____\ V /| |  __/\ V  V /  __/ |
- *  |_| |_|\___/ \___|_|        \_/ |_|\___| \_/\_/ \___|_|
+/* BEGIN-BANNER -f smmono12 -i ' * ' -C "2016 Konstantin Baierer"  -L MIT
+ * ▗▖                              █
+ * ▐▌                              ▀
+ * ▐▙██▖ ▟█▙  ▟██▖ █▟█▌     ▐▙ ▟▌ ██   ▟█▙ █   █ ▟█▙  █▟█▌
+ * ▐▛ ▐▌▐▛ ▜▌▐▛  ▘ █▘        █ █   █  ▐▙▄▟▌▜ █ ▛▐▙▄▟▌ █▘
+ * ▐▌ ▐▌▐▌ ▐▌▐▌    █    ██▌  ▜▄▛   █  ▐▛▀▀▘▐▙█▟▌▐▛▀▀▘ █
+ * ▐▌ ▐▌▝█▄█▘▝█▄▄▌ █         ▐█▌ ▗▄█▄▖▝█▄▄▌▝█ █▘▝█▄▄▌ █
+ * ▝▘ ▝▘ ▝▀▘  ▝▀▀  ▀          ▀  ▝▀▀▀▘ ▝▀▀  ▀ ▀  ▝▀▀  ▀
  *
- *  This software may be modified and distributed under the terms
- *  of the MIT license.  See the LICENSE file for details.
- */
+ * Copyright (c) 2016 Konstantin Baierer
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ *
+
+ * END-BANNER */
 
 @import 'normalize.css';
 
@@ -79,7 +85,8 @@ $color-toolbar-border: #333;
     {
         position: fixed;
         white-space: nowrap;
-        display: flex;
+        // XXX
+        // display: flex;
         justify-content: left; /* align horizontal */
         align-items: center; /* align vertical */
         &:hover::before {
@@ -151,7 +158,8 @@ $color-toolbar-border: #333;
         .toggler-show { display:block; }
     }
     .wrapper {
-        position: relative;
+        position: fixed;
+        margin-left: 1em;
         background-color: $color-toolbar-bg;
         width: 0em;
         overflow: hidden;

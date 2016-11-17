@@ -1,4 +1,4 @@
-const gulp = require('gulp-help')(require('gulp'));
+const gulp = require('gulp-help')(require('gulp'), {hideEmpty: true});
 import babel       from 'gulp-babel';
 import tape        from 'gulp-tape';
 import replace     from 'gulp-replace';
@@ -10,60 +10,68 @@ import tapColorize from 'tap-colorize';
 import express     from 'express';
 import path        from 'path';
 
-function getconfig() {
-    const $ = Object.assign({
-        srcTest: 'src/test/*.js',
-        srcLib: 'src/lib/**/*.js',
-        srcSass: 'sass/**/*.scss',
-        userjs: 'src/userjs/hocr-viewer.user.js',
-        distDir: 'dist',
-        testDir: 'test',
-        libDir: 'lib',
-        assetServer: 'https://kba.github.io/hocrjs/dist',
-        port: 3001,
-    }, require('yargs').argv);
-    $.updateServer = ($.updateServer || $.assetServer);
-    return $;
-}
-const $ = getconfig()
+const $ = Object.assign({
+    srcTest: './src/test/*.js',
+    srcLib: './src/lib/*.js',
+    srcSass: './src/sass/**/*.scss',
+    srcUserjs: './src/userjs/hocr-viewer.user.js',
+    srcEntryFullscreen: './src/browser/fullscreen-init.js',
+    dist: 'dist',
+    test: 'test',
+    lib: 'lib',
+    date: new Date().getTime() / 1000,
+    port: 3001,
+}, require('yargs').argv);
+$.assetServer = ($.assetServer ||  `http://localhost:${$.port}/dist`);
+$.updateServer = ($.updateServer || $.assetServer);
 
 gulp.task('default', ['lib', 'sass', 'webpack', 'userjs']);
 
-gulp.task('clean', "Delete lib dir", () => {
-    del($.libDir);
+gulp.task('clean:test', (cb) => { return del($.test, cb) });
+gulp.task('clean:dist', (cb) => { return del($.dist, cb) });
+gulp.task('clean:lib',  (cb) => { return del($.lib, cb) });
+gulp.task('clean', "Clean all generated", ['clean:dist', 'clean:lib']);
+
+gulp.task('watch', "Incrementally build", ['watch:sass', 'watch:userjs']);
+gulp.task('watch:sass', () => { return gulp.watch($.srcSass, ['sass']) });
+gulp.task('watch:userjs', () => {
+    return gulp.watch('src/**/*.js', ['userjs'])
 });
 
-gulp.task('watch', () => {
-    gulp.watch($.srcLib, ['lib']);
-});
-
-gulp.task('lib', "Build shared files in lib", ['clean'], () => {
-  gulp.src($.srcLib)
-    .pipe(babel())
-    .pipe(gulp.dest($.libDir));
+gulp.task('lib', "Build shared files in lib", () => {
+    return gulp.src($.srcLib)
+        .pipe(babel())
+        .pipe(gulp.dest($.lib));
 });
 
 gulp.task('sass', "Build CSS from SCSS files to dist", () => {
-    gulp.src($.srcSass)
+    return gulp.src($.srcSass)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest($.distDir));
+        .pipe(gulp.dest($.dist));
 });
 
-gulp.task('test', (cb) => {
-    gulp.src($.srcTest)
+gulp.task('test', "Run the tape unit tests in src/test", ['lib'], (cb) => {
+    return gulp.src($.srcTest)
+        .pipe(babel())
+        .pipe(gulp.dest($.test))
         .pipe(tape({ reporter: tapColorize()}));
 });
 
-gulp.task('userjs', "Build the UserScript", () => {
-  gulp.src($.userjs)
-    .pipe(replace('__UPDATE_SERVER__', $.updateServer))
-    .pipe(replace('__ASSET_SERVER__', $.assetServer))
-    .pipe(replace('__DATE__', $.date))
-    .pipe(babel())
-    .pipe(replace(/^.use strict.;\n\n/, ''))
-    .pipe(gulp.dest($.distDir));
+gulp.task('userjs:dist', "Build the Github-hosted userscript", ['webpack'], () => {
+    $.assetServer = $.updateServer = 'https://kba.github.io/hocrjs/dist';
+    return gulp.start('userjs');
+});
+
+gulp.task('userjs', "Build the UserScript", ['webpack'], () => {
+    return gulp.src($.srcUserjs)
+        .pipe(replace('__UPDATE_SERVER__', $.updateServer))
+        .pipe(replace('__ASSET_SERVER__', $.assetServer))
+        .pipe(replace('__DATE__', $.date))
+        .pipe(babel())
+        .pipe(replace(/^.use strict.;\n\n/, ''))
+        .pipe(gulp.dest($.dist));
 }, {
     options: {
         "update-server": `The server to ping for updates. Default: ${$.updateServer}`,
@@ -72,34 +80,34 @@ gulp.task('userjs', "Build the UserScript", () => {
     }
 });
 
-gulp.task('serve', "Start a local server for testing UserJS", () => {
+gulp.task('serve', "Start a local server", ['watch'], (cb) => {
     const app = new express();
     app.use('/', express.static(path.join(__dirname)))
     console.log(`Starting server on http://localhost:${$.port}`);
-    app.listen($.port)
+    return app.listen($.port, cb)
 }, {
     options: {
         'port': `Port to start on. Default ${$.port}`,
     }
 });
 
-gulp.task('webpack', ['lib'], (callback) => {
-    gulp.src("./src/browser/fullscreen-init.js")
+gulp.task('webpack', 'Bundle JS for browsers', (callback) => {
+    return gulp.src("")
         .pipe(babel())
         .pipe(webpack({
             entry: {
-                "hocr-fullscreen": "./src/browser/fullscreen-init.js",
+                "hocr-fullscreen": $.srcEntryFullscreen,
             },
             output: { filename: '[name].webpack.js' },
             devtool: 'source-map',
             module: {
                 loaders: [{
-                        test: /\.jsx?$/,
-                        loader: 'babel-loader',
-                        exclude: [/node_modules/],
+                    test: /\.jsx?$/,
+                    loader: 'babel-loader',
+                    exclude: [/node_modules/],
                 }],
             },
             resolve: { extensions: ['', '.js', '.jsx'] },
         }))
-        .pipe(gulp.dest($.distDir));
+        .pipe(gulp.dest($.dist));
 });

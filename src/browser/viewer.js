@@ -60,7 +60,7 @@ export const defaultConfig = {
             enabled: false,
         },
         tooltips: {
-            enabled: false,
+            enabled: true,
             styleId: 'hocr-viewer-tooltip-style',
         },
         borders: {
@@ -318,12 +318,13 @@ export class HocrViewer {
 
         // fonts
         var fontSelect = this.toolbar.querySelector('select.fontlist');
+        console.log(fontSelect);
         Object.keys(this.config.fonts).forEach((font) => {
             var fontOption = document.createElement('option');
             fontOption.innerHTML = font;
             fontOption.style.fontSize = 'large';
             fontOption.style.fontFamily = font;
-            fontSelect.append(fontOption);
+            fontSelect.appendChild(fontOption);
         });
         fontSelect.addEventListener('change', (ev) => {
             var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML;
