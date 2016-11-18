@@ -54,4 +54,5 @@
     if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {
         injectHocrViewer();
     }
+
 })();

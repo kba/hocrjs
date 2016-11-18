@@ -1,7 +1,9 @@
 const gulp = require('gulp-help')(require('gulp'), {hideEmpty: true});
 import babel       from 'gulp-babel';
 import tape        from 'gulp-tape';
+import rename      from 'gulp-rename';
 import replace     from 'gulp-replace';
+import chmod       from 'gulp-chmod';
 import sass        from 'gulp-sass';
 import sourcemaps  from 'gulp-sourcemaps';
 import del         from 'del';
@@ -12,6 +14,7 @@ import path        from 'path';
 
 const $ = Object.assign({
     srcTest: './src/test/*.js',
+    srcBin: './src/bin/*.js',
     srcLib: './src/lib/*.js',
     srcSass: './src/sass/**/*.scss',
     srcUserjs: './src/userjs/hocr-viewer.user.js',
@@ -19,6 +22,7 @@ const $ = Object.assign({
     dist: 'dist',
     test: 'test',
     lib: 'lib',
+    bin: 'bin',
     date: new Date().getTime() / 1000,
     port: 3001,
 }, require('yargs').argv);
@@ -50,6 +54,16 @@ gulp.task('sass', "Build CSS from SCSS files to dist", () => {
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest($.dist));
+});
+
+gulp.task('bin', "Build the bin scripts", (cb) => {
+    return gulp.src($.srcBin)
+        .pipe(babel())
+        .pipe(rename((path) => {
+            path.extname = ""
+        }))
+        .pipe(chmod(0o755))
+        .pipe(gulp.dest($.bin))
 });
 
 gulp.task('test', "Run the tape unit tests in src/test", ['lib'], (cb) => {
