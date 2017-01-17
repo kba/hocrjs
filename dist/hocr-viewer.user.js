@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    http://localhost:3001/dist/hocr-viewer.user.js
-// @version      1.0.0.1484662358.555
+// @updateURL    https://kba.github.io/hocrjs/dist/hocr-viewer.user.js
+// @version      1.0.0.1484663090.351
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
 // @include      http://*/*
@@ -33,7 +33,7 @@
     'use strict';
 
     function hocrViewerAsset(name) {
-        return "http://localhost:3001/dist/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
+        return "https://kba.github.io/hocrjs/dist/" + name + "?cachebuster=" + Math.random() * 10000000000000000;
     }
     function injectStyle(url) {
         var style = document.createElement('link');
