@@ -27,15 +27,15 @@ dist/hocr-viewer.css: sass/hocr-viewer.scss
 	$(MKDIR) dist
 	$(SASS) $< > $@
 
-dist/hocr-parser.js: LICENSE.js js/parser.js
+dist/hocr-parser.js: LICENSE.js src/lib/parser.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
 
-dist/hocr-viewer.js: LICENSE.js js/parser.js js/viewer.js
+dist/hocr-viewer.js: LICENSE.js src/lib/parser.js src/browser/viewer.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
 
-dist/hocr-viewer-fullscreen.js: LICENSE.js js/parser.js js/viewer.js js/fullscreen-init.js
+dist/hocr-viewer-fullscreen.js: LICENSE.js src/lib/parser.js src/browser/viewer.js src/browser/fullscreen-init.js
 	$(MKDIR) dist
 	$(CAT_SOURCE_MAP) $^ $@
 
