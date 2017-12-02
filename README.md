@@ -6,6 +6,8 @@ Working with [hOCR](https://kba.github.io/hocr-spec/1.2/) in Javascript
 
 [Online Demo](https://kba.github.io/hocrjs/example/426117689_0459.html)
 
+![hocr-viewer-demo](https://i.stack.imgur.com/EU1Es.jpg)
+
 ### Using with local hocr files
 
 You can view your own hocr-files with this library by following these steps:
