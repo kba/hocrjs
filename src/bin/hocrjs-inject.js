@@ -9,25 +9,14 @@
 const fs = require('fs')
 
 const argv = require('yargs').argv
-argv.distUrl = (argv.distUrl || 'https://kba.github.io/hocrjs/dist')
-argv.cssUrl = (argv.cssUrl || `${argv.distUrl}/hocr-viewer.css`)
-argv.scriptUrl = (argv.scriptUrl || `${argv.distUrl}/hocr-fullscreen.webpack.js`)
-const cssSnippet = `<link rel="stylesheet" href="${argv.cssUrl}"/>`
+argv.scriptUrl = (argv.scriptUrl || 'https://unpkg.com/hocrjs/dist/hocr.fullscreen.js')
 const scriptSnippet = `<script src="${argv.scriptUrl}"></script>`
 argv._.forEach((infile) => {
-    const outlines = []
     const outfile = `${infile}.hocrjs.html`
     fs.readFile(infile, {encoding: 'utf-8'}, (err, data) => {
         if (err) throw err
-        data.split('\n').forEach((line) => {
-            if (line.match(/<\/head>/)) {
-                outlines.push(cssSnippet)
-            } else if (line.match(/<\/body>/)) {
-                outlines.push(scriptSnippet)
-            }
-            outlines.push(line)
-        })
-        fs.writeFile(outfile, outlines.join('\n'), {encoding: 'utf-8'}, (err) => {
+        data = data.replace('</body>', `${scriptSnippet}</body>`)
+        fs.writeFile(outfile, data, {encoding: 'utf-8'}, (err) => {
             if (err) throw err
             console.log(`Written to ${outfile}`)
         })
