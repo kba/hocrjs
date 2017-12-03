@@ -9,8 +9,6 @@ ASSET_SERVER = https://unpkg.com/hocrjs/dist
 # URL of the userscript update server (defaults to ASSET_SERVER)
 UPDATE_SERVER = $(ASSET_SERVER) 
 
-LOCAL_SERVER = http://localhost:$(PORT)/dist
-
 # Command to run a static server
 STATIC_SERVER = @python2 -m SimpleHTTPServer $(PORT)
 
@@ -61,13 +59,13 @@ test:
 
 # Run a development server
 serve:
-	$(MAKE) clean dist ASSET_SERVER=$(LOCAL_SERVER)
+	$(MAKE) clean dist ASSET_SERVER=$(ASSET_SERVER)
 	$(STATIC_SERVER)
 
 # Continuously rebuild dist
 watch:
 	while true;do \
-		nodemon --exec "make clean dist ASSET_SERVER=$(LOCAL_SERVER)" \
+		nodemon --exec "make clean dist ASSET_SERVER=$(ASSET_SERVER)" \
 			-w src \
 			-e 'js scss' \
 			; sleep 5 || break; \

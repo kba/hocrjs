@@ -277,10 +277,16 @@ export class HocrViewer {
         <h2>Font</h2>
         <select class="fontlist"></select>
         <h2>Features</h2>
-        <ul class='features'>
+        <ul class="features">
         </ul>
         <h2>Zoom</h2>
-        <input type='range' class='zoom' min='0' max='500' step='2' value="100"/>
+        <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
+        <span class="zoom">100</span>%
+        <p>
+            <button class="zoom" data-scale-factor="height">Fit height</button>
+            <button class="zoom" data-scale-factor="width">Fit width</button>
+            <button class="zoom" data-scale-factor="original">100 %</button>
+        </p>
     </div>`
         this.toolbar.querySelector('.toggler').addEventListener('click', (ev) => {
             this.config.expandToolbar = !this.config.expandToolbar
@@ -335,14 +341,27 @@ export class HocrViewer {
         })
 
         // Zoom
-        let zoomSlider = this.toolbar.querySelector('.zoom')
-        zoomSlider.addEventListener('input', (ev) => {
-            let scaleFactor = ev.target.value / 100.0
-            let page = this.root.querySelector('.ocr_page')
-            page.style.transform = `scale(${scaleFactor})`
-            page.style.transformOrigin = 'top left'
-            // console.log()
-        })
+        let zoomSlider = this.toolbar.querySelector('input[type="range"].zoom')
+        zoomSlider.addEventListener('input', ev => this.scaleTo(ev.target.value / 100.0))
+        for (let zoomButton of this.toolbar.querySelectorAll('button.zoom')) {
+            zoomButton.addEventListener('click', ev => this.scaleTo(ev.target.dataset.scaleFactor))
+        }
+    }
+
+    scaleTo(scaleFactor) {
+        let page = this.root.querySelector('.ocr_page')
+        let coords = this.parser.bbox(document.querySelector('.ocr_page'))
+        if (scaleFactor === 'height') {
+            scaleFactor = window.innerHeight / coords[3]
+        } else if (scaleFactor === 'width') {
+            scaleFactor = window.innerWidth / coords[2]
+        } else if (scaleFactor === 'original') {
+            scaleFactor = 1
+        }
+        page.style.transform = `scale(${scaleFactor})`
+        page.style.transformOrigin = 'top left'
+        this.toolbar.querySelector('span.zoom').innerHTML = Math.floor(scaleFactor * 10000) / 100.0
+        // console.log()
     }
 
 
