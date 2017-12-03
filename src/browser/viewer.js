@@ -58,7 +58,7 @@ export class HocrViewer {
             this.root = document.querySelector(this.root)
         this.parser = new HocrParser(this.config)
         Object.keys(this.config.fonts).forEach((font) => {
-            var cssUrl = this.config.fonts[font].cssUrl
+            let cssUrl = this.config.fonts[font].cssUrl
             if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
         })
         this.cache = {
@@ -66,12 +66,10 @@ export class HocrViewer {
         }
     }
 
-    log() {
-        var level = arguments[0]
+    log(level, ...args) {
         if (level > this.config.debugLevel) return
-        var args = Array.prototype.slice.call(arguments, [1])
-        var levelToFn = ['info', 'debug', 'log']
-        console[levelToFn[level]].apply(console, args)
+        let levelToFn = ['info', 'debug', 'log']
+        console[levelToFn[level]](...args)
     }
 
     findByOcrClass(query) {
@@ -91,7 +89,7 @@ export class HocrViewer {
         if (typeof query.class === 'string') query.class = [query.class]
 
         // Build querySelectorAll query
-        var qs = query.class.map(function(cls) {
+        let qs = query.class.map(function(cls) {
             if (cls.indexOf('ocr') === 0) return cls
             if (cls === '') return 'ocr'
             if (cls.indexOf('x_') !== 0) return `ocr_${cls}`
@@ -100,8 +98,8 @@ export class HocrViewer {
             return `:scope ${query.tag}[class^="${cls}"]${query.clauses}`
         }).join(',')
         this.log(1, "findByOcrClass:", qs)
-        var context = (query.context || document.querySelector('.' + this.config.rootClass))
-        var set = Array.prototype.slice.call(context.querySelectorAll(qs))
+        let context = (query.context || document.querySelector('.' + this.config.rootClass))
+        let set = Array.prototype.slice.call(context.querySelectorAll(qs))
 
         // terminal: Return only hocr-elements containing no hocr-elements themselves
         // container: Opposite
@@ -126,20 +124,20 @@ export class HocrViewer {
         this.findByOcrClass({
             title: 'bbox'
         }).forEach((el) => {
-            var coords = this.parser.bbox(el)
+            let coords = this.parser.bbox(el)
             el.style.left = coords[0] + "px"
             el.style.top = coords[1] + "px"
             el.style.width = coords[2] - coords[0] + "px"
             el.style.height = coords[3] - coords[1] + "px"
         })
-        var coords = this.parser.bbox(document.querySelector('.ocr_page'))
+        let coords = this.parser.bbox(document.querySelector('.ocr_page'))
         document.querySelector('body').style.minHeight = coords[2] + 'px'
     }
 
     toggleScaleFont(onoff) {
         // wrapper element containing wrappers for font-size expansion
         console.time('toggleScaleFont')
-        var wrap = document.querySelector(`.${this.config.features.scaleFont.wrapClass}`)
+        let wrap = document.querySelector(`.${this.config.features.scaleFont.wrapClass}`)
         if (!wrap) {
             wrap = document.createElement('span')
             wrap.classList.add(this.config.features.scaleFont.wrapClass)
@@ -161,10 +159,10 @@ export class HocrViewer {
             // wrap.style.width = '100%'
             wrap.style.fontFamily = el.style.fontFamily
             wrap.innerHTML = el.textContent
-            var w = 'offsetWidth'
-            var h = 'offsetHeight'
-            var fontsize = Math.min(el[w], el[h])
-            var min = this.config.features.scaleFont.minFontSize
+            let w = 'offsetWidth'
+            let h = 'offsetHeight'
+            let fontsize = Math.min(el[w], el[h])
+            let min = this.config.features.scaleFont.minFontSize
             wrap.style.fontSize = fontsize + 'px'
             if (fontsize > min && wrap[h] > el[h]) {
                 fontsize -= wrap[h] - el[h]
@@ -181,12 +179,12 @@ export class HocrViewer {
     }
 
     toggleTooltips(onoff) {
-        var style = document.querySelector('#' + this.config.features.tooltips.styleId)
+        let style = document.querySelector('#' + this.config.features.tooltips.styleId)
         if (!onoff) {
             if (style) style.remove()
         } else {
-            var ocrClasses = {}
-            for (var el of this.findByOcrClass()) {
+            let ocrClasses = {}
+            for (let el of this.findByOcrClass()) {
                 ocrClasses[el.getAttribute('class')] = true
             }
             this.log(0, "Detected OCR classes", Object.keys(ocrClasses))
@@ -202,12 +200,12 @@ export class HocrViewer {
     }
 
     toggleBackgroundImage(onoff) {
-        var page = this.root.querySelector('.ocr_page')
+        let page = this.root.querySelector('.ocr_page')
         if (onoff) {
             this.findByOcrClass({
                 title: 'image'
             }).forEach((el) => {
-                var imageFile = this.parser.image(el)
+                let imageFile = this.parser.image(el)
                 page.style.backgroundImage = `url(${imageFile})`
             })
         } else {
@@ -217,7 +215,7 @@ export class HocrViewer {
     }
 
     toggleContentEditable(onoff) {
-        var onContentEditableInput = (ev) => {
+        let onContentEditableInput = (ev) => {
             console.warn("Scaling of contentEditable is broken right now")
             if (this.config.features.scaleFont.enabled) {
                 this.scaleFont(ev.target)
@@ -248,7 +246,7 @@ export class HocrViewer {
 
     toggleFeature(feature, onoff) {
         this.root.classList.toggle(`feature-${feature}`, onoff)
-        var toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
+        let toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
         if (toggle in this) {
             this.log(0, `Calling this.${toggle}`)
             this[toggle](onoff)
@@ -286,17 +284,17 @@ export class HocrViewer {
         })
 
         // fonts
-        var fontSelect = this.toolbar.querySelector('select.fontlist')
+        let fontSelect = this.toolbar.querySelector('select.fontlist')
         console.log(fontSelect)
         Object.keys(this.config.fonts).forEach((font) => {
-            var fontOption = document.createElement('option')
+            let fontOption = document.createElement('option')
             fontOption.innerHTML = font
             fontOption.style.fontSize = 'large'
             fontOption.style.fontFamily = font
             fontSelect.appendChild(fontOption)
         })
         fontSelect.addEventListener('change', (ev) => {
-            var selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
+            let selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
             this.findByOcrClass().forEach((el) => {
                 el.style.fontFamily = selectedFont
             })
@@ -305,9 +303,9 @@ export class HocrViewer {
 
         // features
         Object.keys(this.config.features).forEach((feature) => {
-            var li = document.createElement('li')
-            var checkbox = document.createElement('input')
-            var label = document.createElement('label')
+            let li = document.createElement('li')
+            let checkbox = document.createElement('input')
+            let label = document.createElement('label')
             li.appendChild(checkbox)
             li.appendChild(label)
             this.toolbar.querySelector('.features').appendChild(li)
@@ -317,7 +315,7 @@ export class HocrViewer {
             checkbox.setAttribute('type', 'checkbox')
             checkbox.checked = this.config.features[feature].enabled
             li.classList.toggle('checked', checkbox.checked)
-            var onChange = (ev) => {
+            let onChange = (ev) => {
                 li.classList.toggle('checked', checkbox.checked)
                 this.config.features[feature].enabled = checkbox.checked
                 this.toggleFeature(feature, checkbox.checked)
@@ -333,10 +331,10 @@ export class HocrViewer {
         })
 
         // Zoom
-        var zoomSlider = this.toolbar.querySelector('.zoom')
+        let zoomSlider = this.toolbar.querySelector('.zoom')
         zoomSlider.addEventListener('input', (ev) => {
-            var scaleFactor = ev.target.value / 100.0
-            var page = this.root.querySelector('.ocr_page')
+            let scaleFactor = ev.target.value / 100.0
+            let page = this.root.querySelector('.ocr_page')
             page.style.transform = `scale(${scaleFactor})`
             page.style.transformOrigin = 'top left'
             // console.log()
