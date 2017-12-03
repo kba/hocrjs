@@ -12,12 +12,13 @@
 // @import 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext';
 
 $selector-test: foo, bar, quux;
-$selector-ocr-page: '*[class="ocr_page"]';
+$selector-ocr-page: '.ocr_page';
 $selector-ocr-classes: '*[class^="ocr"]';
 $selector-ocr-line: '#{$selector-ocr-classes}[class*="line"]';
-$selector-ocr-area: '.ocr_page .ocr_par';
+$selector-ocr-par: '.ocr_par';
+$selector-ocr-carea: '.ocr_carea';
 $selector-ocr-inline: '.ocr_line #{$selector-ocr-classes}';
-$selector-ocr-classes-without-page: '#{$selector-ocr-classes}:not(.ocr_page)';
+$selector-ocr-not-page: '#{$selector-ocr-classes}:not(.ocr_page)';
 
 $border-width: 3px;
 $color-transparent: rgba(0,0,0,0);
@@ -26,6 +27,12 @@ $color-checked: #ccffcc;
 $color-toolbar-bg: rgba(180,180,190,0.85);
 $color-toolbar-toggler: white;
 $color-toolbar-border: #333;
+
+$color-highlight-not-page: red;
+$color-highlight-inline: green;
+$color-highlight-carea: blue;
+$color-highlight-par: purple;
+$color-highlight-line: #aa0;
 
 @mixin transform($args) {
     -webkit-transform: $args;
@@ -47,10 +54,12 @@ $color-toolbar-border: #333;
     top: -15px;
 }
 
-@mixin highlight-area($selector, $borderColor, $fillColor) {
+@mixin highlight-area($selector, $color) {
     #{$selector} {
-        border: $border-width solid $borderColor;
-        &:hover { background: $fillColor; }
+        border: $border-width solid $color;
+        &:hover {
+          background: rgba(lighten($color, 30%), 0.2);
+        }
     }
 }
 
@@ -84,18 +93,11 @@ $color-toolbar-border: #333;
 
     &.feature-highlight {
         margin: -1px;
-        &.feature-highlightNotPage{
-          @include highlight-area($selector-ocr-classes-without-page, red,  rgba(200, 0, 0, 0.2));
-        }
-        &.feature-highlightInline {
-          @include highlight-area($selector-ocr-inline, green,  rgba(0, 200, 0, 0.3));
-        }
-        &.feature-highlightLine {
-          @include highlight-area($selector-ocr-line, #aa0,  rgba(200, 200, 0, 0.3));
-        }
-        &.feature-highlightArea {
-          @include highlight-area($selector-ocr-area, purple,  rgba(200, 0, 200, 0.3));
-        }
+        &.feature-highlightNotPage {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
+        &.feature-highlightInline  {@include highlight-area($selector-ocr-inline, $color-highlight-inline);}
+        &.feature-highlightLine    {@include highlight-area($selector-ocr-line, $color-highlight-line);}
+        &.feature-highlightPar     {@include highlight-area($selector-ocr-par, $color-highlight-par);}
+        &.feature-highlightCarea   {@include highlight-area($selector-ocr-carea, $color-highlight-carea);}
     }
 
     &.feature-backgroundImage {
