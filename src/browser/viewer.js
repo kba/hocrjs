@@ -15,51 +15,29 @@ export const defaultConfig = {
         'sans-serif': {},
         serif: {},
         monospace: {},
-        UnifrakturCook: {
-            cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturCook:700',
-        },
-        UnifrakturMaguntia: {
-            cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturMaguntia',
-        },
-        'Old Standard TT': {
-            cssUrl: 'https://fonts.googleapis.com/css?family=Old+Standard+TT',
-        },
-        Cardo: {
-            cssUrl: 'https://fonts.googleapis.com/css?family=Cardo'
-        },
-        'Noto Serif': {
-            cssUrl: 'https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700&subset=latin-ext'
-        },
-        'Libre Baskerville': {
-            cssUrl: 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext'
-        },
+        UnifrakturCook: {cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturCook:700'},
+        UnifrakturMaguntia: {cssUrl: 'https://fonts.googleapis.com/css?family=UnifrakturMaguntia'},
+        'Old Standard TT': {cssUrl: 'https://fonts.googleapis.com/css?family=Old+Standard+TT'},
+        Cardo: {cssUrl: 'https://fonts.googleapis.com/css?family=Cardo'},
+        'Noto Serif': {cssUrl: 'https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700&subset=latin-ext'},
+        'Libre Baskerville': {cssUrl: 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext'},
     },
     features: {
-        backgroundImage: {
-            enabled: false,
-        },
+        backgroundImage: {enabled: false},
         scaleFont: {
             enabled: false,
             maxFontSize: 128,
             minFontSize: 2,
             wrapClass: 'hocr-viewer-wrap',
         },
-        disableEmStrong: {
-            enabled: false,
-        },
-        contentEditable: {
-            enabled: false,
-        },
+        disableEmStrong: {enabled: false},
+        contentEditable: {enabled: false},
         tooltips: {
             enabled: true,
             styleId: 'hocr-viewer-tooltip-style',
         },
-        borders: {
-            enabled: true,
-        },
-        transparentText: {
-            enabled: false,
-        },
+        borders: {enabled: true},
+        transparentText: {enabled: false},
     },
     expandToolbar: true,
     enableToolbar: true,
