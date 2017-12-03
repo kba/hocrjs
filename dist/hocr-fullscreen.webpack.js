@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -67,9 +67,9 @@
 	
 	window.hocrViewer.init();
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -530,9 +530,9 @@
 	    return HocrViewer;
 	}();
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -602,9 +602,9 @@
 	
 	// export { PropertyMapParser, HocrParser };
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -655,6 +655,6 @@
 	
 	exports.default = Utils;
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=hocr-fullscreen.webpack.js.map
