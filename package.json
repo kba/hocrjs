@@ -2,7 +2,7 @@
     "name": "hocrjs",
     "version": "0.1.0",
     "description": "Inspect hOCR files",
-    "main": "dist/hocr.viewer.js",
+    "main": "dist/hocr.fullscreen.js",
     "bin": {
         "hocrjs-inject": "./src/bin/hocr-inject.js"
     },
