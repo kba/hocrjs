@@ -44,6 +44,7 @@ dist: dist/hocr.user.js
 	webpack
 
 dist/hocr.user.js: src/userjs/hocr.user.js
+	mkdir -p $(dir $@)
 	sed -e "s,__VERSION__,$(VERSION)," \
 		-e "s,__ASSET_SERVER__,$(ASSET_SERVER)," \
 		-e "s,__UPDATE_SERVER__,$(UPDATE_SERVER)," \
@@ -67,7 +68,7 @@ serve:
 watch:
 	while true;do \
 		nodemon --exec "make clean dist ASSET_SERVER=$(LOCAL_SERVER)" \
-			-w js -w sass/ \
+			-w src \
 			-e 'js scss' \
 			; sleep 5 || break; \
 	done
