@@ -1,7 +1,10 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 
+# Version of the latest git tag
+VERSION = $(shell git describe --abbrev=0 --tags|sed 's/v//')
+
 # URL of the asset server, serving the built files and userscript
-ASSET_SERVER = https://kba.github.io/hocrjs/dist
+ASSET_SERVER = https://unpkg.com/hocrjs/dist
 
 # URL of the userscript update server (defaults to ASSET_SERVER)
 UPDATE_SERVER = $(ASSET_SERVER) 
@@ -20,14 +23,15 @@ help:
 	@echo ""
 	@echo "  Targets"
 	@echo ""
-	@echo "    watch  Continuously rebuild dist"
 	@echo "    dist   webpack"
 	@echo "    clean  Remove built targets"
-	@echo "    serve  Run a development server"
 	@echo "    test   Run unit tests"
+	@echo "    serve  Run a development server"
+	@echo "    watch  Continuously rebuild dist"
 	@echo ""
 	@echo "  Variables"
 	@echo ""
+	@echo "    VERSION        Version of the latest git tag"
 	@echo "    ASSET_SERVER   URL of the asset server, serving the built files and userscript"
 	@echo "    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)"
 	@echo "    STATIC_SERVER  Command to run a static server"
@@ -40,7 +44,7 @@ dist: dist/hocr.user.js
 	webpack
 
 dist/hocr.user.js: src/userjs/hocr.user.js
-	sed -e "s/__DATE__/`date +'%s'`/" \
+	sed -e "s,__VERSION__,$(VERSION)," \
 		-e "s,__ASSET_SERVER__,$(ASSET_SERVER)," \
 		-e "s,__UPDATE_SERVER__,$(UPDATE_SERVER)," \
 		$< > $@
@@ -49,15 +53,15 @@ dist/hocr.user.js: src/userjs/hocr.user.js
 clean:
 	$(RM) -r ./dist
 
-# Run a development server
-serve:
-	$(MAKE) clean dist ASSET_SERVER=$(LOCAL_SERVER)
-	$(STATIC_SERVER)
-
 # Run unit tests
 .PHONY: test
 test:
 	babel-tap test/*.test.js
+
+# Run a development server
+serve:
+	$(MAKE) clean dist ASSET_SERVER=$(LOCAL_SERVER)
+	$(STATIC_SERVER)
 
 # Continuously rebuild dist
 watch:

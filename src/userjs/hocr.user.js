@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    __UPDATE_SERVER__/hocr-viewer.user.js
-// @version      1.0.0.__DATE__
+// @updateURL    __UPDATE_SERVER__/hocr.user.js
+// @version      __VERSION__
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
 // @include      http://*/*
@@ -20,19 +20,20 @@
  */
 
 (function() {
-    'use strict'
-    function hocrViewerAsset(name) {
-        return "__ASSET_SERVER__/" + name + "?cachebuster=" + Math.random() * 10000000000000000
-    }
-    function injectScript(url) {
-        var script = document.createElement('script')
-        script.src = url
-        script.type = 'text/javascript'
-        document.querySelector('body').appendChild(script)
-    }
-    GM_registerMenuCommand('Inject hOCR viewer', injectHocrViewer)
-    if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {
-        injectScript(hocrViewerAsset('hocr-fullscreen.webpack.js'))
-    }
+  'use strict'
+  function injectHocrViewer() {
+    const script = document.createElement('script')
+    script.src = "__ASSET_SERVER__/hocr.fullscreen.js?cachebuster=" + Math.random() * 10000000000000000
+    script.type = 'text/javascript'
+    document.querySelector('body').appendChild(script)
+  }
+
+  // Add menu option
+  GM_registerMenuCommand('Inject hOCR viewer', injectHocrViewer)
+
+  // Automatically inject hOCR viewer for local files
+  if (document.location.protocol === 'file:' && document.querySelector('.ocr_page')) {
+    injectHocrViewer()
+  }
 
 })()
