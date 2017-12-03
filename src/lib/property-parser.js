@@ -1,19 +1,12 @@
-/* BEGIN-BANNER -f smmono12 -i ' * ' -C "2016 Konstantin Baierer"  -L MIT
- *                                ▐▌
- * ▐▙█▙  █▟█▌ ▟█▙ ▐▙█▙  ▟█▙  █▟█▌▐███ ▝█ █▌     ▐▙█▙  ▟██▖ █▟█▌▗▟██▖ ▟█▙  █▟█▌
- * ▐▛ ▜▌ █▘  ▐▛ ▜▌▐▛ ▜▌▐▙▄▟▌ █▘   ▐▌   █▖█      ▐▛ ▜▌ ▘▄▟▌ █▘  ▐▙▄▖▘▐▙▄▟▌ █▘
- * ▐▌ ▐▌ █   ▐▌ ▐▌▐▌ ▐▌▐▛▀▀▘ █    ▐▌   ▐█▛  ██▌ ▐▌ ▐▌▗█▀▜▌ █    ▀▀█▖▐▛▀▀▘ █
- * ▐█▄█▘ █   ▝█▄█▘▐█▄█▘▝█▄▄▌ █    ▐▙▄   █▌      ▐█▄█▘▐▙▄█▌ █   ▐▄▄▟▌▝█▄▄▌ █
- * ▐▌▀▘  ▀    ▝▀▘ ▐▌▀▘  ▝▀▀  ▀     ▀▀   █       ▐▌▀▘  ▀▀▝▘ ▀    ▀▀▀  ▝▀▀  ▀
- * ▐▌             ▐▌                   █▌       ▐▌
- *
- * Copyright (c) 2016 Konstantin Baierer
+/*
+ * Copyright (c) 2016-2017 Konstantin Baierer
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
- *
- * END-BANNER */
-export const SEPARATOR = ';';
+ */
+
+export const SEPARATOR = ';'
+
 export default class PropertyParser {
 
     constructor(opts = {
@@ -23,14 +16,14 @@ export default class PropertyParser {
         disableCardinalityChecks: false,
     }) {
         for (let opt in opts) {
-            this[opt] = opts[opt];
+            this[opt] = opts[opt]
         }
         this.parsers = {
             'baseline': this.numberParser([parseFloat, parseInt]),
             'bbox': this.numberParser(parseInt, {min:0}, {length:4}),
             'cflow': this.stringParser({collapse:true}),
             'cuts': (args) => { return args.map((arg) => {
-                return this.numberParser(parseInt)(arg.split(','));
+                return this.numberParser(parseInt)(arg.split(','))
             });},
             'hardbreak': this.booleanParser({collapse:true}),
             'image': this.stringParser({collapse: true}),
@@ -49,7 +42,7 @@ export default class PropertyParser {
             'x_scanner': this.stringParser(),
             'x_source': this.stringParser(),
             'x_wconf': this.numberParser(parseFloat, {min:0, max:100}),
-        };
+        }
     }
 
     checkCardinality(args, {
@@ -60,109 +53,109 @@ export default class PropertyParser {
         maxLength = Number.MAX_VALUE,
     }) {
         if (this.disableCardinalityChecks) {
-            return args;
+            return args
         }
-        if (collapse) length = 1;
+        if (collapse) length = 1
         if (length > -1 && args.length != length)
-            throw Error(`Incorrect number of arguments (${args.length} != ${length})`);
+            throw Error(`Incorrect number of arguments (${args.length} != ${length})`)
         if (modulo > -1 && length % modulo > 0)
-            throw Error(`Number of arguments not a multiple of ${modulo} (${args.length})`);
-        if (collapse) return args[0];
+            throw Error(`Number of arguments not a multiple of ${modulo} (${args.length})`)
+        if (collapse) return args[0]
         if (args.length < minLength)
-            throw Error(`Not enough arguments (${args.length} < ${minLength})`);
+            throw Error(`Not enough arguments (${args.length} < ${minLength})`)
         if (args.length > maxLength)
-            throw Error(`Too many arguments (${args.length} > ${minLength})`);
-        return args;
+            throw Error(`Too many arguments (${args.length} > ${minLength})`)
+        return args
     }
 
     booleanParser(cardinality={}) {
         return (args) => {
             return this.checkCardinality(args.map((arg) => {
-                return Boolean.valueOf()(arg);
-            }), cardinality);
-        };
+                return Boolean.valueOf()(arg)
+            }), cardinality)
+        }
     }
 
     stringParser(cardinality={}) {
         return (args) => {
-            return this.checkCardinality(args, cardinality);
-        };
+            return this.checkCardinality(args, cardinality)
+        }
     }
 
     numberParser(fns, {
         min = -Number.MAX_VALUE,
         max = Number.MAX_VALUE,
     } = {}, cardinality={}) {
-        if (!Array.isArray(fns)) fns = [fns];
+        if (!Array.isArray(fns)) fns = [fns]
         return (args) => {
-            var i = 0;
+            var i = 0
             return this.checkCardinality(args.map((arg) => {
-                var parsed = fns[i++ % fns.length](arg);
+                var parsed = fns[i++ % fns.length](arg)
                 if (!this.allowInvalidNumbers) {
                     if (Number.isNaN(parsed))
-                        throw Error(`Not a number: '${arg}'`);
+                        throw Error(`Not a number: '${arg}'`)
                     else if (parsed < min || parsed > max)
-                        throw Error(`Not in range [${min}..${max}]: '${arg}'`);
+                        throw Error(`Not in range [${min}..${max}]: '${arg}'`)
                 }
-                return parsed;
-            }), cardinality);
-        };
+                return parsed
+            }), cardinality)
+        }
     }
 
     parse(s) {
-        var tokens = this.tokenize(s);
-        if (this.debug) console.log("tokens", tokens);
-        var propertyMap = {};
+        var tokens = this.tokenize(s)
+        if (this.debug) console.log("tokens", tokens)
+        var propertyMap = {}
         for (let i = 0; i < tokens.length; i++) {
-            let propertyName = tokens[i];
+            let propertyName = tokens[i]
             if (! this.allowUnknown && !(propertyName in this.parsers)) {
-                throw Error(`Unknown property '${propertyName}'`);
+                throw Error(`Unknown property '${propertyName}'`)
             }
-            let propertyArgs = [];
+            let propertyArgs = []
             for (var j = i + 1; j < tokens.length; j++) {
-                if (tokens[j] === SEPARATOR) break;
-                propertyArgs.push(tokens[j]);
+                if (tokens[j] === SEPARATOR) break
+                propertyArgs.push(tokens[j])
             }
-            i = j;
+            i = j
             if (propertyName in this.parsers) {
-                propertyArgs = this.parsers[propertyName](propertyArgs);
+                propertyArgs = this.parsers[propertyName](propertyArgs)
             }
-            propertyMap[propertyName] = propertyArgs;
+            propertyMap[propertyName] = propertyArgs
         }
-        if (this.debug) console.log(`propertyMap`, propertyMap);
-        return propertyMap;
+        if (this.debug) console.log(`propertyMap`, propertyMap)
+        return propertyMap
     }
 
     tokenize(s) {
-        var tokens = [];
-        var arr = s.split('');
-        var doubleQuoteOpen = false;
-        var singleQuoteOpen = false;
-        var buf = [];
-        var cur = '';
-        var flush = () => { tokens.push(buf.join('')); buf = []; };
-        var append = () => { buf.push(cur); };
+        var tokens = []
+        var arr = s.split('')
+        var doubleQuoteOpen = false
+        var singleQuoteOpen = false
+        var buf = []
+        var cur = ''
+        var flush = () => { tokens.push(buf.join('')); buf = []; }
+        var append = () => { buf.push(cur); }
         for (let i = 0; i < arr.length; i++) {
-            let prev = i>0 ? arr[i-1] : '';
-            cur = arr[i];
+            let prev = i>0 ? arr[i-1] : ''
+            cur = arr[i]
             if (cur === "'" && prev != '\\' && !doubleQuoteOpen) {
-                if (singleQuoteOpen) flush();
-                singleQuoteOpen = !singleQuoteOpen;
+                if (singleQuoteOpen) flush()
+                singleQuoteOpen = !singleQuoteOpen
             } else if (cur === '"' && prev != '\\' && !singleQuoteOpen) {
-                if (doubleQuoteOpen) flush();
-                doubleQuoteOpen = !doubleQuoteOpen;
+                if (doubleQuoteOpen) flush()
+                doubleQuoteOpen = !doubleQuoteOpen
             } else if (!singleQuoteOpen && !doubleQuoteOpen && cur === SEPARATOR) {
-                if (buf.length > 0) flush();
-                if (tokens[tokens.length-1] !== SEPARATOR) tokens.push(SEPARATOR);
+                if (buf.length > 0) flush()
+                if (tokens[tokens.length-1] !== SEPARATOR) tokens.push(SEPARATOR)
             } else if (!singleQuoteOpen && !doubleQuoteOpen && cur.match(/\s/)) {
-               if (buf.length > 0) flush();
+               if (buf.length > 0) flush()
             } else {
-                append();
+                append()
             }
         }
         if (buf.length > 0)
-            flush();
-        return tokens;
+            flush()
+        return tokens
     }
 }
 

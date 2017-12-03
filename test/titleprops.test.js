@@ -1,5 +1,5 @@
-import test from 'tape';
-var PropertyParser = require('../lib/property-parser').default;
+import {test} from 'babel-tap'
+import PropertyParser from '../src/lib/property-parser'
 
 test("PropertyParser", (t) => {
     'use strict';

@@ -3,8 +3,11 @@
     "version": "0.0.1",
     "description": "Inspect hOCR files",
     "main": "index.js",
+    "bin": {
+        "hocrjs-inject": "./src/bin/hocr-inject.js"
+    },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "make webpack test"
     },
     "repository": {
         "type": "git",
@@ -18,45 +21,25 @@
     "homepage": "https://github.com/kba/hocrjs#readme",
     "babel": {
         "presets": [
-            "latest"
-        ]
-    },
-    "eslintConfig": {
-        "extends": "airbnb",
-        "env": {
-            "browser": true
-        },
-        "plugins": [
-            "import"
+            "env"
         ]
     },
     "devDependencies": {
-        "babel-loader": "^6.2.7",
-        "babel-preset-latest": "^6.16.0",
-        "cat-source-map": "^0.1.2",
-        "eslint": "^3.9.0",
-        "eslint-config-airbnb": "^12.0.0",
-        "eslint-plugin-import": "^2.0.1",
-        "eslint-plugin-jsx-a11y": "^2.2.3",
-        "eslint-plugin-react": "^6.4.1",
-        "express": "^4.14.0",
-        "gulp": "^3.9.1",
-        "gulp-babel": "^6.1.2",
-        "gulp-chmod": "^2.0.0",
-        "gulp-help": "^1.6.1",
-        "gulp-plumber": "^1.1.0",
-        "gulp-rename": "^1.2.2",
-        "gulp-replace": "^0.5.4",
-        "gulp-sass": "^2.3.2",
-        "gulp-sourcemaps": "^2.2.0",
-        "gulp-tape": "^0.0.9",
-        "less": "^2.7.1",
-        "less-plugin-clean-css": "^1.5.1",
-        "nodemon": "^1.10.2",
-        "tap-colorize": "^1.2.0",
-        "tape": "^4.6.2",
-        "webpack-stream": "^3.2.0",
-        "yargs": "^6.4.0"
+        "@kba/makefile-parser": "0.0.3",
+        "babel-core": "6.26.0",
+        "babel-loader": "7.1.2",
+        "babel-preset-env": "1.6.1",
+        "babel-tap": "5.0.0",
+        "css-loader": "0.28.7",
+        "express": "4.16.2",
+        "node-sass": "4.7.2",
+        "nodemon": "1.12.1",
+        "sass-loader": "6.0.6",
+        "style-loader": "0.19.0",
+        "tap": "11.0.0",
+        "uglifyjs-webpack-plugin": "1.1.2",
+        "webpack": "3.9.1",
+        "yargs": "10.0.3"
     },
     "dependencies": {}
 }
