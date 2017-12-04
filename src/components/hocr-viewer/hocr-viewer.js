@@ -5,6 +5,7 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
+import BaseComponent from '@/components/base'
 import {HocrParser} from '@/parser'
 import Utils from '@/utils'
 import HocrjsToolbar from '@/components/hocr-toolbar'
@@ -51,16 +52,14 @@ export const defaultConfig = {
     rootClass: 'hocr-viewer',
 }
 
-class HocrjsViewer {
-    constructor(config) {
-        this.config = defaultConfig
-        Object.keys(config || {}).forEach((k) => {
-            // TODO proper conifg
-            this.config[k] = config[k]
-        })
-        this.root = this.config.root
-        if (typeof this.root === 'string')
-            this.root = document.querySelector(this.root)
+class HocrjsViewer extends BaseComponent {
+
+    constructor(config={}) {
+        super()
+        this.config = Object.assign({}, defaultConfig, config)
+        this.dom = this.config.root
+        if (typeof this.dom === 'string')
+            this.dom = document.querySelector(this.dom)
         this.parser = new HocrParser(this.config)
         Object.keys(this.config.fonts).forEach((font) => {
             let cssUrl = this.config.fonts[font].cssUrl
@@ -70,6 +69,7 @@ class HocrjsViewer {
             scaleFont: {}
         }
     }
+
 
     log(level, ...args) {
         if (level > this.config.debugLevel) return
@@ -146,7 +146,7 @@ class HocrjsViewer {
         if (!wrap) {
             wrap = document.createElement('span')
             wrap.classList.add(this.config.features.scaleFont.wrapClass)
-            this.root.appendChild(wrap)
+            this.dom.appendChild(wrap)
         }
         if (onoff) {
             this.findByOcrClass({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
@@ -205,7 +205,7 @@ class HocrjsViewer {
     }
 
     toggleBackgroundImage(onoff) {
-        let page = this.root.querySelector('.ocr_page')
+        let page = this.dom.querySelector('.ocr_page')
         if (onoff) {
             this.findByOcrClass({
                 title: 'image'
@@ -215,7 +215,7 @@ class HocrjsViewer {
             })
         } else {
             page.style.backgroundImage = ''
-            // delete this.root.style.backgroundImage
+            // delete this.dom.style.backgroundImage
         }
     }
 
@@ -246,7 +246,7 @@ class HocrjsViewer {
     }
 
     toggleFeature(feature, onoff) {
-        this.root.classList.toggle(`feature-${feature}`, onoff)
+        this.dom.classList.toggle(`feature-${feature}`, onoff)
         let toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
         if (toggle in this) {
             this.log(0, `Calling this.${toggle}`)
@@ -255,18 +255,12 @@ class HocrjsViewer {
     }
 
     addToolbar() {
-        this.toolbar = this.root.querySelector('hocr-toolbar')
         if (this.toolbar) return
-        this.toolbar = new HocrjsToolbar({
-          root: document.createElement('div'),
-          $parent: this,
-          config: this.config
-        })
-        document.body.appendChild(this.toolbar.dom)
+        this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
     }
 
     scaleTo(scaleFactor) {
-        let page = this.root.querySelector('.ocr_page')
+        let page = this.dom.querySelector('.ocr_page')
         let coords = this.parser.bbox(document.querySelector('.ocr_page'))
         if (scaleFactor === 'height') {
             scaleFactor = window.innerHeight / coords[3]
@@ -277,8 +271,7 @@ class HocrjsViewer {
         }
         page.style.transform = `scale(${scaleFactor})`
         page.style.transformOrigin = 'top left'
-        this.toolbar.dom.querySelector('span.zoom').innerHTML = Math.floor(scaleFactor * 10000) / 100.0
-        // console.log()
+        this.$emit('scale-to', scaleFactor)
     }
 
 
@@ -289,7 +282,7 @@ class HocrjsViewer {
     }
 
     init() {
-        this.root.classList.add(this.config.rootClass)
+        this.dom.classList.add(this.config.rootClass)
 
         if (this.config.enableToolbar) {
             this.addToolbar()

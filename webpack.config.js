@@ -10,6 +10,7 @@ module.exports = {
     resolve: {
         alias: {
           "@": path.join(__dirname, "src"),
+          vue: 'vue/dist/vue.runtime.min.js',
         },
     },
     output: {

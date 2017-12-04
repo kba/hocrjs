@@ -1,22 +1,29 @@
+import BaseComponent from '@/components/base'
 import template from './hocr-toolbar.html'
 
-export default class HocrjsToolbar {
+export default class HocrjsToolbar extends BaseComponent {
 
   toggle(onoff) {
     this.dom.classList.toggle('expanded', onoff)
   }
 
+  constructor({$parent, config}) {
+    super()
 
-  constructor({root, $parent, config}) {
-    root.innerHTML = template
-    root = this.dom = root.querySelector('div')
-    root.querySelector('.toggler').addEventListener('click', (ev) => {
+    // Add HTML
+    const dummyElement = document.createElement('div')
+    dummyElement.innerHTML = template
+    this.dom = dummyElement.querySelector('div')
+    $parent.dom.appendChild(this.dom)
+
+    // handle toggler
+    this.dom.querySelector('.toggler').addEventListener('click', (ev) => {
       config.expandToolbar = !config.expandToolbar
       this.toggle(config.expandToolbar)
     })
 
     // fonts
-    let fontSelect = root.querySelector('select.fontlist')
+    let fontSelect = this.dom.querySelector('select.fontlist')
     console.log(fontSelect)
     Object.keys(config.fonts).forEach((font) => {
       let fontOption = document.createElement('option')
@@ -40,7 +47,7 @@ export default class HocrjsToolbar {
       let label = document.createElement('label')
       li.appendChild(checkbox)
       li.appendChild(label)
-      root.querySelector('.features').appendChild(li)
+      this.dom.querySelector('.features').appendChild(li)
 
       label.innerHTML = feature
 
@@ -63,11 +70,16 @@ export default class HocrjsToolbar {
     })
 
     // Zoom
-    let zoomSlider = root.querySelector('input[type="range"].zoom')
+    let zoomSlider = this.dom.querySelector('input[type="range"].zoom')
     zoomSlider.addEventListener('input', ev => $parent.scaleTo(ev.target.value / 100.0))
-    for (let zoomButton of root.querySelectorAll('button.zoom')) {
+    for (let zoomButton of this.dom.querySelectorAll('button.zoom')) {
       zoomButton.addEventListener('click', ev => $parent.scaleTo(ev.target.dataset.scaleFactor))
     }
+    $parent.$on('scale-to', scaleFactor => {
+      this.dom.querySelector('span.zoom').innerHTML = Math.floor(scaleFactor * 10000) / 100.0
+      zoomSlider.value = scaleFactor * 100
+    })
+
   }
 }
 
