@@ -1,11 +1,17 @@
 const UglifyJS = require('uglifyjs-webpack-plugin')
+const path = require('path')
 
 module.exports = {
     entry: {
-      'fullscreen': "./src/browser/fullscreen.js",
-      'viewer': "./src/browser/viewer.js",
+      'fullscreen': "./src/fullscreen.js",
+      'viewer': "./src/components/hocr-viewer",
     },
     devtool: 'source-map',
+    resolve: {
+        alias: {
+          "@": path.join(__dirname, "src"),
+        },
+    },
     output: {
         path: __dirname + "/dist",
         filename: `hocr.[name].js`,
@@ -21,6 +27,7 @@ module.exports = {
               test: /\.s?[ac]ss$/,
               loader: "style-loader!css-loader?sourcemap=true!sass-loader?sourcemap-=true"
             },
+            {test: /\.html$/, loader: "html-loader"},
         ]
     },
     plugins: [

@@ -1,0 +1,73 @@
+import template from './hocr-toolbar.html'
+
+export default class HocrjsToolbar {
+
+  toggleExpandToolbar(onoff) {
+    this.dom.classList.toggle('expanded', onoff)
+  }
+
+
+  constructor({root, $parent, config}) {
+    root.innerHTML = template
+    root = this.dom = root.querySelector('div')
+    root.querySelector('.toggler').addEventListener('click', (ev) => {
+      config.expandToolbar = !config.expandToolbar
+      this.toggleExpandToolbar(config.expandToolbar)
+    })
+
+    // fonts
+    let fontSelect = root.querySelector('select.fontlist')
+    console.log(fontSelect)
+    Object.keys(config.fonts).forEach((font) => {
+      let fontOption = document.createElement('option')
+      fontOption.innerHTML = font
+      fontOption.style.fontSize = 'large'
+      fontOption.style.fontFamily = font
+      fontSelect.appendChild(fontOption)
+    })
+    fontSelect.addEventListener('change', (ev) => {
+      let selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
+      $parent.findByOcrClass().forEach((el) => {
+        el.style.fontFamily = selectedFont
+      })
+      $parent.onConfigChange()
+    })
+
+    // features
+    Object.keys(config.features).forEach((feature) => {
+      let li = document.createElement('li')
+      let checkbox = document.createElement('input')
+      let label = document.createElement('label')
+      li.appendChild(checkbox)
+      li.appendChild(label)
+      root.querySelector('.features').appendChild(li)
+
+      label.innerHTML = feature
+
+      checkbox.setAttribute('type', 'checkbox')
+      checkbox.checked = config.features[feature].enabled
+      li.classList.toggle('checked', checkbox.checked)
+      let onChange = (ev) => {
+        li.classList.toggle('checked', checkbox.checked)
+        config.features[feature].enabled = checkbox.checked
+        $parent.toggleFeature(feature, checkbox.checked)
+      }
+      li.addEventListener('click', (ev) => {
+        checkbox.checked = !checkbox.checked
+        // onChange()
+        li.classList.toggle('checked')
+        config.features[feature].enabled = checkbox.checked
+        $parent.toggleFeature(feature, checkbox.checked)
+      })
+      checkbox.addEventListener('change', onChange)
+    })
+
+    // Zoom
+    let zoomSlider = root.querySelector('input[type="range"].zoom')
+    zoomSlider.addEventListener('input', ev => $parent.scaleTo(ev.target.value / 100.0))
+    for (let zoomButton of root.querySelectorAll('button.zoom')) {
+      zoomButton.addEventListener('click', ev => $parent.scaleTo(ev.target.dataset.scaleFactor))
+    }
+  }
+}
+

@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import {HocrParser} from '../lib/parser.js'
-import Utils from './utils'
+import {HocrParser} from '@/parser'
+import Utils from '@/utils'
+import HocrjsToolbar from '@/components/hocr-toolbar'
 
 export const defaultConfig = {
     root: 'body',
@@ -50,7 +51,7 @@ export const defaultConfig = {
     rootClass: 'hocr-viewer',
 }
 
-export class HocrViewer {
+class HocrjsViewer {
     constructor(config) {
         this.config = defaultConfig
         Object.keys(config || {}).forEach((k) => {
@@ -244,10 +245,6 @@ export class HocrViewer {
         })
     }
 
-    toggleExpandToolbar(onoff) {
-        this.toolbar.classList.toggle('expanded', onoff)
-    }
-
     toggleFeature(feature, onoff) {
         this.root.classList.toggle(`feature-${feature}`, onoff)
         let toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
@@ -260,92 +257,12 @@ export class HocrViewer {
     addToolbar() {
         this.toolbar = this.root.querySelector('hocr-toolbar')
         if (this.toolbar) return
-        this.toolbar = document.createElement('div')
-        this.toolbar.classList.add('hocr-toolbar')
-        this.toolbar.classList.toggle('expanded', this.config.expandToolbar)
-        document.body.appendChild(this.toolbar)
-        this.toolbar.innerHTML = `
-    <div class="toggler">
-        <div class="toggler-inner toggler-show">
-            &gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>
-        </div>
-        <div class="toggler-inner toggler-hide">
-            &lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>&lt;<br/>
-        </div>
-    </div>
-    <div class="wrapper">
-        <h2>Font</h2>
-        <select class="fontlist"></select>
-        <h2>Features</h2>
-        <ul class="features">
-        </ul>
-        <h2>Zoom</h2>
-        <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
-        <span class="zoom">100</span>%
-        <p>
-            <button class="zoom" data-scale-factor="height">Fit height</button>
-            <button class="zoom" data-scale-factor="width">Fit width</button>
-            <button class="zoom" data-scale-factor="original">100 %</button>
-        </p>
-    </div>`
-        this.toolbar.querySelector('.toggler').addEventListener('click', (ev) => {
-            this.config.expandToolbar = !this.config.expandToolbar
-            this.toggleExpandToolbar(this.config.expandToolbar)
+        this.toolbar = new HocrjsToolbar({
+          root: document.createElement('div'),
+          $parent: this,
+          config: this.config
         })
-
-        // fonts
-        let fontSelect = this.toolbar.querySelector('select.fontlist')
-        console.log(fontSelect)
-        Object.keys(this.config.fonts).forEach((font) => {
-            let fontOption = document.createElement('option')
-            fontOption.innerHTML = font
-            fontOption.style.fontSize = 'large'
-            fontOption.style.fontFamily = font
-            fontSelect.appendChild(fontOption)
-        })
-        fontSelect.addEventListener('change', (ev) => {
-            let selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
-            this.findByOcrClass().forEach((el) => {
-                el.style.fontFamily = selectedFont
-            })
-            this.onConfigChange()
-        })
-
-        // features
-        Object.keys(this.config.features).forEach((feature) => {
-            let li = document.createElement('li')
-            let checkbox = document.createElement('input')
-            let label = document.createElement('label')
-            li.appendChild(checkbox)
-            li.appendChild(label)
-            this.toolbar.querySelector('.features').appendChild(li)
-
-            label.innerHTML = feature
-
-            checkbox.setAttribute('type', 'checkbox')
-            checkbox.checked = this.config.features[feature].enabled
-            li.classList.toggle('checked', checkbox.checked)
-            let onChange = (ev) => {
-                li.classList.toggle('checked', checkbox.checked)
-                this.config.features[feature].enabled = checkbox.checked
-                this.toggleFeature(feature, checkbox.checked)
-            }
-            li.addEventListener('click', (ev) => {
-                checkbox.checked = !checkbox.checked
-                // onChange()
-                li.classList.toggle('checked')
-                this.config.features[feature].enabled = checkbox.checked
-                this.toggleFeature(feature, checkbox.checked)
-            })
-            checkbox.addEventListener('change', onChange)
-        })
-
-        // Zoom
-        let zoomSlider = this.toolbar.querySelector('input[type="range"].zoom')
-        zoomSlider.addEventListener('input', ev => this.scaleTo(ev.target.value / 100.0))
-        for (let zoomButton of this.toolbar.querySelectorAll('button.zoom')) {
-            zoomButton.addEventListener('click', ev => this.scaleTo(ev.target.dataset.scaleFactor))
-        }
+        document.body.appendChild(this.toolbar.dom)
     }
 
     scaleTo(scaleFactor) {
@@ -360,7 +277,7 @@ export class HocrViewer {
         }
         page.style.transform = `scale(${scaleFactor})`
         page.style.transformOrigin = 'top left'
-        this.toolbar.querySelector('span.zoom').innerHTML = Math.floor(scaleFactor * 10000) / 100.0
+        this.toolbar.dom.querySelector('span.zoom').innerHTML = Math.floor(scaleFactor * 10000) / 100.0
         // console.log()
     }
 
@@ -387,3 +304,5 @@ export class HocrViewer {
     }
 
 }
+
+export {HocrjsViewer}
