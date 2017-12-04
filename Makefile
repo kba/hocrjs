@@ -41,7 +41,7 @@ help:
 dist: dist/hocr.user.js
 	webpack
 
-dist/hocr.user.js: src/userjs/hocr.user.js
+dist/hocr.user.js: src/hocr.user.js
 	mkdir -p $(dir $@)
 	sed -e "s,__VERSION__,$(VERSION)," \
 		-e "s,__ASSET_SERVER__,$(ASSET_SERVER)," \

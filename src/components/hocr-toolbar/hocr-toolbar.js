@@ -2,7 +2,7 @@ import template from './hocr-toolbar.html'
 
 export default class HocrjsToolbar {
 
-  toggleExpandToolbar(onoff) {
+  toggle(onoff) {
     this.dom.classList.toggle('expanded', onoff)
   }
 
@@ -12,7 +12,7 @@ export default class HocrjsToolbar {
     root = this.dom = root.querySelector('div')
     root.querySelector('.toggler').addEventListener('click', (ev) => {
       config.expandToolbar = !config.expandToolbar
-      this.toggleExpandToolbar(config.expandToolbar)
+      this.toggle(config.expandToolbar)
     })
 
     // fonts
