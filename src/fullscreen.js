@@ -8,5 +8,7 @@
 import '@/sass/normalize.scss'
 import '@/sass/hocr-viewer.scss'
 import {HocrjsViewer} from '@/components/hocr-viewer'
-window.hocrViewer = new HocrjsViewer({dom: document.querySelector('body')})
+window.hocrViewer = new HocrjsViewer({
+  dom: document.querySelector('body')
+})
 window.hocrViewer.init()
