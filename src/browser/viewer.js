@@ -47,7 +47,6 @@ export const defaultConfig = {
     expandToolbar: true,
     enableToolbar: true,
     rootClass: 'hocr-viewer',
-    toolbarId: 'hocr-viewer-toolbar',
 }
 
 export class HocrViewer {
@@ -258,10 +257,10 @@ export class HocrViewer {
     }
 
     addToolbar() {
-        this.toolbar = document.querySelector('#' + this.config.toolbarId)
+        this.toolbar = this.root.querySelector('hocr-toolbar')
         if (this.toolbar) return
         this.toolbar = document.createElement('div')
-        this.toolbar.setAttribute('id', this.config.toolbarId)
+        this.toolbar.classList.add('hocr-toolbar')
         this.toolbar.classList.toggle('expanded', this.config.expandToolbar)
         document.body.appendChild(this.toolbar)
         this.toolbar.innerHTML = `
