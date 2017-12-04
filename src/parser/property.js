@@ -13,7 +13,7 @@ class HocrProperty {
     }
 
     serialize() {
-        return `${this.name} ${this.values.map((val) => { return `"${val}"`; }).join(' ')}`
+        return `${this.name} ${this.values.map((val) => {return `"${val}"`}).join(' ')}`
     }
 
 }

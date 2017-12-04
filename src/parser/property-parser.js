@@ -15,16 +15,16 @@ export default class PropertyParser {
         allowInvalidNumbers: false,
         disableCardinalityChecks: false,
     }) {
-        for (let opt in opts) {
+        opts.forEach(opt => {
             this[opt] = opts[opt]
-        }
+        })
         this.parsers = {
             'baseline': this.numberParser([parseFloat, parseInt]),
             'bbox': this.numberParser(parseInt, {min:0}, {length:4}),
             'cflow': this.stringParser({collapse:true}),
             'cuts': (args) => { return args.map((arg) => {
                 return this.numberParser(parseInt)(arg.split(','))
-            });},
+            })},
             'hardbreak': this.booleanParser({collapse:true}),
             'image': this.stringParser({collapse: true}),
             'imagemd5': this.stringParser({collapse: true}),
@@ -88,9 +88,9 @@ export default class PropertyParser {
     } = {}, cardinality={}) {
         if (!Array.isArray(fns)) fns = [fns]
         return (args) => {
-            var i = 0
+            let i = 0
             return this.checkCardinality(args.map((arg) => {
-                var parsed = fns[i++ % fns.length](arg)
+                let parsed = fns[i++ % fns.length](arg)
                 if (!this.allowInvalidNumbers) {
                     if (Number.isNaN(parsed))
                         throw Error(`Not a number: '${arg}'`)
@@ -103,16 +103,17 @@ export default class PropertyParser {
     }
 
     parse(s) {
-        var tokens = this.tokenize(s)
+        let tokens = this.tokenize(s)
         if (this.debug) console.log("tokens", tokens)
-        var propertyMap = {}
+        let propertyMap = {}
         for (let i = 0; i < tokens.length; i++) {
             let propertyName = tokens[i]
             if (! this.allowUnknown && !(propertyName in this.parsers)) {
                 throw Error(`Unknown property '${propertyName}'`)
             }
             let propertyArgs = []
-            for (var j = i + 1; j < tokens.length; j++) {
+            let j
+            for (j = i + 1; j < tokens.length; j++) {
                 if (tokens[j] === SEPARATOR) break
                 propertyArgs.push(tokens[j])
             }
@@ -127,14 +128,14 @@ export default class PropertyParser {
     }
 
     tokenize(s) {
-        var tokens = []
-        var arr = s.split('')
-        var doubleQuoteOpen = false
-        var singleQuoteOpen = false
-        var buf = []
-        var cur = ''
-        var flush = () => { tokens.push(buf.join('')); buf = []; }
-        var append = () => { buf.push(cur); }
+        let tokens = []
+        let arr = s.split('')
+        let doubleQuoteOpen = false
+        let singleQuoteOpen = false
+        let buf = []
+        let cur = ''
+        let flush = () => { tokens.push(buf.join('')); buf = [] }
+        let append = () => { buf.push(cur) }
         for (let i = 0; i < arr.length; i++) {
             let prev = i>0 ? arr[i-1] : ''
             cur = arr[i]

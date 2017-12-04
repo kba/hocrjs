@@ -9,8 +9,8 @@ export class HocrParser {
 
     parseTitle(s) {
         s = this._titleString(s)
-        var prev = ''
-        for (var i = 0; i < s.length; i++) {
+        let prev = ''
+        for (let i = 0; i < s.length; i++) {
         }
     }
 
