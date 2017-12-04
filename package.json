@@ -1,6 +1,6 @@
 {
     "name": "hocrjs",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "Inspect hOCR files",
     "main": "dist/hocr.fullscreen.js",
     "bin": {

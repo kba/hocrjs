@@ -2,7 +2,7 @@
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
 // @updateURL    https://unpkg.com/hocrjs/dist /hocr.user.js
-// @version      0.1.3
+// @version      0.1.4
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
 // @include      http://*/*
