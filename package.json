@@ -4,7 +4,7 @@
     "description": "Inspect hOCR files",
     "main": "dist/hocr.fullscreen.js",
     "bin": {
-        "hocrjs-inject": "./src/bin/hocr-inject.js"
+        "hocrjs-inject": "./bin/hocr-inject.js"
     },
     "scripts": {
         "test": "make webpack test"
