@@ -64,13 +64,13 @@ $color-highlight-line: #aa0;
 }
 
 .hocr-viewer {
-    background-repeat: no-repeat;
-    // NOTE: This is important otherwise fixed will be relative to page not
-    // containing element
     height: 100vh;
     position: relative;
+
     .ocr_page {
         position: relative !important;
+        // NOTE: This is important otherwise fixed will be relative to page not
+        // containing element
         @include transform(rotate(0deg));
         /* .transform(scale(0.7)); */
         /* position: relative !important; */
@@ -103,6 +103,8 @@ $color-highlight-line: #aa0;
     }
 
     &.feature-backgroundImage {
+        background-repeat: no-repeat;
+
         #{$selector-ocr-page} {
             background-size: contain;
 
@@ -134,65 +136,65 @@ $color-highlight-line: #aa0;
     //     width: auto;
     //     height: 100%;
     // }
-}
 
 
-.hocr-toolbar {
-    position: fixed;
-    top: 0;
-    height: 100%;
-    border: none;
-    .toggler {
-        float: left;
-        font-family: monospace;
-        color: $color-toolbar-toggler;
-        background: $color-toolbar-border;
-        height: 100vh;
-        width: 1em;
-        .toggler-inner {
-            font-size: 1.5em;
-            top: 40vh;
-            position: fixed;
-        }
-        .toggler-hide { display:none; }
-        .toggler-show { display:block; }
-    }
-    .wrapper {
+    .hocr-toolbar {
         position: fixed;
-        margin-left: 1em;
-        background-color: $color-toolbar-bg;
-        width: 0em;
-        overflow: hidden;
-        transition: all 0.5s ease;
-        height: 100vh;
-    }
-    &.expanded {
-        border-right: $border-width solid $color-toolbar-border;
-        .wrapper { 
-            padding-left: 1em;
-            width: 15em;
-        }
-        .toggler-show { display:none; }
-        .toggler-hide { display:block; }
-    }
-    ul.features {
-        list-style-type: none;
-        padding: 0;
-        // width: 19em;
-        li {
-            background-color: $color-unchecked;
-            margin-bottom: 2px;
-            padding: 5px 0;
-            &:before { content: '✗ '; }
-            &.checked {
-                background-color: $color-checked;
-                &:before { content: '✓ '; }
+        top: 0;
+        height: 100%;
+        border: none;
+        .toggler {
+            float: left;
+            font-family: monospace;
+            color: $color-toolbar-toggler;
+            background: $color-toolbar-border;
+            height: 100vh;
+            width: 1em;
+            .toggler-inner {
+                font-size: 1.5em;
+                top: 40vh;
+                position: fixed;
             }
-            input[type='checkbox'] { display: none; }
-            label { width: 100%; }
+            .toggler-hide { display:none; }
+            .toggler-show { display:block; }
         }
-    }
-    input.zoom {
-        // width: 19em;
+        .wrapper {
+            position: fixed;
+            margin-left: 1em;
+            background-color: $color-toolbar-bg;
+            width: 0em;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            height: 100vh;
+        }
+        &.expanded {
+            border-right: $border-width solid $color-toolbar-border;
+            .wrapper { 
+                padding-left: 1em;
+                width: 15em;
+            }
+            .toggler-show { display:none; }
+            .toggler-hide { display:block; }
+        }
+        ul.features {
+            list-style-type: none;
+            padding: 0;
+            // width: 19em;
+            li {
+                background-color: $color-unchecked;
+                margin-bottom: 2px;
+                padding: 5px 0;
+                &:before { content: '✗ '; }
+                &.checked {
+                    background-color: $color-checked;
+                    &:before { content: '✓ '; }
+                }
+                input[type='checkbox'] { display: none; }
+                label { width: 100%; }
+            }
+        }
+        input.zoom {
+            // width: 19em;
+        }
     }
 }
