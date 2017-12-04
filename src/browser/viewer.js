@@ -23,6 +23,7 @@ export const defaultConfig = {
         'Libre Baskerville': {cssUrl: 'https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&subset=latin-ext'},
     },
     features: {
+        layout: {enabled: true},
         backgroundImage: {enabled: false},
         scaleFont: {
             enabled: false,

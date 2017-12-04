@@ -78,16 +78,18 @@ $color-highlight-line: #aa0;
     }
 
 
-    #{$selector-ocr-classes}
-    {
-        position: fixed;
-        white-space: nowrap;
-        // XXX
-        // display: flex;
-        justify-content: left; /* align horizontal */
-        align-items: center; /* align vertical */
-        &:hover::before {
-            @include tooltip
+    &.feature-layout {
+        #{$selector-ocr-classes}
+        {
+            position: fixed;
+            white-space: nowrap;
+            // XXX
+            // display: flex;
+            justify-content: left; /* align horizontal */
+            align-items: center; /* align vertical */
+            &:hover::before {
+                @include tooltip
+            }
         }
     }
 
