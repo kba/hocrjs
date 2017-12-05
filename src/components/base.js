@@ -1,13 +1,13 @@
-import Vue from 'vue'
+import TinyEmitter from 'tiny-emitter'
 
 export default class BaseComponent {
 
   constructor() {
-    this.bus = new Vue({})
+    this._bus = new TinyEmitter({})
   }
 
-  $on(...args) {this.bus.$on(...args)}
-  $off(...args) {this.bus.$off(...args)}
-  $emit(...args) {this.bus.$emit(...args)}
+  $on(...args) {this._bus.on(...args)}
+  $off(...args) {this._bus.off(...args)}
+  $emit(...args) {this._bus.emit(...args)}
 
 }

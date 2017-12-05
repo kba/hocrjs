@@ -29,7 +29,6 @@ class HocrjsViewer extends BaseComponent {
         }
     }
 
-
     log(level, ...args) {
         if (level > this.config.debugLevel) return
         let levelToFn = ['info', 'debug', 'log']
@@ -213,11 +212,6 @@ class HocrjsViewer extends BaseComponent {
         }
     }
 
-    addToolbar() {
-        if (this.toolbar) return
-        this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
-    }
-
     scaleTo(scaleFactor) {
         let page = this.dom.querySelector('.ocr_page')
         let coords = this.parser.bbox(document.querySelector('.ocr_page'))
@@ -244,7 +238,7 @@ class HocrjsViewer extends BaseComponent {
         this.dom.classList.add(this.config.rootClass)
 
         if (this.config.enableToolbar) {
-            this.addToolbar()
+          this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
         }
 
         // place the elements on the page
