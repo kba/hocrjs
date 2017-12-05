@@ -5,6 +5,7 @@ export default {
   expandToolbar: true,
   enableToolbar: true,
   rootClass: 'hocr-viewer',
+  scaleFactor: 1,
   fonts: {
     'sans-serif': {},
     serif: {},

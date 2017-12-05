@@ -201,16 +201,21 @@ class HocrjsViewer extends BaseComponent {
     scaleTo(scaleFactor) {
         let page = this.dom.querySelector('.ocr_page')
         let coords = this.parser.bbox(document.querySelector('.ocr_page'))
-        if (scaleFactor === 'height') {
-            scaleFactor = window.innerHeight / coords[3]
-        } else if (scaleFactor === 'width') {
-            scaleFactor = window.innerWidth / coords[2]
-        } else if (scaleFactor === 'original') {
-            scaleFactor = 1
+        if (typeof scaleFactor === 'string') {
+            if (scaleFactor === 'height') {
+                scaleFactor = window.innerHeight / coords[3]
+            } else if (scaleFactor === 'width') {
+                scaleFactor = window.innerWidth / coords[2]
+            } else if (scaleFactor === 'original') {
+                scaleFactor = 1
+            } else if (scaleFactor.match(/^[+-]/)) {
+                scaleFactor = this.config.scaleFactor + parseFloat(scaleFactor)
+            }
         }
-        page.style.transform = `scale(${scaleFactor})`
+        Object.assign(this.config, {scaleFactor})
+        page.style.transform = `scale(${this.config.scaleFactor})`
         page.style.transformOrigin = 'top left'
-        this.$emit('scale-to', scaleFactor)
+        this.$emit('scale-to', this.config.scaleFactor)
     }
 
     onConfigChange() {

@@ -14,10 +14,12 @@
       <select class="font"></select>
     </details>
 
-    <details>
+    <details open>
       <summary>Zoom: <span class="zoom">100</span>%
       </summary>
+      <button class="zoom" data-scale-factor="-0.1">-</button>
       <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
+      <button class="zoom" data-scale-factor="+0.1">+</button>
       <p>
         <button class="zoom" data-scale-factor="height">Fit height</button>
         <button class="zoom" data-scale-factor="width">Fit width</button>
