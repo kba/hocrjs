@@ -3,8 +3,10 @@
 > Working with [hOCR](https://kba.github.io/hocr-spec/1.2/) in Javascript
 
 <!-- BEGIN-MARKDOWN-TOC -->
-* [Screenshot](#screenshot)
-* [Demo](#demo)
+* [Showcase](#showcase)
+	* [Demo](#demo)
+	* [Video](#video)
+	* [Screenshots](#screenshots)
 * [Usage](#usage)
 	* [Simple Usage](#simple-usage)
 	* [User script](#user-script)
@@ -16,14 +18,22 @@
 
 <!-- END-MARKDOWN-TOC -->
 
-## Screenshot
+## Showcase
 
-![background image, transparent text](./doc/hocrjs-1.png)
-![text only, scaled font](./doc/hocrjs-2.png)
-
-## Demo
+### Demo
 
 See this demo document: [Demo](https://kba.github.io/hocrjs/example/426117689_0459.html)
+
+### Video
+
+[![video of hocrjs](https://img.youtube.com/vi/II1lkjFc6zU/0.jpg)](https://youtu.be/II1lkjFc6zU)
+
+### Screenshots
+
+![background image, transparent text](./doc/hocrjs-1.png)
+
+![text only, scaled font](./doc/hocrjs-2.png)
+
 
 ## Usage
 
@@ -109,8 +119,8 @@ behavior using CSS, if possible.
 
 ### Adding a feature
 
-In [viewer.js](./src/browser/viewer.js) add to the `defaultConfig.features`
-object an key-value pair where the key is the name of the feature and the value
+In [state.js](./src/store/state.js) add to the `defaultConfig.features`
+object a key-value pair where the key is the name of the feature and the value
 an object with at least an `enabled` key and optionally more configuration
 options.
 
@@ -128,6 +138,9 @@ options.
 }
 ```
 
-In [hocr-viewer.scss](`./src/sass/hocr-viewer.scss) add rules for
-`.hocr-viewer.feature-myFeature` as necessary.
+In [hocr-viewer.scss](`./src/components/hocr-viewer/hocr-viewer.scss) add rules
+for `.hocr-viewer.feature-myFeature` as necessary.
+
+In [hocr-viewer](./src/components/hocr-viewer/hocr-viewer.js) add any logic
+that is beyond CSS.
 
