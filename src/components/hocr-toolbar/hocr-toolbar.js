@@ -3,10 +3,6 @@ import template from './hocr-toolbar.html'
 
 export default class HocrjsToolbar extends BaseComponent {
 
-  toggle(onoff) {
-    this.dom.classList.toggle('expanded', onoff)
-  }
-
   constructor({$parent, config}) {
     super()
 
@@ -24,7 +20,6 @@ export default class HocrjsToolbar extends BaseComponent {
 
     // fonts
     let fontSelect = this.dom.querySelector('select.fontlist')
-    console.log(fontSelect)
     Object.keys(config.fonts).forEach((font) => {
       let fontOption = document.createElement('option')
       fontOption.innerHTML = font
@@ -34,10 +29,7 @@ export default class HocrjsToolbar extends BaseComponent {
     })
     fontSelect.addEventListener('change', (ev) => {
       let selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
-      $parent.findByOcrClass().forEach((el) => {
-        el.style.fontFamily = selectedFont
-      })
-      $parent.onConfigChange()
+      $parent.setFont(selectedFont)
     })
 
     // features
@@ -61,10 +53,7 @@ export default class HocrjsToolbar extends BaseComponent {
       }
       li.addEventListener('click', (ev) => {
         checkbox.checked = !checkbox.checked
-        // onChange()
-        li.classList.toggle('checked')
-        config.features[feature].enabled = checkbox.checked
-        $parent.toggleFeature(feature, checkbox.checked)
+        onChange()
       })
       checkbox.addEventListener('change', onChange)
     })
@@ -81,5 +70,10 @@ export default class HocrjsToolbar extends BaseComponent {
     })
 
   }
+
+  toggle(onoff) {
+    this.dom.classList.toggle('expanded', onoff)
+  }
+
 }
 

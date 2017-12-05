@@ -16,23 +16,7 @@ class HocrjsViewer extends BaseComponent {
     constructor(config={}) {
         super()
         this.config = Object.assign({}, defaultConfig, config)
-        this.dom = this.config.root
-        if (typeof this.dom === 'string')
-            this.dom = document.querySelector(this.dom)
         this.parser = new HocrParser(this.config)
-        Object.keys(this.config.fonts).forEach((font) => {
-            let cssUrl = this.config.fonts[font].cssUrl
-            if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
-        })
-        this.cache = {
-            scaleFont: {}
-        }
-    }
-
-    log(level, ...args) {
-        if (level > this.config.debugLevel) return
-        let levelToFn = ['info', 'debug', 'log']
-        console[levelToFn[level]](...args)
     }
 
     findByOcrClass(query) {
@@ -227,14 +211,31 @@ class HocrjsViewer extends BaseComponent {
         this.$emit('scale-to', scaleFactor)
     }
 
-
     onConfigChange() {
         Object.keys(this.config.features).forEach((feature) => {
             this.toggleFeature(feature, this.config.features[feature].enabled)
         })
     }
 
+    setFont(selectedFont) {
+      this.findByOcrClass().forEach((el) => {
+        el.style.fontFamily = selectedFont
+      })
+      this.onConfigChange()
+    }
+
     init() {
+        Object.keys(this.config.fonts).forEach((font) => {
+            let cssUrl = this.config.fonts[font].cssUrl
+            if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
+        })
+
+        this.dom = this.config.root
+
+        if (typeof this.dom === 'string')
+            this.dom = document.querySelector(this.dom)
+        this.cache = {scaleFont: {}}
+
         this.dom.classList.add(this.config.rootClass)
 
         if (this.config.enableToolbar) {
