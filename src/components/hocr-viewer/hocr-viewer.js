@@ -11,6 +11,8 @@ import Utils from '@/utils'
 import HocrjsToolbar from '@/components/hocr-toolbar'
 import defaultConfig from '@/store/state'
 
+import './hocr-viewer.scss'
+
 class HocrjsViewer extends BaseComponent {
 
     constructor(config={}) {

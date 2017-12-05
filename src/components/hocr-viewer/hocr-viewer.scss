@@ -1,0 +1,114 @@
+/*
+ * Copyright (c) 2016-2017 Konstantin Baierer
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ */
+
+@import '../../variables.scss';
+
+@mixin transform($args) {
+    -webkit-transform: $args;
+    -ms-transform: $args;
+    transform: $args;
+}
+
+@mixin tooltip {
+    display: block;
+    background: white;
+    color: black !important;
+    border: 1px solid black;
+    font-family: monospace;
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 100%;
+    height: 15px;
+    top: -15px;
+}
+
+@mixin highlight-area($selector, $color) {
+    #{$selector} {
+        border: $border-width solid $color;
+        &:hover {
+          background: rgba(lighten($color, 30%), 0.2);
+        }
+    }
+}
+
+.hocr-viewer {
+    height: 100vh;
+    position: relative;
+
+    .ocr_page {
+        position: relative !important;
+        // NOTE: This is important otherwise fixed will be relative to page not
+        // containing element
+        @include transform(rotate(0deg));
+        /* .transform(scale(0.7)); */
+        /* position: relative !important; */
+        overflow: scroll;
+    }
+
+
+    &.feature-layout {
+        #{$selector-ocr-classes}
+        {
+            position: fixed;
+            white-space: nowrap;
+            // XXX
+            // display: flex;
+            justify-content: left; /* align horizontal */
+            align-items: center; /* align vertical */
+            &:hover::before {
+                @include tooltip
+            }
+        }
+    }
+
+    &.feature-highlight {
+        margin: -1px;
+        &.feature-highlightNotPage {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
+        &.feature-highlightInline  {@include highlight-area($selector-ocr-inline, $color-highlight-inline);}
+        &.feature-highlightLine    {@include highlight-area($selector-ocr-line, $color-highlight-line);}
+        &.feature-highlightPar     {@include highlight-area($selector-ocr-par, $color-highlight-par);}
+        &.feature-highlightCarea   {@include highlight-area($selector-ocr-carea, $color-highlight-carea);}
+    }
+
+    &.feature-backgroundImage {
+        background-repeat: no-repeat;
+
+        #{$selector-ocr-page} {
+            background-size: contain;
+
+        }
+    }
+
+    &.feature-disableEmStrong {
+        em { font-style: normal; }
+        strong { font-weight: normal; }
+    }
+
+    &.feature-transparentText {
+        .ocr_page {
+            color: $color-transparent;
+        }
+    }
+    // .hocr-viewer-wrap {
+    //     width: auto;
+    //     position: absolute;
+    //     bottom: 0;
+    //     span {
+    //         display: block;
+    //         width: auto;
+    //         height: 100%;
+    //     }
+    // }
+    // .hocr-viewer-hidden > * {
+    //     width: auto;
+    //     width: auto;
+    //     height: 100%;
+    // }
+
+
+}

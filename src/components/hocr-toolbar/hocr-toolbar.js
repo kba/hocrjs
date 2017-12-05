@@ -1,3 +1,4 @@
+import './hocr-toolbar.scss'
 import BaseComponent from '@/components/base'
 import template from './hocr-toolbar.html'
 

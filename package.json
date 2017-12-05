@@ -43,5 +43,7 @@
         "webpack": "3.9.1",
         "yargs": "10.0.3"
     },
-    "dependencies": {}
+    "dependencies": {
+        "normalize.css": "7.0.0"
+    }
 }

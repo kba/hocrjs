@@ -5,8 +5,7 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import '@/sass/normalize.scss'
-import '@/sass/hocr-viewer.scss'
+import 'normalize.css'
 import {HocrjsViewer} from '@/components/hocr-viewer'
 window.hocrViewer = new HocrjsViewer({
   dom: document.querySelector('body')
