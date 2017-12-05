@@ -8,19 +8,29 @@
     </div>
   </div>
   <div class="wrapper">
-    <h2>Font</h2>
-    <select class="fontlist"></select>
-    <h2>Features</h2>
-    <ul class="features">
-    </ul>
-    <h2>Zoom</h2>
-    <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
-    <span class="zoom">100</span>%
-    <p>
-      <button class="zoom" data-scale-factor="height">Fit height</button>
-      <button class="zoom" data-scale-factor="width">Fit width</button>
-      <button class="zoom" data-scale-factor="original">100 %</button>
-    </p>
+
+    <details>
+      <summary>Font: <span class="font"></span></summary>
+      <select class="font"></select>
+    </details>
+
+    <details>
+      <summary>Zoom: <span class="zoom">100</span>%
+      </summary>
+      <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
+      <p>
+        <button class="zoom" data-scale-factor="height">Fit height</button>
+        <button class="zoom" data-scale-factor="width">Fit width</button>
+        <button class="zoom" data-scale-factor="original">100 %</button>
+      </p>
+    </details>
+
+    <details open>
+      <summary>Features</summary>
+      <ul class="features">
+      </ul>
+    </details>
+
   </div>
 </div>
 

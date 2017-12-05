@@ -67,6 +67,6 @@ watch:
 	while true;do \
 		nodemon --exec "make clean dist ASSET_SERVER=$(ASSET_SERVER)" \
 			-w src \
-			-e 'js scss' \
+			-e 'js scss html' \
 			; sleep 5 || break; \
 	done

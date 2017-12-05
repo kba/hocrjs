@@ -21,7 +21,7 @@ export default class HocrjsToolbar extends BaseComponent {
     })
 
     // fonts
-    let fontSelect = this.dom.querySelector('select.fontlist')
+    let fontSelect = this.dom.querySelector('select.font')
     Object.keys(config.fonts).forEach((font) => {
       let fontOption = document.createElement('option')
       fontOption.innerHTML = font
@@ -32,6 +32,10 @@ export default class HocrjsToolbar extends BaseComponent {
     fontSelect.addEventListener('change', (ev) => {
       let selectedFont = ev.target.options[ev.target.selectedIndex].innerHTML
       $parent.setFont(selectedFont)
+    })
+    $parent.$on('set-font', font => {
+      this.dom.querySelector('span.font').innerHTML = font
+      this.dom.querySelector('span.font').style.fontFamily = font
     })
 
     // features

@@ -224,7 +224,7 @@ class HocrjsViewer extends BaseComponent {
       this.findByOcrClass().forEach((el) => {
         el.style.fontFamily = this.config.selectedFont
       })
-      // this.onConfigChange()
+      this.$emit('set-font', this.config.selectedFont)
     }
 
     init() {

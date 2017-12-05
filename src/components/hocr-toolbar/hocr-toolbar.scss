@@ -58,5 +58,15 @@
   input.zoom {
     // width: 19em;
   }
+  summary {
+    font-size: 120%;
+    span.font {
+      font-size: 100%;
+    }
+  }
+  select.font {
+    width: 80%;
+    font-size: 110%;
+  }
 }
 
