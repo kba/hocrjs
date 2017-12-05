@@ -1,6 +1,10 @@
 export default {
-  root: 'body',
+  dom: 'body',
   debugLevel: 1,
+  selectedFont: 'sans-serif',
+  expandToolbar: true,
+  enableToolbar: true,
+  rootClass: 'hocr-viewer',
   fonts: {
     'sans-serif': {},
     serif: {},
@@ -35,7 +39,4 @@ export default {
     highlightPar:     {enabled: false},
     highlightCarea:   {enabled: false},
   },
-  expandToolbar: true,
-  enableToolbar: true,
-  rootClass: 'hocr-viewer',
 }

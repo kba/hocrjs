@@ -96,7 +96,7 @@ class HocrjsViewer extends BaseComponent {
             this.findByOcrClass({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
             // wrap.style.display = 'none'
         } else {
-            this.findByOcrClass({terminal: true}).forEach((el) => el.style.fontSize = 'initial')
+            this.findByOcrClass({terminal: true}).forEach((el) => el.style.fontSize = null)
         }
         console.timeEnd('toggleScaleFont')
     }
@@ -220,10 +220,11 @@ class HocrjsViewer extends BaseComponent {
     }
 
     setFont(selectedFont) {
+      if (selectedFont) this.config.selectedFont = selectedFont
       this.findByOcrClass().forEach((el) => {
-        el.style.fontFamily = selectedFont
+        el.style.fontFamily = this.config.selectedFont
       })
-      this.onConfigChange()
+      // this.onConfigChange()
     }
 
     init() {
@@ -232,20 +233,22 @@ class HocrjsViewer extends BaseComponent {
             if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
         })
 
-        this.dom = this.config.root
-
-        if (typeof this.dom === 'string')
+        this.dom = this.config.dom
+        if (typeof this.dom === 'string') {
             this.dom = document.querySelector(this.dom)
-        this.cache = {scaleFont: {}}
+        }
 
         this.dom.classList.add(this.config.rootClass)
 
-        if (this.config.enableToolbar) {
+        if (this.config.enableToolbar)
           this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
-        }
 
         // place the elements on the page
         this.placeOcrElements()
+
+        // set font
+        this.setFont()
+        this.cache = {scaleFont: {}}
 
         // Events
         this.onConfigChange()

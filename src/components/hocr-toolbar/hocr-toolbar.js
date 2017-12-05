@@ -14,6 +14,7 @@ export default class HocrjsToolbar extends BaseComponent {
     $parent.dom.appendChild(this.dom)
 
     // handle toggler
+    this.toggle(config.expandToolbar)
     this.dom.querySelector('.toggler').addEventListener('click', (ev) => {
       config.expandToolbar = !config.expandToolbar
       this.toggle(config.expandToolbar)
