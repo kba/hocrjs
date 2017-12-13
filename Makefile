@@ -1,13 +1,13 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 
 # Version of the latest git tag
-VERSION = $(shell git describe --abbrev=0 --tags|sed 's/v//')
+VERSION = $(shell git describe --abbrev=0 --tags|sed -e 's/v//')
 
 # URL of the asset server, serving the built files and userscript
-ASSET_SERVER = https://unpkg.com/hocrjs/dist
+ASSET_SERVER = https://unpkg.com/hocrjs@$(VERSION)/dist
 
 # URL of the userscript update server (defaults to ASSET_SERVER)
-UPDATE_SERVER = $(ASSET_SERVER) 
+UPDATE_SERVER = $(ASSET_SERVER)
 
 # Command to run a static server
 STATIC_SERVER = @python2 -m SimpleHTTPServer $(PORT)
