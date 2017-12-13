@@ -44,6 +44,7 @@
         "yargs": "10.0.3"
     },
     "dependencies": {
+        "hocr-dom": "0.0.1",
         "normalize.css": "7.0.0"
     }
 }

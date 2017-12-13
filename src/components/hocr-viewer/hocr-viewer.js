@@ -6,80 +6,30 @@
  */
 
 import BaseComponent from '@/components/base'
-import {HocrParser} from '@/parser'
 import Utils from '@/utils'
 import HocrjsToolbar from '@/components/hocr-toolbar'
 import defaultConfig from '@/store/state'
-
-import './hocr-viewer.scss'
+import {HocrPropertyParser} from 'hocr-dom'
 
 class HocrjsViewer extends BaseComponent {
 
     constructor(config={}) {
         super()
         this.config = Object.assign({}, defaultConfig, config)
-        this.parser = new HocrParser(this.config)
-    }
-
-    findByOcrClass(query) {
-        query = (query || {})
-
-        // Expect tag
-        query.tag = (query.tag || '*')
-
-        // Arbitrary clauses
-        query.clauses = (query.clauses || '')
-
-        // Return only hocr-elements with a bbox
-        if (query.title) query.clauses += `[title*="${query.title}"]`
-
-        // Return specific ocr_* / ocrx_* classes
-        query.class = (query.class || '')
-        if (typeof query.class === 'string') query.class = [query.class]
-
-        // Build querySelectorAll query
-        let qs = query.class.map(function(cls) {
-            if (cls.indexOf('ocr') === 0) return cls
-            if (cls === '') return 'ocr'
-            if (cls.indexOf('x_') !== 0) return `ocr_${cls}`
-            return `ocr${cls}`
-        }).map(function(cls) {
-            return `:scope ${query.tag}[class^="${cls}"]${query.clauses}`
-        }).join(',')
-        this.log(1, "findByOcrClass:", qs)
-        let context = (query.context || document.querySelector('.' + this.config.rootClass))
-        let set = Array.prototype.slice.call(context.querySelectorAll(qs))
-
-        // terminal: Return only hocr-elements containing no hocr-elements themselves
-        // container: Opposite
-        if (query.terminal)
-            set = set.filter(function(el) {
-                if (!el.querySelector('*[class^="ocr"]')) return el
-            })
-        if (query.container)
-            set = set.filter(function(el) {
-                if (el.querySelector('*[class^="ocr"]')) return el
-            })
-
-        // Arbitrary filter function
-        if (query.filter) {
-            set = set.filter(query.filter)
-        }
-
-        return set
+        this.propertyParser = new HocrPropertyParser()
     }
 
     placeOcrElements() {
-        this.findByOcrClass({
+        this.dom.queryHocrAll({
             title: 'bbox'
         }).forEach((el) => {
-            let coords = this.parser.bbox(el)
+            let coords = el.hocr.bbox
             el.style.left = coords[0] + "px"
             el.style.top = coords[1] + "px"
             el.style.width = coords[2] - coords[0] + "px"
             el.style.height = coords[3] - coords[1] + "px"
         })
-        let coords = this.parser.bbox(document.querySelector('.ocr_page'))
+        let coords = document.querySelector('.ocr_page').hocr.bbox
         document.querySelector('body').style.minHeight = coords[2] + 'px'
     }
 
@@ -93,10 +43,10 @@ class HocrjsViewer extends BaseComponent {
             this.dom.appendChild(wrap)
         }
         if (onoff) {
-            this.findByOcrClass({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
+            this.dom.queryHocrAll({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
             // wrap.style.display = 'none'
         } else {
-            this.findByOcrClass({terminal: true}).forEach((el) => el.style.fontSize = null)
+            this.dom.queryHocrAll({terminal: true}).forEach((el) => el.style.fontSize = null)
         }
         console.timeEnd('toggleScaleFont')
     }
@@ -133,7 +83,7 @@ class HocrjsViewer extends BaseComponent {
             if (style) style.remove()
         } else {
             let ocrClasses = {}
-            for (let el of this.findByOcrClass()) {
+            for (let el of this.dom.queryHocrAll()) {
                 ocrClasses[el.getAttribute('class')] = true
             }
             this.log(0, "Detected OCR classes", Object.keys(ocrClasses))
@@ -151,10 +101,10 @@ class HocrjsViewer extends BaseComponent {
     toggleBackgroundImage(onoff) {
         let page = this.dom.querySelector('.ocr_page')
         if (onoff) {
-            this.findByOcrClass({
+            this.dom.queryHocrAll({
                 title: 'image'
             }).forEach((el) => {
-                let imageFile = this.parser.image(el)
+                let imageFile = el.hocr.image
                 page.style.backgroundImage = `url(${imageFile})`
             })
         } else {
@@ -168,14 +118,14 @@ class HocrjsViewer extends BaseComponent {
             console.warn("Scaling of contentEditable is broken right now")
             if (this.config.features.scaleFont.enabled) {
                 this.scaleFont(ev.target)
-                this.findByOcrClass({
+                this.dom.queryHocrAll({
                     context: ev.target
                 }).forEach((child) => {
                     this.scaleFont(child)
                 })
             }
         }
-        this.findByOcrClass({
+        this.dom.queryHocrAll({
             class: ['line', 'x_word'],
             clauses: '',
         }).forEach((el) => {
@@ -200,7 +150,7 @@ class HocrjsViewer extends BaseComponent {
 
     scaleTo(scaleFactor) {
         let page = this.dom.querySelector('.ocr_page')
-        let coords = this.parser.bbox(document.querySelector('.ocr_page'))
+        let coords = document.querySelector('.ocr_page').hocr.bbox
         if (typeof scaleFactor === 'string') {
             if (scaleFactor === 'height') {
                 scaleFactor = window.innerHeight / coords[3]
@@ -226,7 +176,7 @@ class HocrjsViewer extends BaseComponent {
 
     setFont(selectedFont) {
       if (selectedFont) this.config.selectedFont = selectedFont
-      this.findByOcrClass().forEach((el) => {
+      this.dom.queryHocrAll().forEach((el) => {
         el.style.fontFamily = this.config.selectedFont
       })
       this.$emit('set-font', this.config.selectedFont)
