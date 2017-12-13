@@ -32,9 +32,11 @@
         "babel-tap": "5.0.0",
         "css-loader": "0.28.7",
         "express": "4.16.2",
+        "hocr-dom": "0.1.0",
         "html-loader": "0.5.1",
         "node-sass": "4.7.2",
         "nodemon": "1.12.1",
+        "normalize.css": "7.0.0",
         "sass-loader": "6.0.6",
         "style-loader": "0.19.0",
         "tap": "11.0.0",
@@ -42,9 +44,5 @@
         "uglifyjs-webpack-plugin": "1.1.2",
         "webpack": "3.9.1",
         "yargs": "10.0.3"
-    },
-    "dependencies": {
-        "hocr-dom": "0.0.1",
-        "normalize.css": "7.0.0"
     }
 }
