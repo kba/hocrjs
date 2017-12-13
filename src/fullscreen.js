@@ -6,6 +6,7 @@
  */
 
 import '@/normalize.scss'
+import 'normalize.css'
 import {HocrjsViewer} from '@/components/hocr-viewer'
 window.hocrViewer = new HocrjsViewer({
   dom: document.querySelector('body'),
