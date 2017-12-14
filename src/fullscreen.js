@@ -5,10 +5,23 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
+import Vue from 'vue'
 import '@/normalize.scss'
 import 'normalize.css'
-import {HocrjsViewer} from '@/components/hocr-viewer'
-window.hocrViewer = new HocrjsViewer({
-  dom: document.querySelector('body'),
+import HocrViewer from '@/components/hocr-viewer'
+// window.hocrViewer = new HocrjsViewer({
+//   dom: document.querySelector('body'),
+// })
+// window.hocrViewer.init()
+
+Vue.config.devtools = true
+window.vm = new Vue({
+  el: "#app",
+  components: {HocrViewer},
+  template: '<HocrViewer :hocr="hocr"/>',
+
+  data: {
+    message: 'Hello from Vue!',
+    hocr: document.querySelector('template').innerHTML,
+  }
 })
-window.hocrViewer.init()

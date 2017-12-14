@@ -9,28 +9,84 @@ import BaseComponent from '@/components/base'
 import Utils from '@/utils'
 import HocrjsToolbar from '@/components/hocr-toolbar'
 import defaultConfig from '@/store/state'
-import {HocrPropertyParser} from 'hocr-dom'
+import {HocrDOM} from 'hocr-dom'
 
-class HocrjsViewer extends BaseComponent {
+import template from './hocr-viewer.html'
+import style from './hocr-viewer.scss'
 
-    constructor(config={}) {
-        super()
-        this.config = Object.assign({}, defaultConfig, config)
-        this.propertyParser = new HocrPropertyParser()
-    }
-
-    placeOcrElements() {
-        this.dom.queryHocrAll({
+export default {
+  name: 'HocrViewer',
+  style,
+  template,
+  props: {
+    hocr: {type: String, required: true},
+  },
+  computed: {
+    hocrDom() {
+      const dom = document.createElement('div')
+      dom.innerHTML = this.hocr
+      if (this.enableLayout) {
+        HocrDOM.queryHocrAll(this.hocrDom, {
             title: 'bbox'
         }).forEach((el) => {
-            let coords = el.hocr.bbox
+            let coords = HocrDOM.getHocrProperties(el)
             el.style.left = coords[0] + "px"
             el.style.top = coords[1] + "px"
             el.style.width = coords[2] - coords[0] + "px"
             el.style.height = coords[3] - coords[1] + "px"
         })
-        let coords = document.querySelector('.ocr_page').hocr.bbox
-        document.querySelector('body').style.minHeight = coords[2] + 'px'
+      }
+      return dom.innerHTML
+    },
+  },
+  data() {return {
+    enableLayout: false,
+  }},
+  mounted() {
+    this.config = Object.assign({}, defaultConfig)
+
+    Object.keys(this.config.fonts).forEach((font) => {
+      let cssUrl = this.config.fonts[font].cssUrl
+      if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
+    })
+
+    // if (this.config.enableToolbar)
+    //   this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
+
+    // // place the elements on the page
+    // this.placeOcrElements()
+
+    // // set font
+    // this.setFont()
+    // this.cache = {scaleFont: {}}
+
+    // // Events
+    // this.onConfigChange()
+    // window.addEventListener('resize', () => this.onConfigChange())
+  },
+  methods: {
+  },
+}
+
+class HocrjsViewer extends BaseComponent {
+
+    constructor(config={}) {
+        super()
+    }
+
+    placeOcrElements() {
+        HocrDOM.queryHocrAll(this.hocrDom, {
+            title: 'bbox'
+        }).forEach((el) => {
+            let coords = HocrDOM.getHocrProperties(el)
+            el.style.left = coords[0] + "px"
+            el.style.top = coords[1] + "px"
+            el.style.width = coords[2] - coords[0] + "px"
+            el.style.height = coords[3] - coords[1] + "px"
+        })
+        // XXX https://github.com/kba/hocrjs/issues/8
+        // let coords = document.querySelector('.ocr_page').hocr.bbox
+        // document.querySelector('body').style.minHeight = coords[2] + 'px'
     }
 
     toggleScaleFont(onoff) {
@@ -43,10 +99,10 @@ class HocrjsViewer extends BaseComponent {
             this.dom.appendChild(wrap)
         }
         if (onoff) {
-            this.dom.queryHocrAll({terminal: true}).forEach((el) => this.scaleFont(el, wrap))
+            HocrDOM.queryHocrAll(this.hocrDom, {terminal: true}).forEach((el) => this.scaleFont(el, wrap))
             // wrap.style.display = 'none'
         } else {
-            this.dom.queryHocrAll({terminal: true}).forEach((el) => el.style.fontSize = null)
+            HocrDOM.queryHocrAll(this.hocrDom, {terminal: true}).forEach((el) => el.style.fontSize = null)
         }
         console.timeEnd('toggleScaleFont')
     }
@@ -83,7 +139,7 @@ class HocrjsViewer extends BaseComponent {
             if (style) style.remove()
         } else {
             let ocrClasses = {}
-            for (let el of this.dom.queryHocrAll()) {
+            for (let el of HocrDOM.queryHocrAll(this.hocrDom)) {
                 ocrClasses[el.getAttribute('class')] = true
             }
             this.log(0, "Detected OCR classes", Object.keys(ocrClasses))
@@ -101,10 +157,10 @@ class HocrjsViewer extends BaseComponent {
     toggleBackgroundImage(onoff) {
         let page = this.dom.querySelector('.ocr_page')
         if (onoff) {
-            this.dom.queryHocrAll({
+            HocrDOM.queryHocrAll(this.hocrDom, {
                 title: 'image'
             }).forEach((el) => {
-                let imageFile = el.hocr.image
+                let imageFile = HocrDOM.getHocrProperties(el).image
                 page.style.backgroundImage = `url(${imageFile})`
             })
         } else {
@@ -118,14 +174,14 @@ class HocrjsViewer extends BaseComponent {
             console.warn("Scaling of contentEditable is broken right now")
             if (this.config.features.scaleFont.enabled) {
                 this.scaleFont(ev.target)
-                this.dom.queryHocrAll({
+                HocrDOM.queryHocrAll(this.hocrDom, {
                     context: ev.target
                 }).forEach((child) => {
                     this.scaleFont(child)
                 })
             }
         }
-        this.dom.queryHocrAll({
+        HocrDOM.queryHocrAll(this.hocrDom, {
             class: ['line', 'x_word'],
             clauses: '',
         }).forEach((el) => {
@@ -176,7 +232,7 @@ class HocrjsViewer extends BaseComponent {
 
     setFont(selectedFont) {
       if (selectedFont) this.config.selectedFont = selectedFont
-      this.dom.queryHocrAll().forEach((el) => {
+      HocrDOM.queryHocrAll(this.hocrDom).forEach((el) => {
         el.style.fontFamily = this.config.selectedFont
       })
       this.$emit('set-font', this.config.selectedFont)
