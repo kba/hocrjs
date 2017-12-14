@@ -37,10 +37,16 @@
 }
 
 .hocr-viewer {
-    height: 100vh;
-    position: relative;
 
-    .ocr_page {
+    &.hocr-viewer-toolbar-enabled {
+      > .hocr-viewer-container {
+        margin-left: 1em;
+      }
+    }
+
+    .hocr-viewer-container {
+      height: 100vh;
+      position: relative;
         position: relative !important;
         // NOTE: This is important otherwise fixed will be relative to page not
         // containing element

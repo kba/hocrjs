@@ -1,5 +1,7 @@
-<div class="hocrjs-toolbar">
-  <div class="toggler">
+<div :class="classList">
+  <div class="toggler"
+    @click="toggle"
+    >
     <div class="toggler-inner toggler-show">
       &gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>&gt;<br/>
     </div>
@@ -9,9 +11,18 @@
   </div>
   <div class="wrapper">
 
-    <details>
+    <details open>
       <summary>Font: <span class="font"></span></summary>
-      <select class="font"></select>
+      <select class="font"
+        @change="$parent.config.selectedFont = $event.target.value"
+        >
+        <option v-for="(fontOptions, fontName) in $parent.config.fonts" :key="fontName"
+          :style="{'font-size': 'large', 'font-family': fontName}"
+          :value="fontName"
+          >
+          {{ fontName }}
+        </option>
+      </select>
     </details>
 
     <details open>
@@ -30,6 +41,17 @@
     <details open>
       <summary>Features</summary>
       <ul class="features">
+        <li v-for="(feature, featureName) in $parent.config.features" :key="featureName"
+          @click="feature.enabled = ! feature.enabled"
+          :class="{checked: feature.enabled}"
+          >
+          <input
+          type="checkbox"
+          :checked="feature.enabled"
+          />
+          <label>{{ featureName }}</label>
+          <label>{{ feature }}</label>
+        </li>
       </ul>
     </details>
 

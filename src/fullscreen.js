@@ -18,7 +18,10 @@ Vue.config.devtools = true
 window.vm = new Vue({
   el: "#app",
   components: {HocrViewer},
-  template: '<HocrViewer :hocr="hocr"/>',
+  template: `<HocrViewer
+    :hocr="hocr"
+    image-prefix="/home/kba/build/github.com/kba/hocr-dom/hocr-dom-jsdom/test/ocr-fileformat-samples/samples/image/",
+  />`,
 
   data: {
     message: 'Hello from Vue!',

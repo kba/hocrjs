@@ -5,53 +5,78 @@
  * of the MIT license.  See the LICENSE file for details.
  */
 
-import BaseComponent from '@/components/base'
 import Utils from '@/utils'
-import HocrjsToolbar from '@/components/hocr-toolbar'
+import HocrToolbar from '@/components/hocr-toolbar'
 import defaultConfig from '@/store/state'
 import {HocrDOM} from 'hocr-dom'
 
 import template from './hocr-viewer.html'
 import style from './hocr-viewer.scss'
 
+function enableLayout(dom) {
+  HocrDOM.queryHocrAll(dom, {
+    title: 'bbox'
+  }).forEach((el) => {
+    let {bbox} = HocrDOM.getHocrProperties(el)
+    el.style.left   = bbox[0] + "px"
+    el.style.top    = bbox[1] + "px"
+    el.style.width  = bbox[2] - bbox[0] + "px"
+    el.style.height = bbox[3] - bbox[1] + "px"
+  })
+}
+
+function setFont(dom, fontFamily) {
+  HocrDOM.queryHocrAll(dom).forEach((el) => {
+    Object.assign(el.style, {fontFamily})
+  })
+}
+
+function setBackgroundImage(dom, prefix='') {
+  let page = HocrDOM.queryHocr(dom, 'page')
+  HocrDOM.queryHocrAll(dom, {
+    title: 'image'
+  }).forEach((el) => {
+    let imageFile = HocrDOM.getHocrProperties(el).image
+    page.style.backgroundImage = `url(${prefix}${imageFile})`
+  })
+}
+
 export default {
   name: 'HocrViewer',
+  components: {HocrToolbar},
   style,
   template,
   props: {
     hocr: {type: String, required: true},
+    enableToolbar: {type: Boolean, default: true},
+    imagePrefix: {type: String, default: ''},
   },
   computed: {
+    classList() {return {
+      'hocr-viewer': true,
+      'hocr-viewer-toolbar-enabled': this.enableToolbar,
+    }},
     hocrDom() {
+      console.log("Redrawing hocr")
       const dom = document.createElement('div')
       dom.innerHTML = this.hocr
-      if (this.enableLayout) {
-        HocrDOM.queryHocrAll(this.hocrDom, {
-            title: 'bbox'
-        }).forEach((el) => {
-            let coords = HocrDOM.getHocrProperties(el)
-            el.style.left = coords[0] + "px"
-            el.style.top = coords[1] + "px"
-            el.style.width = coords[2] - coords[0] + "px"
-            el.style.height = coords[3] - coords[1] + "px"
-        })
-      }
+      if (this.config.features.layout.enabled) enableLayout(dom)
+      setFont(dom, this.config.selectedFont)
+      if (this.config.features.backgroundImage.enabled) setBackgroundImage(dom, this.imagePrefix)
       return dom.innerHTML
     },
   },
   data() {return {
     enableLayout: false,
+    config: defaultConfig,
   }},
   mounted() {
-    this.config = Object.assign({}, defaultConfig)
+    // this.config = Object.assign({}, defaultConfig)
 
     Object.keys(this.config.fonts).forEach((font) => {
       let cssUrl = this.config.fonts[font].cssUrl
       if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
     })
-
-    // if (this.config.enableToolbar)
-    //   this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
 
     // // place the elements on the page
     // this.placeOcrElements()
@@ -65,29 +90,24 @@ export default {
     // window.addEventListener('resize', () => this.onConfigChange())
   },
   methods: {
-  },
-}
 
-class HocrjsViewer extends BaseComponent {
+    // toggleFeature(feature, onoff) {
+    //     this.dom.classList.toggle(`feature-${feature}`, onoff)
+    //     let toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
+    //     if (toggle in this) {
+    //         this.log(0, `Calling this.${toggle}`)
+    //         this[toggle](onoff)
+    //     }
+    // },
 
-    constructor(config={}) {
-        super()
-    }
-
-    placeOcrElements() {
-        HocrDOM.queryHocrAll(this.hocrDom, {
-            title: 'bbox'
-        }).forEach((el) => {
-            let coords = HocrDOM.getHocrProperties(el)
-            el.style.left = coords[0] + "px"
-            el.style.top = coords[1] + "px"
-            el.style.width = coords[2] - coords[0] + "px"
-            el.style.height = coords[3] - coords[1] + "px"
-        })
-        // XXX https://github.com/kba/hocrjs/issues/8
-        // let coords = document.querySelector('.ocr_page').hocr.bbox
-        // document.querySelector('body').style.minHeight = coords[2] + 'px'
-    }
+    toggleLayout(onoff) {
+      this.config.features.layout.enabled = (onoff !== undefined)
+        ? onoff
+        : ! this.config.features.layout.enabled
+      // XXX https://github.com/kba/hocrjs/issues/8
+      // let coords = document.querySelector('.ocr_page').hocr.bbox
+      // document.querySelector('body').style.minHeight = coords[2] + 'px'
+    },
 
     toggleScaleFont(onoff) {
         // wrapper element containing wrappers for font-size expansion
@@ -105,7 +125,7 @@ class HocrjsViewer extends BaseComponent {
             HocrDOM.queryHocrAll(this.hocrDom, {terminal: true}).forEach((el) => el.style.fontSize = null)
         }
         console.timeEnd('toggleScaleFont')
-    }
+    },
 
     scaleFont(el, wrap) {
         if (el.textContent.trim().length === 0) return
@@ -131,7 +151,7 @@ class HocrjsViewer extends BaseComponent {
             this.cache.scaleFont[el.textContent] = fontsize
         }
         el.style.fontSize = this.cache.scaleFont[el.textContent] + 'px'
-    }
+    },
 
     toggleTooltips(onoff) {
         let style = document.querySelector('#' + this.config.features.tooltips.styleId)
@@ -152,22 +172,13 @@ class HocrjsViewer extends BaseComponent {
             ).join("\n")))
             document.head.appendChild(style)
         }
-    }
+    },
 
     toggleBackgroundImage(onoff) {
-        let page = this.dom.querySelector('.ocr_page')
-        if (onoff) {
-            HocrDOM.queryHocrAll(this.hocrDom, {
-                title: 'image'
-            }).forEach((el) => {
-                let imageFile = HocrDOM.getHocrProperties(el).image
-                page.style.backgroundImage = `url(${imageFile})`
-            })
-        } else {
-            page.style.backgroundImage = ''
-            // delete this.dom.style.backgroundImage
-        }
-    }
+      this.config.features.backgroundImage.enabled = (onoff !== undefined)
+        ? onoff
+        : ! this.config.features.backgroundImage.enabled
+    },
 
     toggleContentEditable(onoff) {
         let onContentEditableInput = (ev) => {
@@ -193,16 +204,7 @@ class HocrjsViewer extends BaseComponent {
                 el.removeEventListener('input', onContentEditableInput)
             }
         })
-    }
-
-    toggleFeature(feature, onoff) {
-        this.dom.classList.toggle(`feature-${feature}`, onoff)
-        let toggle = 'toggle' + feature.substr(0, 1).toUpperCase() + feature.substring(1)
-        if (toggle in this) {
-            this.log(0, `Calling this.${toggle}`)
-            this[toggle](onoff)
-        }
-    }
+    },
 
     scaleTo(scaleFactor) {
         let page = this.dom.querySelector('.ocr_page')
@@ -222,50 +224,19 @@ class HocrjsViewer extends BaseComponent {
         page.style.transform = `scale(${this.config.scaleFactor})`
         page.style.transformOrigin = 'top left'
         this.$emit('scale-to', this.config.scaleFactor)
-    }
+    },
 
     onConfigChange() {
         Object.keys(this.config.features).forEach((feature) => {
             this.toggleFeature(feature, this.config.features[feature].enabled)
         })
-    }
+    },
 
     setFont(selectedFont) {
-      if (selectedFont) this.config.selectedFont = selectedFont
-      HocrDOM.queryHocrAll(this.hocrDom).forEach((el) => {
-        el.style.fontFamily = this.config.selectedFont
-      })
-      this.$emit('set-font', this.config.selectedFont)
+      if (selectedFont)
+        this.config.selectedFont = selectedFont
+      // this.$emit('set-font', this.config.selectedFont)
     }
 
-    init() {
-        Object.keys(this.config.fonts).forEach((font) => {
-            let cssUrl = this.config.fonts[font].cssUrl
-            if (cssUrl) Utils.addCssFragment('hocr-view-font-styles', `@import "${cssUrl}";\n`)
-        })
-
-        this.dom = this.config.dom
-        if (typeof this.dom === 'string') {
-            this.dom = document.querySelector(this.dom)
-        }
-
-        this.dom.classList.add(this.config.rootClass)
-
-        if (this.config.enableToolbar)
-          this.toolbar = new HocrjsToolbar({$parent: this, config: this.config})
-
-        // place the elements on the page
-        this.placeOcrElements()
-
-        // set font
-        this.setFont()
-        this.cache = {scaleFont: {}}
-
-        // Events
-        this.onConfigChange()
-        window.addEventListener('resize', () => this.onConfigChange())
-    }
-
+  },
 }
-
-export {HocrjsViewer}
