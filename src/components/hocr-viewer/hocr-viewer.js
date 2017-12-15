@@ -10,6 +10,11 @@ import HocrToolbar from '@/components/hocr-toolbar'
 import defaultConfig from '@/store/state'
 import {HocrDOM} from 'hocr-dom'
 
+import BackgroundImage from '@/feature/BackgroundImage'
+const featuresAvailable = {
+  BackgroundImage
+}
+
 import template from './hocr-viewer.html'
 import style from './hocr-viewer.scss'
 
@@ -31,16 +36,6 @@ function setFont(dom, fontFamily) {
   })
 }
 
-function setBackgroundImage(dom, prefix='') {
-  let page = HocrDOM.queryHocr(dom, 'page')
-  HocrDOM.queryHocrAll(dom, {
-    title: 'image'
-  }).forEach((el) => {
-    let imageFile = HocrDOM.getHocrProperties(el).image
-    page.style.backgroundImage = `url(${prefix}${imageFile})`
-  })
-}
-
 export default {
   name: 'HocrViewer',
   components: {HocrToolbar},
@@ -48,27 +43,58 @@ export default {
   template,
   props: {
     hocr: {type: String, required: true},
-    enableToolbar: {type: Boolean, default: true},
+    enableToolbar: {type: Boolean, default: !true},
     imagePrefix: {type: String, default: ''},
+    featureBackgroundImageEnabled: {type: Boolean, default: true},
   },
   computed: {
+
     classList() {return {
       'hocr-viewer': true,
       'hocr-viewer-toolbar-enabled': this.enableToolbar,
     }},
+
+    featuresEnabled() {
+      console.log('featuresEnabled')
+      const ret = []
+      Object.keys(this).filter(k => k.startsWith('feature') && k.endsWith('Enabled')).map(k => {
+        if (this[k]) ret.push(k.replace(/Enabled$/, '').replace(/^feature/))
+      })
+      return ret
+    },
+
+    features() {
+      console.log('features')
+      const ret = {}
+      Object.keys(featuresAvailable).map(featureName => {
+        if (this.featuresEnabled.includes(featureName)) {
+          ret[featureName] = new featuresAvailable[featureName](this[`${featureName}Options`])
+        }
+      })
+      return ret
+    },
+
     hocrDom() {
-      console.log("Redrawing hocr")
+      console.log("hocrDom")
       const dom = document.createElement('div')
-      dom.innerHTML = this.hocr
-      if (this.config.features.layout.enabled) enableLayout(dom)
-      setFont(dom, this.config.selectedFont)
-      if (this.config.features.backgroundImage.enabled) setBackgroundImage(dom, this.imagePrefix)
+      console.log("hocrDom")
+      // dom.innerHTML = this.hocr
+      // Object.keys(this.features).map(featureName => this.features[featureName].apply(dom))
+      // if (this.config.features.layout.enabled) enableLayout(dom)
+      // setFont(dom, this.config.selectedFont)
+      // if (this.config.features.backgroundImage.enabled) setBackgroundImage(dom, this.imagePrefix)
       return dom.innerHTML
     },
+
   },
   data() {return {
+
     enableLayout: false,
+
     config: defaultConfig,
+
+    featuresAvailable,
+
   }},
   mounted() {
     // this.config = Object.assign({}, defaultConfig)
@@ -90,6 +116,10 @@ export default {
     // window.addEventListener('resize', () => this.onConfigChange())
   },
   methods: {
+
+    isFeatureEnabled(featureName) {return this[`feature${featureName}Enabled`]},
+
+    toggleFeature(featureName) {this[`feature${featureName}Enabled`] = ! this[`feature${featureName}Enabled`]},
 
     // toggleFeature(feature, onoff) {
     //     this.dom.classList.toggle(`feature-${feature}`, onoff)

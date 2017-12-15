@@ -41,14 +41,11 @@
     <details open>
       <summary>Features</summary>
       <ul class="features">
-        <li v-for="(feature, featureName) in $parent.config.features" :key="featureName"
-          @click="feature.enabled = ! feature.enabled"
-          :class="{checked: feature.enabled}"
+        <li v-for="featureName in Object.keys($parent.featuresAvailable)" :key="featureName"
+          @click="$parent.toggleFeature(featureName)"
+          :class="{checked: $parent.isFeatureEnabled(featureName)}"
           >
-          <input
-          type="checkbox"
-          :checked="feature.enabled"
-          />
+          <input type="checkbox" />
           <label>{{ featureName }}</label>
           <label>{{ feature }}</label>
         </li>
