@@ -12,33 +12,6 @@
   <div class="wrapper">
 
     <details open>
-      <summary>Font: <span class="font"></span></summary>
-      <select class="font"
-        @change="$parent.config.selectedFont = $event.target.value"
-        >
-        <option v-for="(fontOptions, fontName) in $parent.config.fonts" :key="fontName"
-          :style="{'font-size': 'large', 'font-family': fontName}"
-          :value="fontName"
-          >
-          {{ fontName }}
-        </option>
-      </select>
-    </details>
-
-    <details open>
-      <summary>Zoom: <span class="zoom">100</span>%
-      </summary>
-      <button class="zoom" data-scale-factor="-0.1">-</button>
-      <input type="range" class="zoom" min="0" max="500" step="2" value="100"/>
-      <button class="zoom" data-scale-factor="+0.1">+</button>
-      <p>
-        <button class="zoom" data-scale-factor="height">Fit height</button>
-        <button class="zoom" data-scale-factor="width">Fit width</button>
-        <button class="zoom" data-scale-factor="original">100 %</button>
-      </p>
-    </details>
-
-    <details open>
       <summary>Features</summary>
       <ul class="features">
         <li v-for="featureName in Object.keys($parent.featuresAvailable)" :key="featureName"
@@ -47,9 +20,40 @@
           >
           <input type="checkbox" />
           <label>{{ featureName }}</label>
-          <label>{{ feature }}</label>
         </li>
       </ul>
+    </details>
+
+    <details class="hocr-toolbar-zoom" open>
+      <summary>Zoom: <span class="zoom">{{ $parent.currentZoomRounded }}</span>%
+      </summary>
+      <button class="zoom" @click="$parent.zoom('-0.1')">-</button>
+      <input type="range" min="0" max="5" step=".02"
+        :value="$parent.currentZoom"
+        @change="$parent.currentZoom = $event.target.value"
+      />
+      <button class="zoom" @click="$parent.zoom('+0.1')">+</button>
+      <p>
+        <button class="zoom" @click="$parent.zoom('height')">Fit height</button>
+        <button class="zoom" @click="$parent.zoom('width')">Fit width</button>
+        <button class="zoom" @click="$parent.zoom('reset')">100 %</button>
+      </p>
+    </details>
+
+
+    <details v-if="$parent.isFeatureEnabled('Font')"
+      open>
+      <summary>Font: <span class="font"></span></summary>
+      <select class="font"
+        @change="$parent.fontFamily = $event.target.value"
+        >
+        <option v-for="(fontOptions, fontName) in $parent.fontsAvailable" :key="fontName"
+          :style="{'font-size': 'large', 'font-family': fontName}"
+          :value="fontName"
+          >
+          {{ fontName }}
+        </option>
+      </select>
     </details>
 
   </div>

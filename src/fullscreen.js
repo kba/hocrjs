@@ -20,7 +20,7 @@ window.vm = new Vue({
   components: {HocrViewer},
   template: `<HocrViewer
     :hocr="hocr"
-    image-prefix="/home/kba/build/github.com/kba/hocr-dom/hocr-dom-jsdom/test/ocr-fileformat-samples/samples/image/",
+    image-prefix="/home/kba/build/github.com/kba/hocr-dom/hocr-dom-jsdom/test/ocr-fileformat-samples/samples/image/"
   />`,
 
   data: {

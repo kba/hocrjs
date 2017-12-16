@@ -7,6 +7,11 @@
 
 export default class Utils {
 
+    static removeCssFragment(styleId, css) {
+      const style = document.querySelector(`#${styleId}`)
+      if (style) style.remove()
+    }
+
     static addCssFragment(styleId, css) {
         let style = document.querySelector(`#${styleId}`)
         if (!style) {
