@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    https://unpkg.com/hocrjs@0.3.0/dist/hocr.user.js
-// @version      0.3.0
+// @updateURL    https://unpkg.com/hocrjs@0.3.1/dist/hocr.user.js
+// @version      0.3.1
 // @description  Add hocr-viewer controls to a apage
 // @author       kba
 // @include      http://*/*
@@ -23,7 +23,7 @@
   'use strict'
   function injectHocrViewer() {
     const script = document.createElement('script')
-    script.src = "https://unpkg.com/hocrjs@0.3.0/dist/hocr.fullscreen.js?cachebuster=" + Math.random() * 10000000000000000
+    script.src = "https://unpkg.com/hocrjs@0.3.1/dist/hocr.fullscreen.js?cachebuster=" + Math.random() * 10000000000000000
     script.type = 'text/javascript'
     document.querySelector('body').appendChild(script)
   }

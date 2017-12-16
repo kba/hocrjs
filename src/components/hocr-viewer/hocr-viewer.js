@@ -29,6 +29,7 @@ export default {
     featureTransparentText:  {type: Boolean, default: false},
     featureTooltip:          {type: Boolean, default: false},
     featureHighlight:        {type: Boolean, default: true},
+    featureHighlightPage:    {type: Boolean, default: false},
     featureHighlightNotPage: {type: Boolean, default: false},
     featureHighlightInline:  {type: Boolean, default: false},
     featureHighlightLine:    {type: Boolean, default: true},

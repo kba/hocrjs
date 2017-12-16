@@ -87,6 +87,7 @@
   &.hocr-viewer-feature-Highlight {
     margin: -1px;
     &.hocr-viewer-feature-HighlightNotPage {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
+    &.hocr-viewer-feature-HighlightPage    {@include highlight-area($selector-ocr-page, $color-highlight-page)}
     &.hocr-viewer-feature-HighlightInline  {@include highlight-area($selector-ocr-inline, $color-highlight-inline);}
     &.hocr-viewer-feature-HighlightLine    {@include highlight-area($selector-ocr-line, $color-highlight-line);}
     &.hocr-viewer-feature-HighlightPar     {@include highlight-area($selector-ocr-par, $color-highlight-par);}
