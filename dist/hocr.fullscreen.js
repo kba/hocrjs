@@ -1893,11 +1893,6 @@ var _hocrViewer2 = _interopRequireDefault(_hocrViewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// window.hocrViewer = new HocrjsViewer({
-//   dom: document.querySelector('body'),
-// })
-// window.hocrViewer.init()
-
 /*
  * Copyright (c) 2016-2017 Konstantin Baierer
  *
@@ -1905,16 +1900,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * of the MIT license.  See the LICENSE file for details.
  */
 
-_vue2.default.config.devtools = true;
-window.vm = new _vue2.default({
+var hocr = document.querySelector('html').innerHTML;
+document.body.innerHTML = '<div id="app"/>';
+window.hocrapp = new _vue2.default({
   el: "#app",
   components: { HocrViewer: _hocrViewer2.default },
-  template: '<HocrViewer\n    :hocr="hocr"\n    image-prefix="/home/kba/build/github.com/kba/hocr-dom/hocr-dom-jsdom/test/ocr-fileformat-samples/samples/image/"\n  />',
-
-  data: {
-    message: 'Hello from Vue!',
-    hocr: document.querySelector('template').innerHTML
-  }
+  template: '<HocrViewer :hocr="hocr" />',
+  data: { hocr: hocr }
 });
 
 /***/ }),

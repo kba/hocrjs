@@ -31,7 +31,7 @@ module.exports = {
             {test: /\.html$/, loader: "html-loader"},
         ]
     },
-    // plugins: [
-    //     new UglifyJS({}),
-    // ]
+    plugins: [
+        new UglifyJS({}),
+    ]
 }

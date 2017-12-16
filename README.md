@@ -101,46 +101,33 @@ Clone the repository and run `make` for a list of targets:
 
 ### Layout
 
-The elements are positioned with `display: fixed`. The trick is that they are
+The hOCR elements are positioned with `display: fixed`. The trick is that they are
 within a container element that has `transformation`. This makes the fixed
 positions relative to the container element instead of the viewport.
 
 ### Features and SASS
 
 A feature is behavior that can be enabled or disabled and possibly configured,
-such as displaying the background image (`backgroundImage`) or whether to
-disable `<strong>`/`<em>` display of text (`disableEmStrong`).
+such as displaying the background image (`BackgroundImage`) or whether to
+disable `<strong>`/`<em>` display of text (`DisableEmStrong`).
 
-If a feature is enabled, a class `feature-<NAME-OF-FEATURE>` will be added to
-the root container.
+If a feature is enabled, a class `hocr-viewer-feature-<NAME-OF-FEATURE>` will
+be added to the root container.
 
-In turn these classes are used by the SCSS stylesheet to implement the desired
+These classes are used in the [SCSS
+stylesheet](./src/components/hocr-viewer/index.js) to implement the desired
 behavior using CSS, if possible.
 
 ### Adding a feature
 
-In [state.js](./src/store/state.js) add to the `defaultConfig.features`
-object a key-value pair where the key is the name of the feature and the value
-an object with at least an `enabled` key and optionally more configuration
-options.
-
-```js
-{
-  // ...
-  features: {
-    // ...
-    myFeature: {
-      enabled: false
-    }
-    // ...
-  },
-  // ...
-}
-```
+Add `enableMyFeature` property to the [HocrViewer component](./src/components/hocr-viewer/hocr-viewer.js).
 
 In [hocr-viewer.scss](`./src/components/hocr-viewer/hocr-viewer.scss) add rules
-for `.hocr-viewer.feature-myFeature` as necessary.
+for `.hocr-viewer-feature-myFeature` as necessary.
 
-In [hocr-viewer](./src/components/hocr-viewer/hocr-viewer.js) add any logic
-that is beyond CSS.
-
+If the behavior requires modifying the hOCR (e.g. `ScaleFont`), create a class
+[`./src/components/hocr-viewer/feature/MyFeature.js`](./src/components/hocr-viewer/feature/)
+that gets passed the component to the constructor and implements an
+`apply(dom)` method to modify the HTML. Use the methods provided by
+[hocr-dom](https://github.com/kba/hocr-dom) to access hOCR specific features
+like properties.

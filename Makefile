@@ -12,7 +12,7 @@ UPDATE_SERVER = $(ASSET_SERVER)
 # Command to run a static server
 STATIC_SERVER = @python2 -m SimpleHTTPServer $(PORT)
 
-# Server port
+# Server port. Default: 8888
 PORT = 8888
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
@@ -33,7 +33,7 @@ help:
 	@echo "    ASSET_SERVER   URL of the asset server, serving the built files and userscript"
 	@echo "    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)"
 	@echo "    STATIC_SERVER  Command to run a static server"
-	@echo "    PORT           Server port"
+	@echo "    PORT           Server port. Default: 8888"
 
 # END-EVAL
 

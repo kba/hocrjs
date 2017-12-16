@@ -9,22 +9,12 @@ import Vue from 'vue'
 import '@/normalize.scss'
 import 'normalize.css'
 import HocrViewer from '@/components/hocr-viewer'
-// window.hocrViewer = new HocrjsViewer({
-//   dom: document.querySelector('body'),
-// })
-// window.hocrViewer.init()
 
-Vue.config.devtools = true
-window.vm = new Vue({
+const hocr = document.querySelector('html').innerHTML
+document.body.innerHTML = '<div id="app"/>'
+window.hocrapp = new Vue({
   el: "#app",
   components: {HocrViewer},
-  template: `<HocrViewer
-    :hocr="hocr"
-    image-prefix="/home/kba/build/github.com/kba/hocr-dom/hocr-dom-jsdom/test/ocr-fileformat-samples/samples/image/"
-  />`,
-
-  data: {
-    message: 'Hello from Vue!',
-    hocr: document.querySelector('template').innerHTML,
-  }
+  template: `<HocrViewer :hocr="hocr" />`,
+  data: {hocr}
 })
