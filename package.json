@@ -4,7 +4,7 @@
     "description": "Vue component for viewing hOCR files, also usable standalone",
     "main": "dist/hocr.fullscreen.js",
     "bin": {
-        "hocrjs-inject": "./bin/hocr-inject.js"
+        "hocrjs-inject": "bin/hocrjs-inject.js"
     },
     "scripts": {
         "test": "make webpack test"
