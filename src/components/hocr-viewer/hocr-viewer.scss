@@ -7,35 +7,6 @@
 
 @import '../../variables.scss';
 
-@mixin transform($args) {
-  -webkit-transform: $args;
-  -ms-transform: $args;
-  transform: $args;
-}
-
-@mixin tooltip {
-  display: block;
-  background: white;
-  color: black !important;
-  border: 1px solid black;
-  font-family: monospace;
-  position: absolute;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 100%;
-  height: 15px;
-  top: -15px;
-}
-
-@mixin highlight-area($selector, $color) {
-  #{$selector} {
-    border: $border-width solid $color;
-    &:hover {
-      background: rgba(lighten($color, 30%), 0.2);
-    }
-  }
-}
-
 .hocr-viewer {
 
   &.hocr-viewer-toolbar-enabled {
@@ -89,6 +60,7 @@
     &.hocr-viewer-feature-HighlightNotPage {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
     &.hocr-viewer-feature-HighlightPage    {@include highlight-area($selector-ocr-page, $color-highlight-page)}
     &.hocr-viewer-feature-HighlightInline  {@include highlight-area($selector-ocr-inline, $color-highlight-inline);}
+    &.hocr-viewer-feature-HighlightBlank   {@include highlight-area($selector-ocr-blank, $color-highlight-blank);}
     &.hocr-viewer-feature-HighlightLine    {@include highlight-area($selector-ocr-line, $color-highlight-line);}
     &.hocr-viewer-feature-HighlightPar     {@include highlight-area($selector-ocr-par, $color-highlight-par);}
     &.hocr-viewer-feature-HighlightCarea   {@include highlight-area($selector-ocr-carea, $color-highlight-carea);}

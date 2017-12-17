@@ -32,6 +32,7 @@ export default {
     featureHighlightPage:    {type: Boolean, default: false},
     featureHighlightNotPage: {type: Boolean, default: false},
     featureHighlightInline:  {type: Boolean, default: false},
+    featureHighlightBlank:   {type: Boolean, default: false},
     featureHighlightLine:    {type: Boolean, default: true},
     featureHighlightPar:     {type: Boolean, default: true},
     featureHighlightCarea:   {type: Boolean, default: true},
@@ -74,11 +75,11 @@ export default {
 
     featuresAvailable() {
       const ret = {}
-      Object.assign(ret, featuresAvailable)
       Object.keys(this.$props)
         .filter(k => k.startsWith('feature'))
         .map(k => k.replace('feature', ''))
         .map(k => {if (!(k in ret)) ret[k] = true})
+      Object.assign(ret, featuresAvailable)
       return ret
     },
 
@@ -113,13 +114,6 @@ export default {
       return Math.floor(this.currentZoom * 10000) / 100.0
     },
 
-  },
-  mounted() {
-    console.log("enter mounted")
-    // // Events
-    // this.onConfigChange()
-    // window.addEventListener('resize', () => this.onConfigChange())
-    console.log("exit mounted")
   },
   methods: {
 

@@ -11,6 +11,7 @@ $selector-ocr-line: '#{$selector-ocr-classes}[class*="line"]';
 $selector-ocr-par: '.ocr_par';
 $selector-ocr-carea: '.ocr_carea';
 $selector-ocr-inline: '.ocr_line #{$selector-ocr-classes}';
+$selector-ocr-blank: '#{$selector-ocr-classes}.hocrjs-blank';
 $selector-ocr-not-page: '#{$selector-ocr-classes}:not(.ocr_page)';
 
 $border-width: 3px;
@@ -24,7 +25,37 @@ $color-toolbar-border: #333;
 $color-highlight-page: #8B4513;
 $color-highlight-not-page: red;
 $color-highlight-inline: green;
+$color-highlight-blank: lighten(green, 30%);
 $color-highlight-carea: blue;
 $color-highlight-par: purple;
 $color-highlight-line: gold;
+
+@mixin transform($args) {
+  -webkit-transform: $args;
+  -ms-transform: $args;
+  transform: $args;
+}
+
+@mixin tooltip {
+  display: block;
+  background: white;
+  color: black !important;
+  border: 1px solid black;
+  font-family: monospace;
+  position: absolute;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 100%;
+  height: 15px;
+  top: -15px;
+}
+
+@mixin highlight-area($selector, $color) {
+  #{$selector} {
+    border: $border-width solid $color;
+    &:hover {
+      background: rgba(lighten($color, 30%), 0.2);
+    }
+  }
+}
 
