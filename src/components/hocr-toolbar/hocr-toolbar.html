@@ -15,6 +15,20 @@
       <summary>Features</summary>
       <ul class="features">
         <li v-for="featureName in Object.keys($parent.featuresAvailable)" :key="featureName"
+          v-if="!featureName.match(/Highlight[A-Z]/)"
+          @click="$parent.toggleFeature(featureName)"
+          :class="{checked: $parent.isFeatureEnabled(featureName)}"
+          >
+          <label>{{ featureName }}</label>
+        </li>
+      </ul>
+    </details>
+
+    <details open>
+      <summary>Highlighting</summary>
+      <ul class="features">
+        <li v-for="featureName in Object.keys($parent.featuresAvailable)" :key="featureName"
+          v-if="featureName.match(/Highlight[A-Z]/)"
           @click="$parent.toggleFeature(featureName)"
           :class="{checked: $parent.isFeatureEnabled(featureName)}"
           >

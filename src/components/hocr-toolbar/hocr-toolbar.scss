@@ -33,7 +33,8 @@
   &.expanded {
     border-right: $border-width solid $color-toolbar-border;
     .wrapper { 
-      padding-left: 1em;
+      padding-left: .5em;
+      padding-right: .5em;
       width: 15em;
       left: 0;
     }
