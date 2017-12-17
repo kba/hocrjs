@@ -10,8 +10,9 @@ $selector-ocr-classes: '*[class^="ocr"]';
 $selector-ocr-line: '#{$selector-ocr-classes}[class*="line"]';
 $selector-ocr-par: '.ocr_par';
 $selector-ocr-carea: '.ocr_carea';
-$selector-ocr-inline: '.ocr_line #{$selector-ocr-classes}';
 $selector-ocr-blank: '#{$selector-ocr-classes}.hocrjs-blank';
+$selector-ocr-inline-not-blank: '.ocr_line #{$selector-ocr-classes}:not(.hocrjs-blank)';
+$selector-ocr-inline-blank: '.ocr_line #{$selector-ocr-classes}.hocrjs-blank';
 $selector-ocr-not-page: '#{$selector-ocr-classes}:not(.ocr_page)';
 
 $border-width: 3px;
@@ -24,8 +25,8 @@ $color-toolbar-border: #333;
 
 $color-highlight-page: #8B4513;
 $color-highlight-not-page: red;
-$color-highlight-inline: green;
-$color-highlight-blank: lighten(green, 30%);
+$color-highlight-inline-not-blank: green;
+$color-highlight-inline-blank: lighten(green, 30%);
 $color-highlight-carea: blue;
 $color-highlight-par: purple;
 $color-highlight-line: gold;

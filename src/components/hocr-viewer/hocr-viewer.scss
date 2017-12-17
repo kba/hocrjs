@@ -57,13 +57,13 @@
 
   &.hocr-viewer-feature-Highlight {
     margin: -1px;
-    &.hocr-viewer-feature-HighlightNotPage {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
-    &.hocr-viewer-feature-HighlightPage    {@include highlight-area($selector-ocr-page, $color-highlight-page)}
-    &.hocr-viewer-feature-HighlightInline  {@include highlight-area($selector-ocr-inline, $color-highlight-inline);}
-    &.hocr-viewer-feature-HighlightBlank   {@include highlight-area($selector-ocr-blank, $color-highlight-blank);}
-    &.hocr-viewer-feature-HighlightLine    {@include highlight-area($selector-ocr-line, $color-highlight-line);}
-    &.hocr-viewer-feature-HighlightPar     {@include highlight-area($selector-ocr-par, $color-highlight-par);}
-    &.hocr-viewer-feature-HighlightCarea   {@include highlight-area($selector-ocr-carea, $color-highlight-carea);}
+    &.hocr-viewer-feature-HighlightNotPage        {@include highlight-area($selector-ocr-not-page, $color-highlight-not-page)}
+    &.hocr-viewer-feature-HighlightPage           {@include highlight-area($selector-ocr-page, $color-highlight-page)}
+    &.hocr-viewer-feature-HighlightInlineNotBlank {@include highlight-area($selector-ocr-inline-not-blank, $color-highlight-inline-not-blank);}
+    &.hocr-viewer-feature-HighlightInlineBlank    {@include highlight-area($selector-ocr-inline-blank, $color-highlight-inline-blank);}
+    &.hocr-viewer-feature-HighlightLine           {@include highlight-area($selector-ocr-line, $color-highlight-line);}
+    &.hocr-viewer-feature-HighlightPar            {@include highlight-area($selector-ocr-par, $color-highlight-par);}
+    &.hocr-viewer-feature-HighlightCarea          {@include highlight-area($selector-ocr-carea, $color-highlight-carea);}
   }
 
   &.hocr-viewer-feature-BackgroundImage {
