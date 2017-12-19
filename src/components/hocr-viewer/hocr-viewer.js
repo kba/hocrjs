@@ -74,6 +74,16 @@ export default {
       return ret
     },
 
+    containerStyle() {
+      const {bbox} = HocrDOM.getHocrProperties(HocrDOM.queryHocr(this.hocrDom, 'page'))
+      const pageHeight = bbox[3] - bbox[1]
+      return {
+        transform: `scale(${this.currentZoom})`,
+        'transform-origin': 'top left',
+        height: `${pageHeight}px`,
+      }
+    },
+
     featuresAvailable() {
       const ret = {}
       Object.keys(this.$props)

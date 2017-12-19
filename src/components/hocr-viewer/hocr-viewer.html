@@ -2,7 +2,7 @@
   <hocr-toolbar v-if="enableToolbar"/>
   <div v-html="hocrDom.innerHTML"
     class="hocr-viewer-container"
-    :style="{transform: `scale(${currentZoom})`, 'transform-origin': 'top left'}"
+    :style="containerStyle"
     >
   </div>
 </div>

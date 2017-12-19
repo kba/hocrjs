@@ -17,7 +17,7 @@
   }
 
   .hocr-viewer-container {
-    height: 100vh;
+    min-height: 100vh;
     position: relative !important;
     // NOTE: This is important otherwise fixed will be relative to page not
     // containing element
