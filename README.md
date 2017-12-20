@@ -57,9 +57,15 @@ so you need to have a user script runner like
 - Browse to [unpkg.com/hocrjs/dist/hocr.user.js](https://unpkg.com/hocrjs/dist/hocr.user.js)
 - Install the user script when asked
 - Browse to a plain hOCR document, e.g. [this one](https://kba.github.io/hocrjs/example/426117689_0459_noscript.html)
-- Choose `Inject hOCR viewer` from the menu of the user script manager, e.g.
+- Choose `Inject hOCR viewer` from the menu of the user script manager
 
-![user script menu](./doc/hocrjs-userjs.png)
+Tampermonkey:
+
+![Tampermonkey](./doc/hocrjs-userjs.png)
+
+Greasemonkey:
+
+![Greasemonkey](./doc/hocrjs-userjs-gm4.png)
 
 ### Command line interface
 
