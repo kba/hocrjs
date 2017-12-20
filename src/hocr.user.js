@@ -9,6 +9,7 @@
 // @include      https://*/*
 // @include      file:///*
 // @grant        GM_registerMenuCommand
+// @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @run-at       document-end
 // ==/UserScript==
 
