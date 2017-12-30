@@ -8,7 +8,7 @@
 import Vue from 'vue'
 import '@/normalize.scss'
 import 'normalize.css'
-import HocrViewer from '@/components/hocr-viewer'
+import {HocrViewer} from 'vue-hocr'
 
 const hocr = document.querySelector('html').innerHTML
 document.body.innerHTML = '<div id="app"/>'

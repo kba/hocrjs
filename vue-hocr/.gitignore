@@ -1,9 +1,6 @@
+/node_modules
 .sass-cache
 test/test-string.html
 dist/hocr.fullscreen.js.map
 dist/hocr.viewer.js.map
 doc/large
-*/node_modules
-example/tesseract4.html
-node_modules
-*.log

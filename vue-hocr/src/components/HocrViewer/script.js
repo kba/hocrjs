@@ -6,18 +6,14 @@
  */
 
 import {HocrDOM} from 'hocr-dom'
-import HocrToolbar from '@/components/hocr-toolbar'
+import HocrToolbar from '../HocrToolbar/index.vue'
 import defaultConfig from '@/store/state'
 
-import template from './hocr-viewer.html'
-import style from './hocr-viewer.scss'
 import featuresAvailable from './feature'
 
 export default {
   name: 'HocrViewer',
   components: {HocrToolbar},
-  style,
-  template,
   props: {
     hocr:                           {type: String,  required: true},
     initialZoom:                    {type: Number,  default:  1},
@@ -75,7 +71,12 @@ export default {
     },
 
     containerStyle() {
-      const {bbox} = HocrDOM.getHocrProperties(HocrDOM.queryHocr(this.hocrDom, 'page'))
+      const page = HocrDOM.queryHocr(this.hocrDom, 'page')
+      if (!page) {
+        console.warn("No .ocr_page element found. Is this hOCR?")
+        return {}
+      }
+      const {bbox} = HocrDOM.getHocrProperties(HocrDOM.queryHocr(page))
       const pageHeight = bbox[3] - bbox[1]
       return {
         transform: `scale(${this.currentZoom})`,

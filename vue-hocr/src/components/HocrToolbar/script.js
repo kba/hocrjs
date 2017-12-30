@@ -1,10 +1,5 @@
-import style from './hocr-toolbar.scss'
-import template from './hocr-toolbar.html'
-
 export default {
   name: 'HocrToolbar',
-  template,
-  style,
   computed: {
     classList() {return {
       'hocrjs-toolbar': true,
