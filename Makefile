@@ -1,8 +1,7 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 
 # Version of the latest git tag
-VERSION = $(shell node -e "console.log(require('./lerna.json').version)")
-export VERSION
+VERSION != $(shell node -e "console.log(require('./lerna.json').version)")
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
@@ -27,11 +26,11 @@ bootstrap:
 
 # webpack all
 dist:
-	lerna exec make -B dist
+	lerna exec -- make -B dist
 
 # Remove built targets
 clean:
-	lerna exec make clean
+	lerna exec -- make clean
 
 # Run unit tests
 .PHONY: test
@@ -41,7 +40,8 @@ test:
 # publish packages
 publish: clean dist
 	lerna publish --skip-npm --skip-git
-	$(MAKE) -B dist VERSION=$(VERSION)
-	git add .
-	git commit --amend --reuse-message=ORIG_HEAD
-	git tag v$(VERSION)
+	VERSION=`node -e "console.log(require('./lerna.json').version)"`; \
+		$(MAKE) -B dist VERSION=$$VERSION; \
+		git add .; \
+		git commit -m ":package: Release $$VERSION"; \
+		git tag v$$VERSION; \
