@@ -1,9 +1,0 @@
-#!/bin/sh
-echo "skipped"
-# gulp test
-# if ! make -n -q dist;then
-#     echo '!! dist needs rebuilding !!';
-#     echo 'make -d -n'
-#     make -n
-#     exit 123
-# fi

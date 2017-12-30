@@ -1,10 +1,11 @@
 const path = require('path')
+const srcPath = path.join(__dirname, "src")
 
 module.exports = {
-  entry: "./src/components/index.js",
+  entry: `${srcPath}/components/index.js`,
   resolve: {
     alias: {
-      "@": path.join(__dirname, "src"),
+      "@": srcPath,
       vue: 'vue/dist/vue.esm.js',
     },
   },
@@ -12,7 +13,7 @@ module.exports = {
     path: __dirname + "/dist",
     filename: `vue-hocr.js`,
     libraryTarget: 'umd',
-    // library: 'VueHocr',
+    library: 'VueHocr',
   },
   module: {
     loaders: [
