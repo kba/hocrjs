@@ -8,6 +8,8 @@
   border: none;
   .toggler {
     float: left;
+    position: fixed;
+    left: 0;
     font-family: monospace;
     color: $color-toolbar-toggler;
     background: $color-toolbar-border;

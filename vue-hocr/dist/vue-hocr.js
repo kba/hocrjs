@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["VueHocr"] = factory();
+	else
+		root["VueHocr"] = factory();
+})(typeof self !== 'undefined' ? self : this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -1391,7 +1401,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n@charset \"UTF-8\";\n/*\n * Copyright (c) 2016-2017 Konstantin Baierer\n *\n * This software may be modified and distributed under the terms\n * of the MIT license.  See the LICENSE file for details.\n */\n.hocrjs-toolbar {\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  height: 100%;\n  border: none;\n}\n.hocrjs-toolbar .toggler {\n    float: left;\n    font-family: monospace;\n    color: white;\n    background: #333;\n    height: 100vh;\n    width: 1em;\n}\n.hocrjs-toolbar .toggler .toggler-inner {\n      font-size: 1.5em;\n      top: 40vh;\n      position: fixed;\n}\n.hocrjs-toolbar .toggler .toggler-hide {\n      display: none;\n}\n.hocrjs-toolbar .toggler .toggler-show {\n      display: block;\n}\n.hocrjs-toolbar .wrapper {\n    position: fixed;\n    margin-left: 1em;\n    background-color: rgba(180, 180, 190, 0.85);\n    overflow: hidden;\n    left: -32em;\n    transition: all 0.5s ease;\n    height: 100vh;\n}\n.hocrjs-toolbar.expanded {\n    border-right: 3px solid #333;\n}\n.hocrjs-toolbar.expanded .wrapper {\n      padding-left: .5em;\n      padding-right: .5em;\n      width: 15em;\n      left: 0;\n}\n.hocrjs-toolbar.expanded .toggler-show {\n      display: none;\n}\n.hocrjs-toolbar.expanded .toggler-hide {\n      display: block;\n}\n.hocrjs-toolbar ul.features {\n    list-style-type: none;\n    padding: 0;\n}\n.hocrjs-toolbar ul.features li {\n      background-color: #ffcccc;\n      margin-bottom: 2px;\n      padding: 5px 0;\n}\n.hocrjs-toolbar ul.features li:before {\n        content: '\\2717   ';\n}\n.hocrjs-toolbar ul.features li.checked {\n        background-color: #ccffcc;\n}\n.hocrjs-toolbar ul.features li.checked:before {\n          content: '\\2713   ';\n}\n.hocrjs-toolbar ul.features li input[type='checkbox'] {\n        display: none;\n}\n.hocrjs-toolbar ul.features li label {\n        width: 100%;\n}\n.hocrjs-toolbar summary {\n    font-size: 120%;\n}\n.hocrjs-toolbar summary span.font {\n      font-size: 100%;\n}\n.hocrjs-toolbar select.font {\n    width: 80%;\n    font-size: 110%;\n}\n", ""]);
+exports.push([module.i, "\n@charset \"UTF-8\";\n/*\n * Copyright (c) 2016-2017 Konstantin Baierer\n *\n * This software may be modified and distributed under the terms\n * of the MIT license.  See the LICENSE file for details.\n */\n.hocrjs-toolbar {\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  height: 100%;\n  border: none;\n}\n.hocrjs-toolbar .toggler {\n    float: left;\n    position: fixed;\n    left: 0;\n    font-family: monospace;\n    color: white;\n    background: #333;\n    height: 100vh;\n    width: 1em;\n}\n.hocrjs-toolbar .toggler .toggler-inner {\n      font-size: 1.5em;\n      top: 40vh;\n      position: fixed;\n}\n.hocrjs-toolbar .toggler .toggler-hide {\n      display: none;\n}\n.hocrjs-toolbar .toggler .toggler-show {\n      display: block;\n}\n.hocrjs-toolbar .wrapper {\n    position: fixed;\n    margin-left: 1em;\n    background-color: rgba(180, 180, 190, 0.85);\n    overflow: hidden;\n    left: -32em;\n    transition: all 0.5s ease;\n    height: 100vh;\n}\n.hocrjs-toolbar.expanded {\n    border-right: 3px solid #333;\n}\n.hocrjs-toolbar.expanded .wrapper {\n      padding-left: .5em;\n      padding-right: .5em;\n      width: 15em;\n      left: 0;\n}\n.hocrjs-toolbar.expanded .toggler-show {\n      display: none;\n}\n.hocrjs-toolbar.expanded .toggler-hide {\n      display: block;\n}\n.hocrjs-toolbar ul.features {\n    list-style-type: none;\n    padding: 0;\n}\n.hocrjs-toolbar ul.features li {\n      background-color: #ffcccc;\n      margin-bottom: 2px;\n      padding: 5px 0;\n}\n.hocrjs-toolbar ul.features li:before {\n        content: '\\2717   ';\n}\n.hocrjs-toolbar ul.features li.checked {\n        background-color: #ccffcc;\n}\n.hocrjs-toolbar ul.features li.checked:before {\n          content: '\\2713   ';\n}\n.hocrjs-toolbar ul.features li input[type='checkbox'] {\n        display: none;\n}\n.hocrjs-toolbar ul.features li label {\n        width: 100%;\n}\n.hocrjs-toolbar summary {\n    font-size: 120%;\n}\n.hocrjs-toolbar summary span.font {\n      font-size: 100%;\n}\n.hocrjs-toolbar select.font {\n    width: 80%;\n    font-size: 110%;\n}\n", ""]);
 
 // exports
 
@@ -2175,3 +2185,4 @@ if (false) {
 
 /***/ })
 /******/ ]);
+});
