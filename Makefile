@@ -1,7 +1,7 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 
 # Version of the latest git tag
-VERSION != $(shell node -e "console.log(require('./lerna.json').version)")
+VERSION = $(shell node -e "console.log(require('./lerna.json').version)")
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
 
@@ -36,6 +36,10 @@ clean:
 .PHONY: test
 test:
 	lerna exec make test
+
+# link
+link:
+	lerna exec -- npm link
 
 # publish packages
 publish: clean dist
