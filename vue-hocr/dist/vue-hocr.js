@@ -77,11 +77,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const HocrDOM = __webpack_require__(14)
-const HocrPropertyParser = __webpack_require__(5)
+const HocrDOM = __webpack_require__(14);
+const HocrPropertyParser = __webpack_require__(5);
 
-module.exports = {HocrDOM, HocrPropertyParser}
-
+module.exports = { HocrDOM, HocrPropertyParser };
 
 /***/ }),
 /* 1 */
@@ -553,6 +552,7 @@ exports.default = {
     featureHighlightCarea: { type: Boolean, default: true },
     featureDisableEmStrong: { type: Boolean, default: true },
     enableToolbar: { type: Boolean, default: true },
+    expandToolbar: { type: Boolean, default: false },
     imagePrefix: { type: String, default: '' },
     font: { type: String, default: 'sans-serif' },
     fontsAvailable: { type: Object, default: function _default() {
@@ -698,7 +698,7 @@ exports.default = {
  * 
  */
 
-const SEPARATOR = ';'
+const SEPARATOR = ';';
 
 module.exports = class HocrPropertyParser {
 
@@ -712,38 +712,41 @@ module.exports = class HocrPropertyParser {
      *   - `@param {Object} opts.disableCardinalityChecks` Whether to silently ignore invalid argument cardinality
      * 
      */
-    constructor(opts={}) {
+    constructor(opts = {}) {
         Object.assign(this, {
             debug: false,
             allowUnknown: false,
+            allowUnknownEngineSpecific: true,
             allowInvalidNumbers: false,
-            disableCardinalityChecks: false,
-        }, opts)
+            disableCardinalityChecks: false
+        }, opts);
         this.parsers = {
             'baseline': this.numberParser([parseFloat, parseInt]),
-            'bbox': this.numberParser(parseInt, {min:0}, {length:4}),
-            'cflow': this.stringParser({collapse:true}),
-            'cuts': (args) => { return args.map((arg) => {
-                return this.numberParser(parseInt)(arg.split(','))
-            })},
-            'hardbreak': this.booleanParser({collapse:true}),
-            'image': this.stringParser({collapse: true}),
-            'imagemd5': this.stringParser({collapse: true}),
-            'lpageno': this.stringParser({collapse: true}),
-            'ppageno': this.numberParser(parseInt, {min: 0}, {collapse: true}),
-            'nlp': this.numberParser(parseFloat, {min: 0, max: 100}),
-            'order': this.numberParser(parseInt, {min: 0}, {collapse: true}),
-            'poly': this.numberParser(parseInt, {min: 0}, {minLength: 4, modulo: 2}),
-            'scan_res': this.numberParser(parseInt, {min: 0}),
-            'textangle': this.numberParser(parseFloat, {}, {collapse: true}),
-            'x_bboxes': this.numberParser(parseInt, {min:0}),
-            'x_font': this.stringParser({collapse:true}),
-            'x_fsize': this.numberParser(parseInt, {min:0}),
-            'x_confs': this.numberParser(parseFloat, {min:0, max:100}),
+            'bbox': this.numberParser(parseInt, { min: 0 }, { length: 4 }),
+            'cflow': this.stringParser({ collapse: true }),
+            'cuts': args => {
+                return args.map(arg => {
+                    return this.numberParser(parseInt)(arg.split(','));
+                });
+            },
+            'hardbreak': this.booleanParser({ collapse: true }),
+            'image': this.stringParser({ collapse: true }),
+            'imagemd5': this.stringParser({ collapse: true }),
+            'lpageno': this.stringParser({ collapse: true }),
+            'ppageno': this.numberParser(parseInt, { min: 0 }, { collapse: true }),
+            'nlp': this.numberParser(parseFloat, { min: 0, max: 100 }),
+            'order': this.numberParser(parseInt, { min: 0 }, { collapse: true }),
+            'poly': this.numberParser(parseInt, { min: 0 }, { minLength: 4, modulo: 2 }),
+            'scan_res': this.numberParser(parseInt, { min: 0 }),
+            'textangle': this.numberParser(parseFloat, {}, { collapse: true }),
+            'x_bboxes': this.numberParser(parseInt, { min: 0 }),
+            'x_font': this.stringParser({ collapse: true }),
+            'x_fsize': this.numberParser(parseInt, { min: 0 }),
+            'x_confs': this.numberParser(parseFloat, { min: 0, max: 100 }),
             'x_scanner': this.stringParser(),
             'x_source': this.stringParser(),
-            'x_wconf': this.numberParser(parseFloat, {min:0, max:100}),
-        }
+            'x_wconf': this.numberParser(parseFloat, { min: 0, max: 100 })
+        };
     }
 
     checkCardinality(args, {
@@ -751,56 +754,49 @@ module.exports = class HocrPropertyParser {
         modulo = -1,
         collapse = false,
         minLength = 0,
-        maxLength = Number.MAX_VALUE,
+        maxLength = Number.MAX_VALUE
     }) {
         if (this.disableCardinalityChecks) {
-            return args
+            return args;
         }
-        if (collapse) length = 1
-        if (length > -1 && args.length != length)
-            throw Error(`Incorrect number of arguments (${args.length} != ${length})`)
-        if (modulo > -1 && length % modulo > 0)
-            throw Error(`Number of arguments not a multiple of ${modulo} (${args.length})`)
-        if (collapse) return args[0]
-        if (args.length < minLength)
-            throw Error(`Not enough arguments (${args.length} < ${minLength})`)
-        if (args.length > maxLength)
-            throw Error(`Too many arguments (${args.length} > ${minLength})`)
-        return args
+        if (collapse) length = 1;
+        if (length > -1 && args.length != length) throw Error(`Incorrect number of arguments (${args.length} != ${length})`);
+        if (modulo > -1 && length % modulo > 0) throw Error(`Number of arguments not a multiple of ${modulo} (${args.length})`);
+        if (collapse) return args[0];
+        if (args.length < minLength) throw Error(`Not enough arguments (${args.length} < ${minLength})`);
+        if (args.length > maxLength) throw Error(`Too many arguments (${args.length} > ${minLength})`);
+        return args;
     }
 
-    booleanParser(cardinality={}) {
-        return (args) => {
-            return this.checkCardinality(args.map((arg) => {
-                return Boolean.valueOf()(arg)
-            }), cardinality)
-        }
+    booleanParser(cardinality = {}) {
+        return args => {
+            return this.checkCardinality(args.map(arg => {
+                return Boolean.valueOf()(arg);
+            }), cardinality);
+        };
     }
 
-    stringParser(cardinality={}) {
-        return (args) => {
-            return this.checkCardinality(args, cardinality)
-        }
+    stringParser(cardinality = {}) {
+        return args => {
+            return this.checkCardinality(args, cardinality);
+        };
     }
 
     numberParser(fns, {
         min = -Number.MAX_VALUE,
-        max = Number.MAX_VALUE,
-    } = {}, cardinality={}) {
-        if (!Array.isArray(fns)) fns = [fns]
-        return (args) => {
-            let i = 0
-            return this.checkCardinality(args.map((arg) => {
-                let parsed = fns[i++ % fns.length](arg)
+        max = Number.MAX_VALUE
+    } = {}, cardinality = {}) {
+        if (!Array.isArray(fns)) fns = [fns];
+        return args => {
+            let i = 0;
+            return this.checkCardinality(args.map(arg => {
+                let parsed = fns[i++ % fns.length](arg);
                 if (!this.allowInvalidNumbers) {
-                    if (Number.isNaN(parsed))
-                        throw Error(`Not a number: '${arg}'`)
-                    else if (parsed < min || parsed > max)
-                        throw Error(`Not in range [${min}..${max}]: '${arg}'`)
+                    if (Number.isNaN(parsed)) throw Error(`Not a number: '${arg}'`);else if (parsed < min || parsed > max) throw Error(`Not in range [${min}..${max}]: '${arg}'`);
                 }
-                return parsed
-            }), cardinality)
-        }
+                return parsed;
+            }), cardinality);
+        };
     }
 
     /**
@@ -810,70 +806,77 @@ module.exports = class HocrPropertyParser {
      * 
      */
     parse(s) {
-        let tokens = this.tokenize(s)
-        if (this.debug) console.log(`tokenize('${s})`, tokens)
-        let propertyMap = {}
+        let tokens = this.tokenize(s);
+        if (this.debug) console.log(`tokenize('${s})`, tokens);
+        let propertyMap = {};
         for (let i = 0; i < tokens.length; i++) {
-            let propertyName = tokens[i]
-            if (! this.allowUnknown && !(propertyName in this.parsers)) {
-                throw Error(`Unknown property '${propertyName}' in '${s}'`)
-            }
-            let propertyArgs = []
-            let j
-            for (j = i + 1; j < tokens.length; j++) {
-                if (tokens[j] === SEPARATOR) break
-                propertyArgs.push(tokens[j])
-            }
-            i = j
+            let propertyName = tokens[i];
+            let parser;
             if (propertyName in this.parsers) {
-              try {
-                propertyArgs = this.parsers[propertyName](propertyArgs)
-              } catch (err) {
-                console.log(`Parse error in '${s}'`)
-                throw err
-              }
+                parser = this.parsers[propertyName];
+            } else {
+                if (this.allowUnknown || propertyName.startsWith('x_') && this.allowUnknownEngineSpecific) {
+                    parser = this.stringParser();
+                } else {
+                    throw Error(`Unknown property '${propertyName}' in '${s}'`);
+                }
             }
-            propertyMap[propertyName] = propertyArgs
+            let propertyArgs = [];
+            let j;
+            for (j = i + 1; j < tokens.length; j++) {
+                if (tokens[j] === SEPARATOR) break;
+                propertyArgs.push(tokens[j]);
+            }
+            i = j;
+            try {
+                propertyArgs = parser(propertyArgs);
+            } catch (err) {
+                console.log(`Parse error in '${s}'`);
+                throw err;
+            }
+            propertyMap[propertyName] = propertyArgs;
         }
-        if (this.debug) console.log(`propertyMap`, propertyMap)
-        return propertyMap
+        if (this.debug) console.log(`propertyMap`, propertyMap);
+        return propertyMap;
     }
 
     tokenize(s) {
-        let tokens = []
-        let arr = s.split('')
-        let doubleQuoteOpen = false
-        let singleQuoteOpen = false
-        let buf = []
-        let cur = ''
-        let flush = () => { tokens.push(buf.join('')); buf = [] }
-        let append = () => { buf.push(cur) }
+        let tokens = [];
+        let arr = s.split('');
+        let doubleQuoteOpen = false;
+        let singleQuoteOpen = false;
+        let buf = [];
+        let cur = '';
+        let flush = () => {
+            tokens.push(buf.join(''));buf = [];
+        };
+        let append = () => {
+            buf.push(cur);
+        };
         for (let i = 0; i < arr.length; i++) {
-            let prev = i>0 ? arr[i-1] : ''
-            cur = arr[i]
+            let prev = i > 0 ? arr[i - 1] : '';
+            cur = arr[i];
             if (cur === "'" && prev != '\\' && !doubleQuoteOpen) {
-                if (singleQuoteOpen) flush()
-                singleQuoteOpen = !singleQuoteOpen
+                if (singleQuoteOpen) flush();
+                singleQuoteOpen = !singleQuoteOpen;
             } else if (cur === '"' && prev != '\\' && !singleQuoteOpen) {
-                if (doubleQuoteOpen) flush()
-                doubleQuoteOpen = !doubleQuoteOpen
+                if (doubleQuoteOpen) flush();
+                doubleQuoteOpen = !doubleQuoteOpen;
             } else if (!singleQuoteOpen && !doubleQuoteOpen && cur === SEPARATOR) {
-                if (buf.length > 0) flush()
-                if (tokens[tokens.length-1] !== SEPARATOR) tokens.push(SEPARATOR)
+                if (buf.length > 0) flush();
+                if (tokens[tokens.length - 1] !== SEPARATOR) tokens.push(SEPARATOR);
             } else if (!singleQuoteOpen && !doubleQuoteOpen && cur.match(/\s/)) {
-               if (buf.length > 0) flush()
+                if (buf.length > 0) flush();
             } else {
-                append()
+                append();
             }
         }
-        if (buf.length > 0)
-            flush()
-        return tokens
+        if (buf.length > 0) flush();
+        return tokens;
     }
-}
+};
 
-
-
+// vim: sw=4
 
 /***/ }),
 /* 6 */
@@ -952,9 +955,12 @@ exports.default = {
       };
     }
   },
+  props: {
+    expandedInitial: { type: Boolean, default: false }
+  },
   data: function data() {
     return {
-      expanded: true
+      expanded: this.expandedInitial
     };
   },
 
@@ -1173,7 +1179,7 @@ module.exports = function listToStyles (parentId, list) {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const HocrPropertyParser = __webpack_require__(5)
+const HocrPropertyParser = __webpack_require__(5);
 
 /**
  * ### HocrDOM
@@ -1181,11 +1187,11 @@ const HocrPropertyParser = __webpack_require__(5)
  */
 
 function log(options, ...args) {
-  if (!options.debug) return
-  console.log('# ', new Date(), ...args)
+  if (!options.debug) return;
+  console.log('# ', new Date(), ...args);
 }
 
-const defaultPropertyParser = new HocrPropertyParser()
+const defaultPropertyParser = new HocrPropertyParser();
 
 class HocrDOM {
 
@@ -1211,11 +1217,11 @@ class HocrDOM {
    * - `@param {Object}` cache If provided, will cache the properties in this object with key `_hocr`
    * 
    */
-  static isHocrElement(context, options, cache={}) {
+  static isHocrElement(context, options, cache = {}) {
     if (cache._isHocrElement === undefined) {
-      cache._isHocrElement = !! Array.from(context.classList).find(cls => cls.startsWith('ocr'))
+      cache._isHocrElement = !!Array.from(context.classList).find(cls => cls.startsWith('ocr'));
     }
-    return cache._isHocrElement
+    return cache._isHocrElement;
   }
 
   /**
@@ -1228,17 +1234,17 @@ class HocrDOM {
    * - `@param {Object}` cache If provided, will cache the properties in this object with key `_hocr`
    * 
    */
-  static getHocrProperties(context, options={}, cache={}) {
-    let {propertyParser} = options
-    if (!propertyParser) propertyParser = defaultPropertyParser
+  static getHocrProperties(context, options = {}, cache = {}) {
+    let { propertyParser } = options;
+    if (!propertyParser) propertyParser = defaultPropertyParser;
     if (!cache._hocr) {
       if (!HocrDOM.isHocrElement(context, options, cache)) {
-        cache._hocr = {}
+        cache._hocr = {};
       } else {
-        cache._hocr = propertyParser.parse(context.getAttribute('title'))
+        cache._hocr = propertyParser.parse(context.getAttribute('title'));
       }
     }
-    return cache._hocr
+    return cache._hocr;
   }
 
   /**
@@ -1250,7 +1256,7 @@ class HocrDOM {
    * 
    */
   static queryHocr(...args) {
-    return Array.from(HocrDOM.queryHocrAll(...args))[0]
+    return Array.from(HocrDOM.queryHocrAll(...args))[0];
   }
 
   /**
@@ -1268,53 +1274,53 @@ class HocrDOM {
    *   - `@param {String} query.filter` Arbitrary filter to prune resulting element set
    * 
    */
-  static queryHocrAll(context, query={}, options={}) {
+  static queryHocrAll(context, query = {}, options = {}) {
 
-    if (Array.isArray(query) || typeof query === 'string') query = {class: query}
-    query.tag = (query.tag || '*')
-    query.clauses = (query.clauses || '')
+    if (Array.isArray(query) || typeof query === 'string') query = { class: query };
+    query.tag = query.tag || '*';
+    query.clauses = query.clauses || '';
 
     // Return only hocr-elements with a bbox
-    if (query.title) query.clauses += `[title*="${query.title}"]`
+    if (query.title) query.clauses += `[title*="${query.title}"]`;
 
     // Return specific ocr_* / ocrx_* classes
-    query.class = (query.class || '')
-    if (typeof query.class === 'string') query.class = [query.class]
+    query.class = query.class || '';
+    if (typeof query.class === 'string') query.class = [query.class];
 
     // Build querySelectorAll query
-    let qs = query.class.map(function(cls) {
-      if (cls.indexOf('ocr') === 0) return cls
-      if (cls === '') return 'ocr'
-      if (cls.indexOf('x_') !== 0) return `ocr_${cls}`
-      return `ocr${cls}`
-    }).map(function(cls) {
-      return `${query.tag}[class^="${cls}"]${query.clauses}`
-    }).join(',')
+    let qs = query.class.map(function (cls) {
+      if (cls.indexOf('ocr') === 0) return cls;
+      if (cls === '') return 'ocr';
+      if (cls.indexOf('x_') !== 0) return `ocr_${cls}`;
+      return `ocr${cls}`;
+    }).map(function (cls) {
+      return `${query.tag}[class^="${cls}"]${query.clauses}`;
+    }).join(',');
 
-    log(options, "findByOcrClass:", qs)
+    log(options, "findByOcrClass:", qs);
 
     // let set = Array.prototype.slice.call(context.querySelectorAll(qs))
-    const nodeList = context.querySelectorAll(qs)
-    let set = Array.from(nodeList)
+    const nodeList = context.querySelectorAll(qs);
+    let set = Array.from(nodeList);
 
     if (query.terminal) {
-      set = set.filter(function(el) {
-        if (!el.querySelector('*[class^="ocr"]')) return el
-      })
+      set = set.filter(function (el) {
+        if (!el.querySelector('*[class^="ocr"]')) return el;
+      });
     }
     if (query.nonTerminal) {
-      set = set.filter(function(el) {
-        if (el.querySelector('*[class^="ocr"]')) return el
-      })
+      set = set.filter(function (el) {
+        if (el.querySelector('*[class^="ocr"]')) return el;
+      });
     }
 
     // Arbitrary filter function
     if (query.filter) {
-      log(options, {query})
-      set = set.filter(query.filter)
+      log(options, { query });
+      set = set.filter(query.filter);
     }
 
-    return Object.create(set, nodeList.prototype)
+    return Object.create(set, nodeList.prototype);
   }
 
   /**
@@ -1340,31 +1346,33 @@ class HocrDOM {
    * Property containing the hOCR properties
    * 
    */
-  static extendPrototypes({Element, Document}, options) {
+  static extendPrototypes({ Element, Document }, options) {
 
     ;[Element.prototype, Document.prototype].forEach(p => {
       ;['queryHocr', 'queryHocrAll'].forEach(fn => {
-        p[fn] = function (query={}, options) {
-          const context = (query.context || this)
-          return HocrDOM[fn](context, query, options)
-        }
-      })
+        p[fn] = function (query = {}, options) {
+          const context = query.context || this;
+          return HocrDOM[fn](context, query, options);
+        };
+      });
 
-      Object.defineProperty(p, '_hocr', {enumerable: false, writable: true})
-      Object.defineProperty(p, 'hocr', {get() {return HocrDOM.getHocrProperties(this, options, this)}})
+      Object.defineProperty(p, '_hocr', { enumerable: false, writable: true });
+      Object.defineProperty(p, 'hocr', { get() {
+          return HocrDOM.getHocrProperties(this, options, this);
+        } });
 
-      Object.defineProperty(p, '_isHocrElement', {enumerable: true, writable: true})
-      Object.defineProperty(p, 'isHocrElement', {get() {return HocrDOM.isHocrElement(this, options, this)}})
-    })
+      Object.defineProperty(p, '_isHocrElement', { enumerable: true, writable: true });
+      Object.defineProperty(p, 'isHocrElement', { get() {
+          return HocrDOM.isHocrElement(this, options, this);
+        } });
+    });
 
-    HocrDOM._initialized = true
+    HocrDOM._initialized = true;
   }
-
 
 }
 
-module.exports = HocrDOM
-
+module.exports = HocrDOM;
 
 /***/ }),
 /* 15 */
@@ -2161,7 +2169,9 @@ var render = function() {
     "div",
     { class: _vm.classList },
     [
-      _vm.enableToolbar ? _c("hocr-toolbar") : _vm._e(),
+      _vm.enableToolbar
+        ? _c("hocr-toolbar", { attrs: { expandedInitial: _vm.expandToolbar } })
+        : _vm._e(),
       _vm._v(" "),
       _c("div", {
         staticClass: "hocr-viewer-container",

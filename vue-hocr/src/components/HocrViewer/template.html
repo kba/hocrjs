@@ -1,5 +1,7 @@
 <div :class="classList">
-  <hocr-toolbar v-if="enableToolbar"/>
+  <hocr-toolbar v-if="enableToolbar"
+    :expandedInitial="expandToolbar"
+    />
   <div v-html="hocrDom.innerHTML"
     class="hocr-viewer-container"
     :style="containerStyle"

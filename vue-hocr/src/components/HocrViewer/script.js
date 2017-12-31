@@ -35,6 +35,7 @@ export default {
     featureHighlightCarea:          {type: Boolean, default: true},
     featureDisableEmStrong:         {type: Boolean, default: true},
     enableToolbar:                  {type: Boolean, default: true},
+    expandToolbar:                  {type: Boolean, default: false},
     imagePrefix:                    {type: String,  default:  ''},
     font:                           {type: String,  default:  'sans-serif'},
     fontsAvailable:                 {type: Object,  default() {return  {

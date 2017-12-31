@@ -6,8 +6,11 @@ export default {
       expanded: this.expanded,
     }},
   },
+  props: {
+    expandedInitial: {type: Boolean, default: false},
+  },
   data() {return {
-    expanded: true
+    expanded: this.expandedInitial,
   }},
   methods: {
     toggle() {
