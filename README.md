@@ -89,19 +89,16 @@ Clone the repository and run `make` for a list of targets:
 
   Targets
 
-    dist   webpack
-    clean  Remove built targets
-    test   Run unit tests
-    serve  Run a development server
-    watch  Continuously rebuild dist
+    bootstrap  lerna bootstrap
+    dist       webpack all
+    clean      Remove built targets
+    test       Run unit tests
+    link       link
+    publish    publish packages
 
   Variables
 
-    VERSION        Version of the latest git tag
-    ASSET_SERVER   URL of the asset server, serving the built files and userscript
-    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)
-    STATIC_SERVER  Command to run a static server
-    PORT           Server port
+    VERSION  Version of the latest git tag
 
 <!-- END-EVAL -->
 
