@@ -42,7 +42,7 @@ See this demo document: [Demo](https://kba.github.io/hocrjs/example/426117689_04
 To add the interface to a plain hOCR file, add this line just before the closing `</body>` tag:
 
 ```html
-<script src="https://unpkg.com/hocrjs"/>
+<script src="https://unpkg.com/hocrjs"></script>
 ```
 
 ### User script
