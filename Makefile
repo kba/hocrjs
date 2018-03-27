@@ -9,14 +9,16 @@ help:
 	@echo ""
 	@echo "  Targets"
 	@echo ""
-	@echo "    bootstrap  lerna bootstrap --hoist"
+	@echo "    bootstrap  lerna bootstrap"
 	@echo "    dist       webpack all"
 	@echo "    clean      Remove built targets"
 	@echo "    test       Run unit tests"
+	@echo "    link       link"
+	@echo "    publish    publish packages"
 	@echo ""
 	@echo "  Variables"
 	@echo ""
-	@echo "    VERSION  Version of the release. Default: $(VERSION)"
+	@echo "    VERSION  Version of the latest git tag"
 
 # END-EVAL
 
