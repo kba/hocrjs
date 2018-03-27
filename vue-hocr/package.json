@@ -41,6 +41,6 @@
         "webpack": "3.9.1"
     },
     "dependencies": {
-        "hocr-dom": "0.1.3"
+        "hocr-dom": "0.1.4"
     }
 }
