@@ -32,7 +32,6 @@
         "babel-tap": "5.0.0",
         "css-loader": "0.28.7",
         "express": "4.16.2",
-        "hocr-dom": "0.1.3",
         "html-loader": "0.5.1",
         "node-sass": "4.7.2",
         "nodemon": "1.12.1",
@@ -48,6 +47,7 @@
         "yargs": "10.0.3"
     },
     "dependencies": {
-        "vue-hocr": "^0.4.0-0"
+        "vue-hocr": "^0.4.0-0",
+        "hocr-dom": "0.1.3"
     }
 }
