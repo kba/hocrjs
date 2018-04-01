@@ -608,7 +608,7 @@ exports.default = {
       var _HocrDOM$getHocrPrope = _hocrDom.HocrDOM.getHocrProperties(_hocrDom.HocrDOM.queryHocr(page)),
           bbox = _HocrDOM$getHocrPrope.bbox;
 
-      var pageHeight = bbox[3] - bbox[1];
+      var pageHeight = bbox[3] - bbox[1] + 1;
       return {
         transform: 'scale(' + this.currentZoom + ')',
         'transform-origin': 'top left',
@@ -1985,8 +1985,8 @@ var Layout = function () {
         el.style.position = 'fixed';
         el.style.left = bbox[0] + "px";
         el.style.top = bbox[1] + "px";
-        el.style.width = bbox[2] - bbox[0] + "px";
-        el.style.height = bbox[3] - bbox[1] + "px";
+        el.style.width = bbox[2] - bbox[0] + 1 + "px";
+        el.style.height = bbox[3] - bbox[1] + 1 + "px";
       });
     }
   }]);
@@ -2023,10 +2023,9 @@ var ScaleFont = function () {
     _classCallCheck(this, ScaleFont);
 
     this.fontFamily = fontFamily;
-    this.maxFontSize = 128;
     this.minFontSize = 2;
     this.wrapClass = 'hocr-viewer-wrap';
-    this.cache = {};
+    this.wrap = {};
   }
 
   _createClass(ScaleFont, [{
@@ -2037,46 +2036,36 @@ var ScaleFont = function () {
       console.time('toggleScaleFont');
 
       // wrapper element containing wrappers for font-size expansion
-      var wrap = document.createElement('span');
-      wrap.classList.add(this.wrapClass);
-      document.body.appendChild(wrap);
+      this.wrap = document.createElement('span');
+      this.wrap.classList.add(this.wrapClass);
+      document.body.appendChild(this.wrap);
       _hocrDom.HocrDOM.queryHocrAll(dom, { terminal: true }).forEach(function (el) {
-        return _this.scaleFont(el, wrap);
+        return _this.scaleFont(el);
       });
-      wrap.remove();
+      this.wrap.remove();
 
       console.timeEnd('toggleScaleFont');
     }
   }, {
     key: 'scaleFont',
-    value: function scaleFont(el, wrap) {
+    value: function scaleFont(el) {
       var text = el.textContent.trim();
       if (text.length === 0) return;
-      if (!(text in this.cache)) {
-        // wrap.setAttribute('class', el.getAttribute('class'))
-        // wrap.style.width = '100%'
-        wrap.style.fontFamily = el.style.fontFamily;
-        wrap.innerHTML = text;
-        var height = parseInt(el.style.height.replace('px', ''));
-        var width = parseInt(el.style.width.replace('px', ''));
-        var fontSize = Math.min(width, height);
-        if (fontSize <= this.minFontSize) {
-          this.cache[text] = this.minFontSize;
-        } else {
-          // console.log({fontSize, width: width, height:height, min, el})
-          wrap.style.fontSize = fontSize + 'px';
-          if (fontSize > this.minFontSize && wrap.offsetHeight > height) {
-            fontSize -= wrap.offsetHeight - height;
-            wrap.style.fontSize = fontSize + 'px';
-          }
-          while (fontSize > this.minFontSize && wrap.offsetWidth > width) {
-            wrap.style.fontSize = --fontSize + 'px';
-          }
-          // if (iterations > 1) console.debug(iterations, text, wrap.offsetHeight, height, wrap.offsetWidth, width)
-          this.cache[text] = fontSize - 1;
-        }
+      this.wrap.style.fontFamily = el.style.fontFamily;
+      this.wrap.innerHTML = text;
+      var height = parseInt(el.style.height.replace('px', ''));
+      var width = parseInt(el.style.width.replace('px', ''));
+      var fontSize = height;
+      if (fontSize > this.minFontSize) {
+        this.wrap.style.fontSize = fontSize + 'px';
+        var fontSizeH = fontSize * height / this.wrap.offsetHeight;
+        var fontSizeW = fontSize * width / this.wrap.offsetWidth;
+        fontSize = fontSizeH < fontSizeW ? fontSizeH : fontSizeW;
       }
-      el.style.fontSize = this.cache[text] + 'px';
+      if (fontSize < this.minFontSize) {
+        fontSize = this.minFontSize;
+      }
+      el.style.fontSize = fontSize + 'px';
     }
   }]);
 
