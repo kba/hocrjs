@@ -99,7 +99,7 @@ Clone the repository and run `make` for a list of targets:
 
     VERSION        Version of the latest git tag
     ASSET_SERVER   URL of the asset server, serving the built files and userscript
-    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)
+    UPDATE_SERVER  URL of the userscript update server
     STATIC_SERVER  Command to run a static server
     PORT           Server port
 
