@@ -6,8 +6,8 @@ VERSION = $(shell git describe --abbrev=0 --tags|sed -e 's/v//')
 # URL of the asset server, serving the built files and userscript ('$(ASSET_SERVER)')
 ASSET_SERVER = https://unpkg.com/hocrjs@$(VERSION)/dist
 
-# URL of the userscript update server ('$(UPDATE_SERVER)')
-UPDATE_SERVER = $(ASSET_SERVER)
+# URL of the userscript update server ('$(UPDATE_SERVER)', will automatically redirect to latest version)
+UPDATE_SERVER = https://unpkg.com/hocrjs
 
 # Command to run a static server ('$(STATIC_SERVER)')
 STATIC_SERVER = @python2 -m SimpleHTTPServer $(PORT)
@@ -31,7 +31,7 @@ help:
 	@echo ""
 	@echo "    VERSION        Version of the latest git tag ('$(VERSION)')"
 	@echo "    ASSET_SERVER   URL of the asset server, serving the built files and userscript ('$(ASSET_SERVER)')"
-	@echo "    UPDATE_SERVER  URL of the userscript update server ('$(UPDATE_SERVER)')"
+	@echo "    UPDATE_SERVER  URL of the userscript update server ('$(UPDATE_SERVER)', will automatically redirect to latest version)"
 	@echo "    STATIC_SERVER  Command to run a static server ('$(STATIC_SERVER)')"
 	@echo "    PORT           Server port. ('$(PORT)')"
 

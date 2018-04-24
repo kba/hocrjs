@@ -97,11 +97,11 @@ Clone the repository and run `make` for a list of targets:
 
   Variables
 
-    VERSION        Version of the latest git tag
-    ASSET_SERVER   URL of the asset server, serving the built files and userscript
-    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)
-    STATIC_SERVER  Command to run a static server
-    PORT           Server port
+    VERSION        Version of the latest git tag ('0.4.0')
+    ASSET_SERVER   URL of the asset server, serving the built files and userscript ('https://unpkg.com/hocrjs@0.4.0/dist')
+    UPDATE_SERVER  URL of the userscript update server ('https://unpkg.com/hocrjs', will automatically redirect to latest version)
+    STATIC_SERVER  Command to run a static server ('@python2 -m SimpleHTTPServer 8888')
+    PORT           Server port. ('8888')
 
 <!-- END-EVAL -->
 
