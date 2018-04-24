@@ -1,18 +1,18 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
 
-# Version of the latest git tag
+# Version of the latest git tag ('$(VERSION)')
 VERSION = $(shell git describe --abbrev=0 --tags|sed -e 's/v//')
 
-# URL of the asset server, serving the built files and userscript
+# URL of the asset server, serving the built files and userscript ('$(ASSET_SERVER)')
 ASSET_SERVER = https://unpkg.com/hocrjs@$(VERSION)/dist
 
-# URL of the userscript update server (defaults to ASSET_SERVER)
+# URL of the userscript update server ('$(UPDATE_SERVER)')
 UPDATE_SERVER = $(ASSET_SERVER)
 
-# Command to run a static server
+# Command to run a static server ('$(STATIC_SERVER)')
 STATIC_SERVER = @python2 -m SimpleHTTPServer $(PORT)
 
-# Server port. Default: 8888
+# Server port. ('$(PORT)')
 PORT = 8888
 
 # BEGIN-EVAL makefile-parser --make-help Makefile
@@ -29,11 +29,11 @@ help:
 	@echo ""
 	@echo "  Variables"
 	@echo ""
-	@echo "    VERSION        Version of the latest git tag"
-	@echo "    ASSET_SERVER   URL of the asset server, serving the built files and userscript"
-	@echo "    UPDATE_SERVER  URL of the userscript update server (defaults to ASSET_SERVER)"
-	@echo "    STATIC_SERVER  Command to run a static server"
-	@echo "    PORT           Server port. Default: 8888"
+	@echo "    VERSION        Version of the latest git tag ('$(VERSION)')"
+	@echo "    ASSET_SERVER   URL of the asset server, serving the built files and userscript ('$(ASSET_SERVER)')"
+	@echo "    UPDATE_SERVER  URL of the userscript update server ('$(UPDATE_SERVER)')"
+	@echo "    STATIC_SERVER  Command to run a static server ('$(STATIC_SERVER)')"
+	@echo "    PORT           Server port. ('$(PORT)')"
 
 # END-EVAL
 
