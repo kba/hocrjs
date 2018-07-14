@@ -42,8 +42,17 @@ See this demo document: [Demo](https://kba.github.io/hocrjs/example/426117689_04
 To add the interface to a plain hOCR file, add this line just before the closing `</body>` tag:
 
 ```html
-<script src="https://unpkg.com/hocrjs"></script>
+<script src="https://unpkg.com/hocrjs" type="text/javascript"></script>
 ```
+
+For some document types, the `type` attribute can be ommitted.
+
+In addition, your webserver must set the correct mime type `text/html`.
+If your hOCR file uses a `.html` extension, the mime type is normally correct,
+but for files with `.hocr` extension, the correct mime type must be configured,
+for example by adding the following line to the `.htaccess` file:
+
+    AddType text/html hocr
 
 ### User script
 
