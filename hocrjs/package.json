@@ -43,11 +43,11 @@
         "uglifyjs-webpack-plugin": "1.1.4",
         "vue": "2.5.13",
         "webpack": "3.9.1",
-        "webpack-node-externals": "1.6.0",
-        "yargs": "10.0.3"
+        "webpack-node-externals": "1.6.0"
     },
     "dependencies": {
         "hocr-dom": "0.1.4",
-        "vue-hocr": "^0.4.1"
+        "vue-hocr": "^0.4.1",
+        "yargs": "10.0.3"
     }
 }
