@@ -1,4 +1,5 @@
 const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const srcPath = path.join(__dirname, "src")
 
 module.exports = {
@@ -16,9 +17,15 @@ module.exports = {
     library: 'VueHocr',
   },
   module: {
-    loaders: [
-      {test: /.*\.js$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory'},
+    rules: [
+      {test: /.*\.js$/,   exclude: /node_modules/, loader: 'babel-loader', options:      {cacheDirectory: true}},
+      {test: /.*\.scss$/, exclude: /node_modules/, loader: ['vue-style-loader', 'css-loader', 'sass-loader']},
+      //{test: /\.html$/, loader: "html-loader"},
       {test: /\.vue/, loader: "vue-loader"},
     ]
-  }
+  },
+  plugins: [
+    // make sure to include the plugin!
+    new VueLoaderPlugin()
+  ]
 }
