@@ -128,7 +128,9 @@ export default {
     },
 
   },
+
   methods: {
+
 
     isFeatureEnabled(featureName) {return this.featuresEnabled.includes(featureName)},
 
