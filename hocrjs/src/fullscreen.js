@@ -8,7 +8,8 @@
 import Vue from 'vue'
 import '@/normalize.scss'
 import 'normalize.css'
-import {HocrViewer} from 'vue-hocr'
+import butwhy from 'vue-hocr'
+const {HocrViewer} = butwhy // for some reason 'import {HocrViewer} from 'vue-hocr' wont work
 
 const hocr = document.querySelector('html').innerHTML
 document.body.innerHTML = '<div id="app"/>'

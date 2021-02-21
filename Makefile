@@ -1,4 +1,5 @@
 PATH := $(PWD)/node_modules/.bin:$(PATH)
+export NODE_ENV
 
 # Version of the latest git tag
 VERSION = $(shell node -e "console.log(require('./lerna.json').version)")

@@ -32,6 +32,7 @@ module.exports = {
           {loader: 'sass-loader', options: {sourceMap: true}}
         ],
       },
+      {test: /\.vue/, loader: "vue-loader"},
     ]
   },
   //plugins: [
