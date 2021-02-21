@@ -9,12 +9,16 @@ import Vue from 'vue'
 import '@/normalize.scss'
 import 'normalize.css'
 import butwhy from 'vue-hocr'
-const {HocrViewer} = butwhy // for some reason 'import {HocrViewer} from 'vue-hocr' wont work
+const {HocrViewer, HocrViewerStyle, HocrToolbarStyle} = butwhy // for some reason 'import {HocrViewer} from 'vue-hocr' wont work
+import Utils from 'vue-hocr/src/utils'
 
 const hocr = document.querySelector('html').innerHTML
+Utils.addCssFragment('hocr-viewer-styles', HocrViewerStyle.toString())
+Utils.addCssFragment('hocr-toolbar', HocrToolbarStyle.toString())
 document.body.innerHTML = '<div id="app"/>'
 window.hocrapp = new Vue({
   el: "#app",
+  style: HocrViewerStyle,
   components: {HocrViewer},
   template: `<HocrViewer :hocr="hocr" />`,
   data: {hocr}

@@ -22,7 +22,7 @@ module.exports = {
   module: {
     rules: [
       {test: /.*\.js$/, loader: 'babel-loader', options: {cacheDirectory: true}},
-      {test: /\.scss$/, use: ['vue-style-loader', 'css-loader', 'sass-loader']},
+      {test: /\.scss$/, use: ['css-loader', 'sass-loader']},
       {test: /\.vue/, loader: "vue-loader"},
     ]
   }

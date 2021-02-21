@@ -3,6 +3,10 @@
     "version": "0.4.1",
     "description": "Vue component for viewing hOCR files",
     "main": "dist/vue-hocr.js",
+    "sideEffects": [
+      "*.scss",
+      "*.css"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kba/vue-hocr.git"
