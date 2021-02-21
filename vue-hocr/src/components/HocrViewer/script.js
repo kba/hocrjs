@@ -129,8 +129,7 @@ export default {
 
     hocrDom() {
       const dom = document.createElement('div')
-      //dom.innerHTML = `<html><body>${this.currentPage.innerHTML}</body></html>`
-      dom.innerHTML = this.hocr
+      dom.innerHTML = this.currentPage.innerHTML
       Object.keys(this.features).map(featureName => {
         const featureClass = this.features[featureName]
         if (featureClass.apply) {
@@ -149,11 +148,11 @@ export default {
   methods: {
 
     prevPage() {
-      this.currentPageIdx -= Math.max(this.currentPageIdx - 1, 0)
+      this.currentPageIdx = Math.max(this.currentPageIdx - 1, 0)
     },
 
     nextPage() {
-      this.currentPageIdx -= Math.min(this.currentPageIdx + 1, this.lastPageIdx)
+      this.currentPageIdx = Math.min(this.currentPageIdx + 1, this.lastPageIdx)
     },
 
     isFeatureEnabled(featureName) {return this.featuresEnabled.includes(featureName)},
