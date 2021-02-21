@@ -11,6 +11,10 @@
   </div>
   <div class="wrapper">
 
+    <button :click="$parent.prevPage" :disabled="$parent.currentPageIdx == 0">prev</button>
+    <button>{{ $parent.currentPageIdx }}</button>
+    <button :click="$parent.nextPage" :disabled="$parent.currentPageIdx == $parent.lastPageIdx">next</button>
+
     <details open>
       <summary>Features</summary>
       <ul class="features">

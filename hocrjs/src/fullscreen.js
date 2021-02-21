@@ -18,7 +18,6 @@ Utils.addCssFragment('hocr-toolbar', HocrToolbarStyle.toString())
 document.body.innerHTML = '<div id="app"/>'
 window.hocrapp = new Vue({
   el: "#app",
-  style: HocrViewerStyle,
   components: {HocrViewer},
   template: `<HocrViewer :hocr="hocr" />`,
   data: {hocr}

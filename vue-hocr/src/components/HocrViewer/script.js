@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       enableLayout: false,
+      currentPageIdx: 0,
       config: defaultConfig,
       featuresEnabled: Object.keys(this.$props)
         .filter(k => k.startsWith('feature') && this[k])
@@ -71,12 +72,22 @@ export default {
       return ret
     },
 
-    containerStyle() {
-      const page = HocrDOM.queryHocr(this.hocrDom, 'page')
-      if (!page) {
+    lastPageIdx() {
+      const pages = HocrDOM.queryHocrAll(this.shadowDom, 'page')
+      return pages.length
+    },
+
+    currentPage() {
+      const pages = HocrDOM.queryHocrAll(this.shadowDom, 'page')
+      if (!pages.length) {
         console.warn("No .ocr_page element found. Is this hOCR?")
         return {}
       }
+      return pages[this.currentPageIdx]
+    },
+
+    containerStyle() {
+      const page = this.currentPage
       const {bbox} = HocrDOM.getHocrProperties(HocrDOM.queryHocr(page))
       const pageHeight = bbox[3] - bbox[1] + 1
       return {
@@ -109,9 +120,16 @@ export default {
       return ret
     },
 
-    hocrDom() {
-      console.log("enter hocrDom")
+    shadowDom() {
+      console.log("enter shadowDom")
       const dom = document.createElement('div')
+      dom.innerHTML = this.hocr
+      return dom
+    },
+
+    hocrDom() {
+      const dom = document.createElement('div')
+      //dom.innerHTML = `<html><body>${this.currentPage.innerHTML}</body></html>`
       dom.innerHTML = this.hocr
       Object.keys(this.features).map(featureName => {
         const featureClass = this.features[featureName]
@@ -129,6 +147,14 @@ export default {
 
   },
   methods: {
+
+    prevPage() {
+      this.currentPageIdx -= Math.max(this.currentPageIdx - 1, 0)
+    },
+
+    nextPage() {
+      this.currentPageIdx -= Math.min(this.currentPageIdx + 1, this.lastPageIdx)
+    },
 
     isFeatureEnabled(featureName) {return this.featuresEnabled.includes(featureName)},
 
