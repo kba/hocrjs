@@ -1,5 +1,6 @@
 const path = require('path')
 const srcPath = path.join(__dirname, "src")
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   entry: `${srcPath}/components/index.js`,
@@ -15,9 +16,13 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'VueHocr',
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   module: {
-    loaders: [
-      {test: /.*\.js$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory'},
+    rules: [
+      {test: /.*\.js$/, exclude: /node_modules/, loader: 'babel-loader', options: {cacheDirectory: true}},
+      {test: /\.scss$/, use: ['vue-style-loader', 'css-loader', 'sass-loader']},
       {test: /\.vue/, loader: "vue-loader"},
     ]
   }

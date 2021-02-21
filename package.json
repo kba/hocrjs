@@ -1,5 +1,7 @@
 {
-	"devDependencies": {
-		"lerna": "^2.5.1"
+	"devDependencies": {},
+	"name": "hocrjs",
+	"dependencies": {
+		"lerna": "4.0.0"
 	}
 }

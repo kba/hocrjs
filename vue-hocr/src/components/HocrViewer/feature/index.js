@@ -6,7 +6,7 @@ import Layout          from './Layout'
 import ScaleFont       from './ScaleFont'
 import Tooltip         from './Tooltip'
 
-module.exports = {
+export default {
   BackgroundImage,
   ContentEditable,
   Font,

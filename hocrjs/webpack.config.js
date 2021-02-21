@@ -1,4 +1,4 @@
-const UglifyJS = require('uglifyjs-webpack-plugin')
+//const UglifyJS = require('uglifyjs-webpack-plugin')
 const path = require('path')
 
 module.exports = {
@@ -17,19 +17,24 @@ module.exports = {
     filename: `hocr.[name].js`,
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /.*\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader?cacheDirectory'
+        loader: 'babel-loader',
+        options: {cacheDirectory: true},
       },
       {
         test: /\.s?[ac]ss$/,
-        loader: "style-loader!css-loader?sourcemap=true!sass-loader?sourcemap-=true"
+        use: [
+          'style-loader',
+          {loader: 'css-loader', options: {sourceMap: true}},
+          {loader: 'sass-loader', options: {sourceMap: true}}
+        ],
       },
     ]
   },
-  plugins: [
-    new UglifyJS({}),
-  ]
+  //plugins: [
+  //  new UglifyJS({}),
+  //]
 }

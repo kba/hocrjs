@@ -21,28 +21,29 @@
     "homepage": "https://github.com/kba/hocrjs#readme",
     "babel": {
         "presets": [
-            "env"
+            "@babel/preset-env"
         ]
     },
     "devDependencies": {
+        "@babel/core": "7.12.17",
+        "@babel/preset-env": "7.12.17",
         "@kba/makefile-parser": "0.0.3",
-        "babel-core": "6.26.0",
-        "babel-loader": "7.1.2",
-        "babel-preset-env": "1.6.1",
+        "babel-loader": "8.2.2",
         "babel-tap": "5.0.0",
-        "css-loader": "0.28.7",
-        "express": "4.16.2",
-        "html-loader": "0.5.1",
-        "node-sass": "4.7.2",
+        "css-loader": "5.0.2",
+        "express": "4.17.1",
+        "html-loader": "2.1.0",
+        "node-sass": "5.0.0",
         "nodemon": "1.12.1",
-        "normalize.css": "7.0.0",
-        "sass-loader": "6.0.6",
-        "style-loader": "0.19.0",
-        "tap": "11.0.0",
-        "tiny-emitter": "2.0.2",
-        "uglifyjs-webpack-plugin": "1.1.4",
-        "vue": "2.5.13",
-        "webpack": "3.9.1",
+        "normalize.css": "8.0.1",
+        "sass-loader": "11.0.1",
+        "style-loader": "2.0.0",
+        "tap": "14.11.0",
+        "tiny-emitter": "2.1.0",
+        "uglifyjs-webpack-plugin": "2.2.0",
+        "vue": "2.6.12",
+        "webpack": "5.23.0",
+        "webpack-cli": "4.5.0",
         "webpack-node-externals": "1.6.0"
     },
     "dependencies": {
