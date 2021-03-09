@@ -145,6 +145,11 @@ export default {
     },
 
   },
+
+  mounted() {
+    this.zoom('height')
+  },
+
   methods: {
 
     prevPage() {
