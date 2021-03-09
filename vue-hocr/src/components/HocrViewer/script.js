@@ -17,7 +17,7 @@ export default {
   props: {
     hocr:                           {type: String,  required: true},
     initialZoom:                    {type: Number,  default:  1},
-    featureBackgroundImage:         {type: Boolean, default: false},
+    featureBackgroundImage:         {type: Boolean, default: true},
     featureContentEditable:         {type: Boolean, default: true},
     featureFont:                    {type: Boolean, default: true},
     featureLayout:                  {type: Boolean, default: true},
