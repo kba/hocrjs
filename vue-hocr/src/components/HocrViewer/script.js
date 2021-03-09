@@ -129,7 +129,7 @@ export default {
 
     hocrDom() {
       const dom = document.createElement('div')
-      dom.innerHTML = this.currentPage.innerHTML
+      dom.innerHTML = this.currentPage.outerHTML
       Object.keys(this.features).map(featureName => {
         const featureClass = this.features[featureName]
         if (featureClass.apply) {
