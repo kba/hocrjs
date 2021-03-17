@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hocr-viewer
 // @namespace    http://github.com/kba/hocrjs
-// @updateURL    __UPDATE_SERVER__/hocr.user.js
+// @updateURL    __UPDATE_SERVER__/dist/hocr.user.js
 // @version      __VERSION__
 // @description  Add hocr-viewer controls to a apage
 // @author       kba

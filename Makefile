@@ -45,10 +45,11 @@ link:
 	lerna exec -- npm link
 
 # publish packages
-publish: clean dist
-	lerna publish --skip-npm --skip-git
+publish:
+	lerna version --no-push --no-git-tag-version
 	VERSION=`node -e "console.log(require('./lerna.json').version)"`; \
-		$(MAKE) -B dist VERSION=$$VERSION; \
-		git add .; \
-		git commit -m ":package: Release $$VERSION"; \
+		$(MAKE) -B dist VERSION=$$VERSION NODE_ENV=production; \
+		git add */dist */package.json; \
+		git commit -m ":package: v$$VERSION"; \
 		git tag v$$VERSION; \
+	lerna exec npm publish
