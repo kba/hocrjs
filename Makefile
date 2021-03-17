@@ -49,7 +49,7 @@ publish:
 	lerna version --no-push --no-git-tag-version
 	VERSION=`node -e "console.log(require('./lerna.json').version)"`; \
 		$(MAKE) -B dist VERSION=$$VERSION NODE_ENV=production; \
-		git add */dist */package.json; \
+		git add lerna.json */dist */package*.json; \
 		git commit -m ":package: v$$VERSION"; \
 		git tag v$$VERSION; \
 	lerna exec npm publish
