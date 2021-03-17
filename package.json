@@ -1,5 +1,4 @@
 {
-	"devDependencies": {},
 	"name": "hocrjs",
 	"dependencies": {
 		"lerna": "4.0.0"
