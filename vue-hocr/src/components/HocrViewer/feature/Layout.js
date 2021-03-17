@@ -7,6 +7,10 @@ export default class Layout {
       title: 'bbox'
     }).forEach((el) => {
       let {bbox} = HocrDOM.getHocrProperties(el)
+      // XXX this can happen because e.g. "x_bboxes".contains('bbox')
+      // TODO implement glyph bounding boxes
+      if (!bbox)
+        return
       el.style.position = 'fixed'
       el.style.left    = bbox[0] + "px"
       el.style.top     = bbox[1] + "px"

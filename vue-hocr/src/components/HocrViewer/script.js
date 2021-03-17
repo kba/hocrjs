@@ -78,6 +78,7 @@ export default {
     },
 
     currentPage() {
+      console.log("enter currentPage")
       const pages = HocrDOM.queryHocrAll(this.shadowDom, 'page')
       if (!pages.length) {
         console.warn("No .ocr_page element found. Is this hOCR?")
