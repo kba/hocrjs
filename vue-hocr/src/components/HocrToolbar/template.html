@@ -12,7 +12,7 @@
   <div class="wrapper">
 
     <button @click="$parent.prevPage" :disabled="$parent.currentPageIdx == 0">prev</button>
-    <button>{{ $parent.currentPageIdx }}</button>
+    <button>{{ $parent.currentPageIdx + 1 }} / {{ $parent.lastPageIdx + 1 }}</button>
     <button @click="$parent.nextPage" :disabled="$parent.currentPageIdx == $parent.lastPageIdx">next</button>
 
     <details open>

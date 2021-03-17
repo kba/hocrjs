@@ -74,7 +74,7 @@ export default {
 
     lastPageIdx() {
       const pages = HocrDOM.queryHocrAll(this.shadowDom, 'page')
-      return pages.length
+      return pages.length - 1
     },
 
     currentPage() {
