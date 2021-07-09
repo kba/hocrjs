@@ -1,6 +1,6 @@
 {
     "name": "vue-hocr",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "description": "Vue component for viewing hOCR files",
     "main": "dist/vue-hocr.js",
     "sideEffects": [

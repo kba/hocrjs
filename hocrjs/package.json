@@ -1,6 +1,6 @@
 {
     "name": "hocrjs",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "description": "Vue component for viewing hOCR files, also usable standalone",
     "main": "dist/hocr.fullscreen.js",
     "bin": {
@@ -48,7 +48,7 @@
     },
     "dependencies": {
         "hocr-dom": "0.1.4",
-        "vue-hocr": "^0.5.3",
+        "vue-hocr": "^0.5.4",
         "yargs": "10.0.3"
     },
     "gitHead": "17f48d51d58f784cbf5e7e1fdc0c8324f73b20cd"
