@@ -89,7 +89,7 @@ export default {
 
     containerStyle() {
       const page = this.currentPage
-      const {bbox} = HocrDOM.getHocrProperties(HocrDOM.queryHocr(page))
+      const {bbox} = HocrDOM.getHocrProperties(page)
       const pageHeight = bbox[3] - bbox[1] + 1
       return {
         transform: `scale(${this.currentZoom})`,
