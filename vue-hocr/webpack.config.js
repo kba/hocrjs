@@ -1,6 +1,7 @@
 const path = require('path')
 const srcPath = path.join(__dirname, "src")
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const {SourceMapDevToolPlugin} = require('webpack')
 
 module.exports = {
   entry: `${srcPath}/components/index.js`,
@@ -16,8 +17,13 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'VueHocr',
   },
+  devtool: false,
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new SourceMapDevToolPlugin({
+      append: '\n//# sourceMappingURL=https://unpkg.com/hocrjs/[url]',
+      filename: '[name].map',
+    })
   ],
   module: {
     rules: [

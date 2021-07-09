@@ -1,11 +1,11 @@
 //const UglifyJS = require('uglifyjs-webpack-plugin')
 const path = require('path')
+const {SourceMapDevToolPlugin} = require('webpack')
 
 module.exports = {
   entry: {
     'fullscreen': "./src/fullscreen.js",
   },
-  devtool: 'source-map',
   resolve: {
     alias: {
       "@": path.join(__dirname, "src"),
@@ -35,6 +35,13 @@ module.exports = {
       {test: /\.vue/, loader: "vue-loader"},
     ]
   },
+  devtool: false,
+  plugins: [
+    new SourceMapDevToolPlugin({
+      append: '\n//# sourceMappingURL=https://unpkg.com/hocrjs/[url]',
+      filename: '[name].map',
+    })
+  ]
   //plugins: [
   //  new UglifyJS({}),
   //]
