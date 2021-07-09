@@ -38,7 +38,7 @@ module.exports = {
   devtool: false,
   plugins: [
     new SourceMapDevToolPlugin({
-      append: '\n//# sourceMappingURL=https://unpkg.com/hocrjs/[url]',
+      append: '\n//# sourceMappingURL=https://unpkg.com/hocrjs/dist/[url]',
       filename: '[name].map',
     })
   ]

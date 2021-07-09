@@ -21,7 +21,7 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new SourceMapDevToolPlugin({
-      append: '\n//# sourceMappingURL=https://unpkg.com/hocrjs/[url]',
+      append: '\n//# sourceMappingURL=https://unpkg.com/vue-hocr/dist/[url]',
       filename: '[name].map',
     })
   ],
