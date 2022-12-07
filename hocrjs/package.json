@@ -31,7 +31,7 @@
         "babel-loader": "8.2.2",
         "babel-tap": "5.0.0",
         "css-loader": "5.0.2",
-        "express": "4.17.1",
+        "express": "4.18.2",
         "html-loader": "2.1.0",
         "node-sass": "5.0.0",
         "nodemon": "1.12.1",
