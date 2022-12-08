@@ -33,7 +33,7 @@
         "css-loader": "5.0.2",
         "express": "4.18.2",
         "html-loader": "2.1.0",
-        "node-sass": "5.0.0",
+        "node-sass": "7.0.0",
         "nodemon": "1.12.1",
         "normalize.css": "8.0.1",
         "sass-loader": "11.0.1",
